@@ -91,7 +91,7 @@
     <div class="top">
       <div>
         <h1>⚽ Laufchallenge</h1>
-        <div class="sub">Einzelrangliste & Gruppenübersicht · sortiert nach km · Klick für Details</div>
+        <div class="sub">Einzelrangliste & Gruppenübersicht · sortiert nach Strecke · Klick für Details</div>
       </div>
 
       <div class="tabs" role="tablist">
@@ -141,10 +141,24 @@
       }[m]));
     }
 
+    // ISO (YYYY-MM-DD) -> TT.MM.JJJJ (lokal, ohne UTC-Shift)
+    function formatDateDE(iso){
+      if (!iso) return "—";
+      const parts = String(iso).split("-");
+      if (parts.length !== 3) return esc(iso);
+      const y = Number(parts[0]), m = Number(parts[1]), d = Number(parts[2]);
+      if (!y || !m || !d) return esc(iso);
+      const dt = new Date(y, m - 1, d);
+      return dt.toLocaleDateString("de-DE");
+    }
+
+    function kmText(v){
+      return `${Number(v || 0).toFixed(2)} km`;
+    }
+
     function adminModeEnabled(){
       if (location.hash !== "#admin") return false;
 
-      // schon freigeschaltet?
       if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "1") return true;
 
       const pw = prompt("Admin-Passwort:");
@@ -158,7 +172,6 @@
 
     function adminLogout(){
       sessionStorage.removeItem(ADMIN_SESSION_KEY);
-      // hash entfernen
       if (location.hash === "#admin") history.replaceState(null, "", location.pathname + location.search);
       render();
     }
@@ -227,8 +240,6 @@
         .sort((a,b) => (b.km - a.km) || a.group.localeCompare(b.group));
 
       const ranked = denseRank(rows, r => r.km);
-
-      // Trend für Gruppen optional später (wenn du prev ranks in data.json speicherst)
       return ranked.map(r => ({ ...r, rank_delta: 0 }));
     }
 
@@ -284,7 +295,7 @@
             </div>
 
             <div>
-              <div class="hint" style="margin:0 0 4px 0">km</div>
+              <div class="hint" style="margin:0 0 4px 0">Strecke (km)</div>
               <input id="adminKm" class="inp" type="number" step="0.01" value="0">
             </div>
 
@@ -338,7 +349,7 @@
         const imgName = $("adminImgName").value.trim();
 
         if (!playerName || !date || !Number.isFinite(km) || km <= 0){
-          $("adminHint").textContent = "Bitte Spieler, Datum und km > 0 ausfüllen.";
+          $("adminHint").textContent = "Bitte Spieler, Datum und Strecke > 0 ausfüllen.";
           return;
         }
         if (!imgName){
@@ -370,10 +381,8 @@
     function render(){
       $("stamp").textContent = (DATA && DATA.stand) ? DATA.stand : "—";
 
-      // Admin Mount
       $("adminBarMount").innerHTML = renderAdminBar();
 
-      // Sidebar groups
       $("groupList").innerHTML = (DATA.groups || []).map(g => `
         <div class="li">
           <div>
@@ -396,7 +405,7 @@
               <th>Rang</th>
               <th>Spieler</th>
               <th>Gruppe</th>
-              <th class="km">km</th>
+              <th class="km">Strecke</th>
             </tr>
           </thead>
           <tbody>
@@ -411,7 +420,7 @@
                     <div style="padding:10px 10px 12px 10px; border-top:1px solid rgba(255,255,255,.06)">
                       <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-end;margin-bottom:8px">
                         <div style="font-weight:900">${esc(pr.name)} – Läufe</div>
-                        <div style="font-size:12px;color:var(--muted)">Gesamt: ${pr.km.toFixed(2)} km</div>
+                        <div style="font-size:12px;color:var(--muted)">Gesamt: ${kmText(pr.km)}</div>
                       </div>
 
                       ${runsSorted.length === 0 ? `
@@ -420,16 +429,18 @@
                         <table style="width:100%; border-collapse:collapse; background:rgba(0,0,0,.06); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:0">
                           <thead>
                             <tr>
+                              <th>Run</th>
                               <th>Datum</th>
-                              <th class="km">km</th>
+                              <th class="km">Strecke</th>
                               <th>Beweis</th>
                             </tr>
                           </thead>
                           <tbody>
-                            ${runsSorted.map(r => `
+                            ${runsSorted.map((r, i) => `
                               <tr style="border-top:1px solid rgba(255,255,255,.06)">
-                                <td>${esc(r.date || "")}</td>
-                                <td class="km">${Number(r.km||0).toFixed(2)}</td>
+                                <td>${i + 1}</td>
+                                <td>${formatDateDE(r.date || "")}</td>
+                                <td class="km">${kmText(r.km)}</td>
                                 <td>
                                   ${r.img ? `
                                     <a href="${esc(r.img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
@@ -458,7 +469,7 @@
                       ${esc(pr.group)}
                     </span>
                   </td>
-                  <td class="km">${pr.km.toFixed(2)}</td>
+                  <td class="km">${kmText(pr.km)}</td>
                 </tr>
                 ${details}
               `;
@@ -476,7 +487,7 @@
               <th>Trend</th>
               <th>Rang</th>
               <th>Gruppe</th>
-              <th class="km">km</th>
+              <th class="km">Strecke</th>
             </tr>
           </thead>
           <tbody>
@@ -490,7 +501,7 @@
                     <div style="padding:10px 10px 12px 10px; border-top:1px solid rgba(255,255,255,.06)">
                       <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:8px">
                         <div style="font-weight:900; color:${groupColor(gr.group)}">${esc(gr.group)} – Mitglieder</div>
-                        <div style="font-size:12px; color:var(--muted)">Sortiert nach km</div>
+                        <div style="font-size:12px; color:var(--muted)">Sortiert nach Strecke</div>
                       </div>
 
                       <table style="width:100%; border-collapse:collapse; background:rgba(0,0,0,.06); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:0">
@@ -498,7 +509,7 @@
                           <tr>
                             <th>#</th>
                             <th>Spieler</th>
-                            <th class="km">km</th>
+                            <th class="km">Strecke</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -506,7 +517,7 @@
                             <tr style="border-top:1px solid rgba(255,255,255,.06)">
                               <td>${idx+1}</td>
                               <td style="font-weight:800">${esc(m.name)}${idx===0 ? `<span style="margin-left:8px">👑</span>` : ""}</td>
-                              <td class="km">${Number(m.km).toFixed(2)}</td>
+                              <td class="km">${kmText(m.km)}</td>
                             </tr>
                           `).join("")}
                         </tbody>
@@ -522,7 +533,7 @@
                   <td>${trend(gr.rank_delta)}</td>
                   <td>${gr.current_rank}</td>
                   <td><b style="color:${groupColor(gr.group)}">${esc(gr.group)}</b></td>
-                  <td class="km">${Number(gr.km).toFixed(2)}</td>
+                  <td class="km">${kmText(gr.km)}</td>
                 </tr>
                 ${details}
               `;
