@@ -146,8 +146,14 @@
     },
     {
       "name": "Vinzenz Ertl",
-      "previousRank": null,
-      "runs": []
+      "previousRank": 3,
+      "runs": [
+        {
+          "date": "2026-01-09",
+          "km": 5,
+          "img": "uploads/vinzenz_ertl/Run1.jpg"
+        }
+      ]
     },
     {
       "name": "Nac",
