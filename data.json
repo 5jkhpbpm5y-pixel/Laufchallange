@@ -120,8 +120,19 @@
     },
     {
       "name": "Valentin Ertl",
-      "previousRank": null,
-      "runs": []
+      "previousRank": 2,
+      "runs": [
+        {
+          "date": "2026-01-09",
+          "km": 5,
+          "img": "uploads/valentin_ertl/Run1"
+        },
+        {
+          "date": "2026-01-09",
+          "km": 20,
+          "img": "uploads/valentin_ertl/Run2"
+        }
+      ]
     },
     {
       "name": "Martin Winklmaier",
