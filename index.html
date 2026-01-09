@@ -84,9 +84,83 @@
     }
     .btnGood{ background:rgba(34,197,94,.15); color:#dff7e8; font-weight:800; }
     .btnBad{ background:rgba(255,107,107,.12); color:#ffd6d6; font-weight:800; }
+
+    /* ===== PODIUM ===== */
+    .podiumWrap{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:12px;
+      margin-bottom:6px;
+    }
+    @media (min-width:700px){
+      .podiumWrap{ grid-template-columns:1fr 1fr 1fr; }
+    }
+    .podiumCard{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:rgba(255,255,255,.02);
+      padding:12px;
+      position:relative;
+      overflow:hidden;
+    }
+    .podiumCard::before{
+      content:"";
+      position:absolute;
+      inset:-60px -60px auto auto;
+      width:120px;
+      height:120px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      transform:rotate(20deg);
+    }
+    .podiumTop{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .podiumRank{ font-weight:900; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+    .podiumEmoji{ font-size:20px; }
+    .podiumName{ font-weight:900; font-size:14px; margin-top:6px; }
+    .podiumMeta{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
+    .badgeMini{
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.02);
+      color:var(--muted);
+      display:inline-flex;
+      gap:6px;
+      align-items:center;
+    }
+    .badgeMini.good{ color:#dff7e8; border-color:rgba(34,197,94,.35); background:rgba(34,197,94,.12); }
+    .badgeMini.warn{ color:#ffe9c7; border-color:rgba(255,186,73,.35); background:rgba(255,186,73,.10); }
+    .badgeMini.fire{ color:#ffd1d1; border-color:rgba(255,107,107,.35); background:rgba(255,107,107,.10); }
+    .badgeMini.blue{ color:#d7e9ff; border-color:rgba(122,183,255,.35); background:rgba(122,183,255,.10); }
+
+    /* ===== CONFETTI ===== */
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:9999;
+      overflow:hidden;
+      display:none;
+    }
+    .confetti.show{ display:block; }
+    .confetti span{
+      position:absolute;
+      top:-20px;
+      font-size:18px;
+      animation:fall 1.8s linear forwards;
+      opacity:.95;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.45));
+    }
+    @keyframes fall{
+      to{ transform:translateY(110vh) rotate(360deg); opacity:0.9; }
+    }
   </style>
 </head>
 <body>
+  <div class="confetti" id="confetti"></div>
+
   <div class="wrap">
     <div class="top">
       <div>
@@ -209,6 +283,40 @@
       return Number(sum.toFixed(2));
     }
 
+    // ===== STREAK: 3 Tage am Stück? =====
+    function has3DayStreak(runs){
+      if (!Array.isArray(runs) || runs.length === 0) return false;
+
+      // unique dates
+      const set = new Set();
+      for (const r of runs){
+        if (r && r.date) set.add(String(r.date));
+      }
+      const dates = Array.from(set)
+        .map(d => {
+          const p = d.split("-");
+          if (p.length !== 3) return null;
+          return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])).getTime();
+        })
+        .filter(x => Number.isFinite(x))
+        .sort((a,b) => a - b);
+
+      if (dates.length < 3) return false;
+
+      const day = 24 * 60 * 60 * 1000;
+      let streak = 1;
+
+      for (let i=1;i<dates.length;i++){
+        if (dates[i] - dates[i-1] === day){
+          streak++;
+          if (streak >= 3) return true;
+        } else if (dates[i] !== dates[i-1]) {
+          streak = 1;
+        }
+      }
+      return false;
+    }
+
     function buildPlayerRows(){
       const nameToGroup = buildNameToGroup();
 
@@ -225,7 +333,7 @@
       return ranked.map(r => {
         const prev = (r.previousRank == null) ? r.current_rank : r.previousRank;
         const delta = prev - r.current_rank;
-        return { ...r, rank_delta: delta };
+        return { ...r, rank_delta: delta, has_streak3: has3DayStreak(r.runs) };
       });
     }
 
@@ -257,7 +365,7 @@
         .toLowerCase()
         .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
         .replace(/[^a-z0-9]+/g,"_")
-        .replace(/^_+|_+$/g,"");
+        .replace(/^_+|_+$/g,"_");
       return `${safe}_${dateStr}.jpg`;
     }
 
@@ -271,6 +379,51 @@
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+    }
+
+    // ===== CONFETTI =====
+    function launchConfetti(){
+      const el = $("confetti");
+      el.innerHTML = "";
+      el.classList.add("show");
+
+      const emojis = ["🎉","✨","🏆","⚡️","🎊","🥳"];
+      const count = 42;
+
+      for (let i=0;i<count;i++){
+        const s = document.createElement("span");
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const left = Math.random()*100;
+        const delay = Math.random()*0.35;
+        const dur = 1.5 + Math.random()*1.2;
+        s.style.left = left + "vw";
+        s.style.animationDelay = delay + "s";
+        s.style.animationDuration = dur + "s";
+        s.style.transform = `translateY(-20px) rotate(${Math.random()*120}deg)`;
+        el.appendChild(s);
+      }
+
+      setTimeout(() => {
+        el.classList.remove("show");
+        el.innerHTML = "";
+      }, 2600);
+    }
+
+    function maybeConfettiForNewLeader(playerRows){
+      if (!playerRows || playerRows.length === 0) return;
+      const leader = playerRows.find(p => p.current_rank === 1);
+      if (!leader) return;
+
+      // Nur wenn previousRank gepflegt ist und > 1
+      const prev = (DATA.players || []).find(x => x.name === leader.name)?.previousRank;
+      if (prev == null || Number(prev) <= 1) return;
+
+      // nur 1x pro Stand
+      const standKey = `confetti_shown_${DATA.stand || "stand"}`;
+      if (sessionStorage.getItem(standKey) === "1") return;
+
+      sessionStorage.setItem(standKey, "1");
+      launchConfetti();
     }
 
     // ====== ADMIN BAR ======
@@ -395,8 +548,47 @@
       const playerRows = buildPlayerRows();
       const groupRows = buildGroupRows(playerRows);
 
+      // Most Improved (größter delta > 0)
+      const mostImproved = playerRows
+        .filter(p => p.rank_delta > 0)
+        .sort((a,b) => (b.rank_delta - a.rank_delta) || (b.km - a.km))[0] || null;
+
+      // Podium (Top 3)
+      const top3 = playerRows.slice(0,3);
+
+      // Confetti ggf. für neuen Leader
+      maybeConfettiForNewLeader(playerRows);
+
       // Players view
       $("playersView").innerHTML = `
+        ${top3.length ? `
+          <div class="podiumWrap">
+            ${top3.map((p, idx) => {
+              const rank = idx + 1;
+              const emoji = rank === 1 ? "👑" : (rank === 2 ? "🥈" : "🥉");
+              const mi = (mostImproved && mostImproved.name === p.name) ? `<span class="badgeMini blue">🚀 Most Improved</span>` : "";
+              const st = p.has_streak3 ? `<span class="badgeMini fire">🔥 3-Tage-Streak</span>` : "";
+              const gcol = groupColor(p.group);
+              return `
+                <div class="podiumCard" style="border-color:${gcol}33">
+                  <div class="podiumTop">
+                    <div class="podiumRank">Platz ${rank}</div>
+                    <div class="podiumEmoji">${emoji}</div>
+                  </div>
+                  <div class="podiumName">${esc(p.name)}</div>
+                  <div class="podiumMeta">
+                    <span class="badgeMini" style="border-color:${gcol}55;color:${gcol}">${esc(p.group)}</span>
+                    <span class="badgeMini good">${kmText(p.km)}</span>
+                    ${mi}
+                    ${st}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <div class="hint">Ab Platz 4 geht’s in der Tabelle weiter.</div>
+        ` : ""}
+
         <table>
           <thead>
             <tr>
@@ -411,7 +603,11 @@
           <tbody>
             ${playerRows.map(pr => {
               const open = expandedPlayer === pr.name;
-              const crown = pr.current_rank === 1 ? `<span title="Platz 1" style="margin-left:6px">👑</span>` : "";
+
+              const medal = pr.current_rank === 1 ? "👑" : (pr.current_rank === 2 ? "🥈" : (pr.current_rank === 3 ? "🥉" : ""));
+              const miBadge = (mostImproved && mostImproved.name === pr.name) ? `<span class="badgeMini blue" style="margin-left:8px">🚀 Most Improved</span>` : "";
+              const streakBadge = pr.has_streak3 ? `<span class="badgeMini fire" style="margin-left:8px">🔥 3-Tage-Streak</span>` : "";
+
               const runsSorted = [...(pr.runs||[])].sort((a,b) => String(b.date||"").localeCompare(String(a.date||"")));
 
               const details = `
@@ -463,7 +659,11 @@
                   <td class="caret" style="color:${groupColor(pr.group)}">${open ? "▾" : "▸"}</td>
                   <td>${trend(pr.rank_delta)}</td>
                   <td>${pr.current_rank}</td>
-                  <td><b>${esc(pr.name)}${crown}</b></td>
+                  <td>
+                    <b>${esc(pr.name)} ${medal ? `<span style="margin-left:6px">${medal}</span>` : ""}</b>
+                    ${miBadge}
+                    ${streakBadge}
+                  </td>
                   <td>
                     <span class="tag" style="border-color:${groupColor(pr.group)}; color:${groupColor(pr.group)}">
                       ${esc(pr.group)}
