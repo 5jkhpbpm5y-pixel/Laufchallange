@@ -42,7 +42,7 @@
     }
     .tab.active{ background:rgba(34,197,94,.15); color:#dff7e8; }
     .metaRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:8px; }
-    .pill{ border:1px solid var(--border); background:rgba(255,255,255,.02); padding:5px 10px; border-radius:999px; font-size:12px; color:var(--muted); }
+    .pill{ border:1px solid var(--border); background:rgba(255,255,255,.02); padding:5px 10px; border-radius:999px; font-size:12px; color:var(--muted); display:inline-flex; gap:6px; align-items:center; }
     .pill b{ color:var(--text); }
     .grid2{ display:grid; grid-template-columns:1fr; gap:12px; }
     @media (min-width:860px){ .grid2{ grid-template-columns:1.3fr .7fr; } }
@@ -178,6 +178,7 @@
       <div class="card" id="mainCard">
         <div class="metaRow">
           <div class="pill">Stand: <b id="stamp">—</b></div>
+          <div class="pill" id="leaderStreakPill">🏁 Leader-Streak: <b>—</b></div>
           <div class="pill">Admin: <code>#admin</code> an die URL hängen</div>
         </div>
 
@@ -283,11 +284,10 @@
       return Number(sum.toFixed(2));
     }
 
-    // ===== STREAK: 3 Tage am Stück? =====
+    // ===== STREAK (Spieler): 3 Tage am Stück gelaufen? =====
     function has3DayStreak(runs){
       if (!Array.isArray(runs) || runs.length === 0) return false;
 
-      // unique dates
       const set = new Set();
       for (const r of runs){
         if (r && r.date) set.add(String(r.date));
@@ -315,6 +315,82 @@
         }
       }
       return false;
+    }
+
+    // ===== VERTEIDIGER (Leader 3 Tage+ Platz 1) =====
+    function parseISOToLocalMidnight(iso){
+      const p = String(iso || "").split("-");
+      if (p.length !== 3) return null;
+      const y = Number(p[0]), m = Number(p[1]), d = Number(p[2]);
+      if (!y || !m || !d) return null;
+      return new Date(y, m - 1, d, 0, 0, 0, 0);
+    }
+
+    function getAllRunDatesSorted(){
+      const set = new Set();
+      for (const pl of (DATA.players || [])){
+        for (const r of (pl.runs || [])){
+          if (r && r.date) set.add(String(r.date));
+        }
+      }
+      return Array.from(set)
+        .map(iso => ({ iso, dt: parseISOToLocalMidnight(iso) }))
+        .filter(x => x.dt)
+        .sort((a,b) => a.dt - b.dt)
+        .map(x => x.iso);
+    }
+
+    function totalsUpToDateISO(dateISO){
+      const totals = new Map();
+      for (const pl of (DATA.players || [])){
+        let sum = 0;
+        for (const r of (pl.runs || [])){
+          if (!r || !r.date) continue;
+          if (String(r.date) <= String(dateISO)) sum += Number(r.km || 0);
+        }
+        totals.set(pl.name, Number(sum.toFixed(2)));
+      }
+      return totals;
+    }
+
+    function leaderOnDateISO(dateISO){
+      const totals = totalsUpToDateISO(dateISO);
+      let bestName = null;
+      let bestKm = -Infinity;
+
+      for (const [name, km] of totals.entries()){
+        if (km > bestKm || (km === bestKm && String(name).localeCompare(String(bestName || "")) < 0)){
+          bestKm = km;
+          bestName = name;
+        }
+      }
+      return bestName;
+    }
+
+    function defenderStreakDays(currentLeaderName){
+      const dates = getAllRunDatesSorted();
+      if (dates.length === 0) return 0;
+
+      let streak = 0;
+      let prevDt = null;
+
+      for (let i = dates.length - 1; i >= 0; i--){
+        const iso = dates[i];
+        const dt = parseISOToLocalMidnight(iso);
+        if (!dt) continue;
+
+        const leader = leaderOnDateISO(iso);
+        if (leader !== currentLeaderName) break;
+
+        if (prevDt){
+          const dayMs = 24 * 60 * 60 * 1000;
+          if ((prevDt - dt) !== dayMs) break;
+        }
+
+        streak++;
+        prevDt = dt;
+      }
+      return streak;
     }
 
     function buildPlayerRows(){
@@ -414,11 +490,9 @@
       const leader = playerRows.find(p => p.current_rank === 1);
       if (!leader) return;
 
-      // Nur wenn previousRank gepflegt ist und > 1
       const prev = (DATA.players || []).find(x => x.name === leader.name)?.previousRank;
       if (prev == null || Number(prev) <= 1) return;
 
-      // nur 1x pro Stand
       const standKey = `confetti_shown_${DATA.stand || "stand"}`;
       if (sessionStorage.getItem(standKey) === "1") return;
 
@@ -548,6 +622,12 @@
       const playerRows = buildPlayerRows();
       const groupRows = buildGroupRows(playerRows);
 
+      // Live Leader-Streak Counter (oben)
+      const currentLeader = playerRows.find(p => p.current_rank === 1) || null;
+      const leaderDefDays = currentLeader ? defenderStreakDays(currentLeader.name) : 0;
+      $("leaderStreakPill").innerHTML =
+        `🏁 Leader-Streak: <b>${currentLeader ? esc(currentLeader.name) : "—"}</b> · <b>${leaderDefDays || 0} Tage</b>`;
+
       // Most Improved (größter delta > 0)
       const mostImproved = playerRows
         .filter(p => p.rank_delta > 0)
@@ -568,6 +648,7 @@
               const emoji = rank === 1 ? "👑" : (rank === 2 ? "🥈" : "🥉");
               const mi = (mostImproved && mostImproved.name === p.name) ? `<span class="badgeMini blue">🚀 Most Improved</span>` : "";
               const st = p.has_streak3 ? `<span class="badgeMini fire">🔥 3-Tage-Streak</span>` : "";
+              const def = (rank === 1 && leaderDefDays >= 3) ? `<span class="badgeMini warn">🛡 Verteidiger · ${leaderDefDays} Tage</span>` : "";
               const gcol = groupColor(p.group);
               return `
                 <div class="podiumCard" style="border-color:${gcol}33">
@@ -581,6 +662,7 @@
                     <span class="badgeMini good">${kmText(p.km)}</span>
                     ${mi}
                     ${st}
+                    ${def}
                   </div>
                 </div>
               `;
@@ -607,6 +689,7 @@
               const medal = pr.current_rank === 1 ? "👑" : (pr.current_rank === 2 ? "🥈" : (pr.current_rank === 3 ? "🥉" : ""));
               const miBadge = (mostImproved && mostImproved.name === pr.name) ? `<span class="badgeMini blue" style="margin-left:8px">🚀 Most Improved</span>` : "";
               const streakBadge = pr.has_streak3 ? `<span class="badgeMini fire" style="margin-left:8px">🔥 3-Tage-Streak</span>` : "";
+              const defBadge = (pr.current_rank === 1 && leaderDefDays >= 3) ? `<span class="badgeMini warn" style="margin-left:8px">🛡 Verteidiger · ${leaderDefDays} Tage</span>` : "";
 
               const runsSorted = [...(pr.runs||[])].sort((a,b) => String(b.date||"").localeCompare(String(a.date||"")));
 
@@ -663,6 +746,7 @@
                     <b>${esc(pr.name)} ${medal ? `<span style="margin-left:6px">${medal}</span>` : ""}</b>
                     ${miBadge}
                     ${streakBadge}
+                    ${defBadge}
                   </td>
                   <td>
                     <span class="tag" style="border-color:${groupColor(pr.group)}; color:${groupColor(pr.group)}">
