@@ -14,6 +14,10 @@
       --muted:#9aa7b6;
       --good:#22c55e;
       --bad:#ff6b6b;
+
+      /* === LOGO (Pfad anpassen) === */
+      --logo-url: url("uploads/logo.png");
+      --logo-opacity: .08; /* Wasserzeichen-Stärke */
     }
     *{ box-sizing:border-box; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; }
     body{
@@ -21,7 +25,26 @@
       background: radial-gradient(1200px 600px at 20% 0%, #142033 0%, var(--bg) 55%), var(--bg);
       color:var(--text);
       padding:18px;
+      position:relative;
+      overflow-x:hidden;
     }
+    /* Wasserzeichen-Logo */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image: var(--logo-url);
+      background-repeat:no-repeat;
+      background-position:center;
+      background-size:min(70vw, 520px);
+      opacity:var(--logo-opacity);
+      pointer-events:none;
+      z-index:0;
+      filter: drop-shadow(0 12px 40px rgba(0,0,0,.45));
+    }
+    /* alles über dem Logo */
+    body > *{ position:relative; z-index:1; }
+
     .wrap{ max-width:980px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
     .top{ display:flex; gap:12px; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; }
     h1{ margin:0; font-size:22px; letter-spacing:.2px; }
@@ -31,6 +54,7 @@
       border:1px solid var(--border);
       border-radius:18px;
       padding:14px;
+      backdrop-filter: blur(6px);
     }
     .side{ background: linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card2); }
     .tabs{
@@ -41,14 +65,38 @@
       padding:9px 12px; font-size:13px; border:0; color:var(--text); background:transparent; cursor:pointer;
     }
     .tab.active{ background:rgba(34,197,94,.15); color:#dff7e8; }
+
     .metaRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:8px; }
-    .pill{ border:1px solid var(--border); background:rgba(255,255,255,.02); padding:5px 10px; border-radius:999px; font-size:12px; color:var(--muted); display:inline-flex; gap:6px; align-items:center; }
+    .metaLeft{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .pill{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      line-height:1.2;
+    }
     .pill b{ color:var(--text); }
+    .pillCol{ display:flex; flex-direction:column; gap:2px; }
+    .pill small{ color:var(--muted); font-size:11px; }
+    .leftRed b{ color: var(--bad); }
+
     .grid2{ display:grid; grid-template-columns:1fr; gap:12px; }
     @media (min-width:860px){ .grid2{ grid-template-columns:1.3fr .7fr; } }
 
-    table{ width:100%; border-collapse:collapse; margin-top:10px; background:rgba(0,0,0,.06);
-      border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      background:rgba(0,0,0,.06);
+      border:1px solid var(--border);
+      border-radius:14px;
+      overflow:hidden;
+    }
     th,td{ padding:10px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left; vertical-align:top; }
     th{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); background:rgba(255,255,255,.02); }
     tr:last-child td{ border-bottom:0; }
@@ -69,7 +117,6 @@
     .rowclick{ cursor:pointer; }
     .caret{ width:26px; font-weight:900; }
     img.proof{ max-height:80px; border-radius:10px; border:1px solid rgba(255,255,255,.08); display:block; }
-    code{ padding:1px 6px; border:1px solid rgba(255,255,255,.1); border-radius:8px; background:rgba(255,255,255,.03); }
 
     select,input,button{ font:inherit; }
     .adminGrid{ display:grid; gap:8px; grid-template-columns:1fr 160px 1fr; align-items:end; }
@@ -86,7 +133,25 @@
     .btnBad{ background:rgba(255,107,107,.12); color:#ffd6d6; font-weight:800; }
 
     /* PODIUM / BADGES */
-    .podiumWrap{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:12px; margin-bottom:6px; }
+    .leaderCenter{
+      display:flex;
+      justify-content:center;
+      margin-top:12px;
+      margin-bottom:6px;
+    }
+    .leaderPill{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.02);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .leaderPill b{ color:var(--text); }
+    .podiumWrap{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:8px; margin-bottom:6px; }
     @media (min-width:700px){ .podiumWrap{ grid-template-columns:1fr 1fr 1fr; } }
     .podiumCard{
       border:1px solid rgba(255,255,255,.08);
@@ -126,24 +191,9 @@
     .badgeMini.warn{ color:#ffe9c7; border-color:rgba(255,186,73,.35); background:rgba(255,186,73,.10); }
     .badgeMini.fire{ color:#ffd1d1; border-color:rgba(255,107,107,.35); background:rgba(255,107,107,.10); }
     .badgeMini.blue{ color:#d7e9ff; border-color:rgba(122,183,255,.35); background:rgba(122,183,255,.10); }
-
-    /* CONFETTI */
-    .confetti{ position:fixed; inset:0; pointer-events:none; z-index:9999; overflow:hidden; display:none; }
-    .confetti.show{ display:block; }
-    .confetti span{
-      position:absolute;
-      top:-20px;
-      font-size:18px;
-      animation:fall 1.8s linear forwards;
-      opacity:.95;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,.45));
-    }
-    @keyframes fall{ to{ transform:translateY(110vh) rotate(360deg); opacity:0.9; } }
   </style>
 </head>
 <body>
-  <div class="confetti" id="confetti"></div>
-
   <div class="wrap">
     <div class="top">
       <div>
@@ -160,9 +210,16 @@
     <div class="grid2">
       <div class="card" id="mainCard">
         <div class="metaRow">
-          <div class="pill">Stand: <b id="stamp">—</b></div>
-          <div class="pill" id="leaderStreakPill">🏁 Leader-Streak: <b>—</b></div>
-          <div class="pill">Admin: <code>#admin</code> an die URL hängen</div>
+          <div class="metaLeft">
+            <div class="pill">
+              <div class="pillCol">
+                <div>Start: <b id="startDate">—</b></div>
+                <div>Ende: <b id="endDate">—</b></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pill leftRed" id="leftPill">⏳ <span><b id="daysLeft">—</b> left</span></div>
         </div>
 
         <div id="adminBarMount"></div>
@@ -181,12 +238,14 @@
   </div>
 
   <script>
+    // ====== KONFIG ======
+    const START_ISO = "2026-01-11";
+    const END_ISO   = "2026-01-31";
+
     // ====== STATE ======
     let DATA = null;
     let expandedGroup = null;
     let expandedPlayer = null;
-
-    // Map: Name -> aktueller Rang (für Admin-Vorschläge)
     let CURRENT_RANK_BY_NAME = new Map();
 
     // ====== ADMIN PASS (nur Klickschutz, nicht echte Sicherheit) ======
@@ -202,15 +261,27 @@
       }[m]));
     }
 
-    // ISO (YYYY-MM-DD) -> TT.MM.JJJJ (lokal)
+    function parseISOToLocalMidnight(iso){
+      const p = String(iso || "").split("-");
+      if (p.length !== 3) return null;
+      const y = Number(p[0]), m = Number(p[1]), d = Number(p[2]);
+      if (!y || !m || !d) return null;
+      return new Date(y, m - 1, d, 0, 0, 0, 0);
+    }
+
     function formatDateDE(iso){
-      if (!iso) return "—";
-      const parts = String(iso).split("-");
-      if (parts.length !== 3) return esc(iso);
-      const y = Number(parts[0]), m = Number(parts[1]), d = Number(parts[2]);
-      if (!y || !m || !d) return esc(iso);
-      const dt = new Date(y, m - 1, d);
+      const dt = parseISOToLocalMidnight(iso);
+      if (!dt) return esc(iso || "—");
       return dt.toLocaleDateString("de-DE");
+    }
+
+    function daysLeftToEnd(){
+      const end = parseISOToLocalMidnight(END_ISO);
+      if (!end) return null;
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0,0);
+      const diff = Math.ceil((end - today) / (24*60*60*1000));
+      return diff;
     }
 
     function kmText(v){ return `${Number(v || 0).toFixed(2)} km`; }
@@ -275,7 +346,6 @@
       return Number(sum.toFixed(2));
     }
 
-    // ===== STREAK (Spieler): 3 Tage am Stück gelaufen? =====
     function has3DayStreak(runs){
       if (!Array.isArray(runs) || runs.length === 0) return false;
       const set = new Set();
@@ -283,9 +353,8 @@
 
       const dates = Array.from(set)
         .map(d => {
-          const p = d.split("-");
-          if (p.length !== 3) return null;
-          return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])).getTime();
+          const dt = parseISOToLocalMidnight(d);
+          return dt ? dt.getTime() : null;
         })
         .filter(x => Number.isFinite(x))
         .sort((a,b) => a - b);
@@ -294,7 +363,6 @@
 
       const day = 24 * 60 * 60 * 1000;
       let streak = 1;
-
       for (let i=1;i<dates.length;i++){
         if (dates[i] - dates[i-1] === day){
           streak++;
@@ -304,15 +372,6 @@
         }
       }
       return false;
-    }
-
-    // ===== VERTEIDIGER (Leader 3 Tage+ Platz 1) =====
-    function parseISOToLocalMidnight(iso){
-      const p = String(iso || "").split("-");
-      if (p.length !== 3) return null;
-      const y = Number(p[0]), m = Number(p[1]), d = Number(p[2]);
-      if (!y || !m || !d) return null;
-      return new Date(y, m - 1, d, 0, 0, 0, 0);
     }
 
     function getAllRunDatesSorted(){
@@ -346,7 +405,6 @@
       const totals = totalsUpToDateISO(dateISO);
       let bestName = null;
       let bestKm = -Infinity;
-
       for (const [name, km] of totals.entries()){
         if (km > bestKm || (km === bestKm && String(name).localeCompare(String(bestName || "")) < 0)){
           bestKm = km;
@@ -395,7 +453,6 @@
 
       const ranked = denseRank(rows, r => r.km);
 
-      // current rank map für Admin
       CURRENT_RANK_BY_NAME = new Map(ranked.map(r => [r.name, r.current_rank]));
 
       return ranked.map(r => {
@@ -436,44 +493,6 @@
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
-    }
-
-    // ===== CONFETTI =====
-    function launchConfetti(){
-      const el = $("confetti");
-      el.innerHTML = "";
-      el.classList.add("show");
-
-      const emojis = ["🎉","✨","🏆","⚡️","🎊","🥳"];
-      const count = 42;
-
-      for (let i=0;i<count;i++){
-        const s = document.createElement("span");
-        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-        s.style.left = (Math.random()*100) + "vw";
-        s.style.animationDelay = (Math.random()*0.35) + "s";
-        s.style.animationDuration = (1.5 + Math.random()*1.2) + "s";
-        el.appendChild(s);
-      }
-
-      setTimeout(() => {
-        el.classList.remove("show");
-        el.innerHTML = "";
-      }, 2600);
-    }
-
-    function maybeConfettiForNewLeader(playerRows){
-      const leader = playerRows.find(p => p.current_rank === 1);
-      if (!leader) return;
-
-      const prev = (DATA.players || []).find(x => x.name === leader.name)?.previousRank;
-      if (prev == null || Number(prev) <= 1) return;
-
-      const standKey = `confetti_shown_${DATA.stand || "stand"}`;
-      if (sessionStorage.getItem(standKey) === "1") return;
-
-      sessionStorage.setItem(standKey, "1");
-      launchConfetti();
     }
 
     // ====== ADMIN BAR ======
@@ -518,7 +537,7 @@
             <div>
               <div class="hint" style="margin:0 0 4px 0">Rank für Trend speichern</div>
               <input id="adminPrevRank" class="inp" type="number" min="1" step="1" placeholder="z.B. 2">
-              <div class="hint" style="margin-top:6px">Schreibt <code>previousRank</code> beim Spieler (für ▲/▼).</div>
+              <div class="hint" style="margin-top:6px">Schreibt <code>previousRank</code> beim Spieler.</div>
             </div>
 
             <button id="adminAdd" class="btn btnGood" type="button">Lauf hinzufügen</button>
@@ -528,7 +547,7 @@
 
           <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center">
             <button id="adminDownload" class="btn" type="button">data.json herunterladen</button>
-            <div class="hint" style="margin:0">Dann <code>data.json</code> + Bild in GitHub hochladen → Link bleibt gleich.</div>
+            <div class="hint" style="margin:0">Dann <code>data.json</code> + Bild in GitHub hochladen.</div>
           </div>
         </div>
       `;
@@ -546,13 +565,10 @@
         const p = (DATA.players || []).find(x => x.name === playerName);
         const nextRun = (p && Array.isArray(p.runs)) ? (p.runs.length + 1) : 1;
 
-        // Vorschlag: laufX.jpg (nur Dateiname)
         if (!$("adminImgName").value) $("adminImgName").value = `lauf${nextRun}.jpg`;
 
-        // Path-Hint
         $("adminPathHint").innerHTML = `Upload nach: <code>uploads/${esc(slug)}/</code>`;
 
-        // Vorschlag für previousRank (aktueller Rang)
         const curRank = CURRENT_RANK_BY_NAME.get(playerName);
         if (!$("adminPrevRank").value && Number.isFinite(curRank)) $("adminPrevRank").value = curRank;
       };
@@ -595,7 +611,6 @@
 
         p.runs.push({ date, km: Number(km.toFixed(2)), img: imgPath });
 
-        // previousRank setzen (damit Trend beim nächsten Stand korrekt ist)
         if (Number.isFinite(prevRankInput) && prevRankInput >= 1){
           p.previousRank = Math.floor(prevRankInput);
         }
@@ -605,7 +620,6 @@
           `1) Lade das Bild nach <code>uploads/${esc(slug)}/</code> hoch und nenn es <code>${esc(imgName)}</code>.<br>` +
           `2) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.`;
 
-        // reset nur km + bildname auto fürs nächste
         $("adminKm").value = 0;
         $("adminImgName").value = "";
         updateHints();
@@ -618,7 +632,13 @@
 
     // ====== RENDER ======
     function render(){
-      $("stamp").textContent = (DATA && DATA.stand) ? DATA.stand : "—";
+      // Start / Ende
+      $("startDate").textContent = formatDateDE(START_ISO);
+      $("endDate").textContent = formatDateDE(END_ISO);
+
+      // left counter
+      const left = daysLeftToEnd();
+      $("daysLeft").textContent = (left == null) ? "—" : String(Math.max(left, 0));
 
       $("adminBarMount").innerHTML = renderAdminBar();
 
@@ -634,26 +654,28 @@
       const playerRows = buildPlayerRows();
       const groupRows = buildGroupRows(playerRows);
 
-      // Live Leader-Streak Counter (oben)
+      // Leader + Verteidiger-Streak
       const currentLeader = playerRows.find(p => p.current_rank === 1) || null;
       const leaderDefDays = currentLeader ? defenderStreakDays(currentLeader.name) : 0;
-      $("leaderStreakPill").innerHTML =
-        `🏁 Leader-Streak: <b>${currentLeader ? esc(currentLeader.name) : "—"}</b> · <b>${leaderDefDays || 0} Tage</b>`;
 
-      // Most Improved (größter delta > 0)
+      // Most Improved
       const mostImproved = playerRows
         .filter(p => p.rank_delta > 0)
         .sort((a,b) => (b.rank_delta - a.rank_delta) || (b.km - a.km))[0] || null;
 
-      // Podium Top 3
       const top3 = playerRows.slice(0,3);
-
-      // Confetti ggf. für neuen Leader (nur wenn previousRank gepflegt ist)
-      maybeConfettiForNewLeader(playerRows);
 
       // Players
       $("playersView").innerHTML = `
         ${top3.length ? `
+          <div class="leaderCenter">
+            <div class="leaderPill">
+              🏁 Leader-Streak:
+              <b>${currentLeader ? esc(currentLeader.name) : "—"}</b>
+              · <b>${leaderDefDays || 0} Tage</b>
+            </div>
+          </div>
+
           <div class="podiumWrap">
             ${top3.map((p, idx) => {
               const rank = idx + 1;
@@ -695,11 +717,10 @@
           <tbody>
             ${playerRows.map(pr => {
               const open = expandedPlayer === pr.name;
-
               const medal = pr.current_rank === 1 ? "👑" : (pr.current_rank === 2 ? "🥈" : (pr.current_rank === 3 ? "🥉" : ""));
               const miBadge = (mostImproved && mostImproved.name === pr.name) ? `<span class="badgeMini blue" style="margin-left:8px">🚀 Most Improved</span>` : "";
               const streakBadge = pr.has_streak3 ? `<span class="badgeMini fire" style="margin-left:8px">🔥 3-Tage-Streak</span>` : "";
-              const defBadge = (pr.current_rank === 1 && leaderDefDays >= 3) ? `<span class="badgeMini warn" style="margin-left:8px">🛡 Verteidiger · ${leaderDefDays} Tage</span>` : "";
+              const defBadge = (pr.current_rank === 1 && leaderDefDays >= 3) ? `<span class="badgeMini warn" style="margin-left:8px">🛡 Verteidiger</span>` : "";
 
               const runsSorted = [...(pr.runs||[])].sort((a,b) => String(b.date||"").localeCompare(String(a.date||"")));
 
