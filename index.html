@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Laufchallenge</title>
+
   <style>
     :root{
       --bg:#0b0f14;
@@ -12,51 +13,56 @@
       --border:#233044;
       --text:#e8eef7;
       --muted:#9aa7b6;
+
       --good:#22c55e;
       --bad:#ff6b6b;
+      --warn:#facc15;
 
-      /* === LOGO (Pfad anpassen) === */
+      /* Logo als Hintergrund (dezent) */
       --logo-url: url("uploads/logo.png");
-      --logo-opacity: .08; /* Wasserzeichen-Stärke */
     }
+
     *{ box-sizing:border-box; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; }
     body{
       margin:0;
-      background: radial-gradient(1200px 600px at 20% 0%, #142033 0%, var(--bg) 55%), var(--bg);
+      background:
+        radial-gradient(1200px 600px at 20% 0%, #142033 0%, var(--bg) 55%),
+        var(--bg);
       color:var(--text);
       padding:18px;
-      position:relative;
-      overflow-x:hidden;
     }
-    /* Wasserzeichen-Logo */
+
+    /* Hintergrund-Logo nur als Watermark, ohne Layout zu killen */
     body::before{
       content:"";
       position:fixed;
-      inset:0;
+      inset:auto -140px -160px auto;
+      width:520px;
+      height:520px;
       background-image: var(--logo-url);
       background-repeat:no-repeat;
       background-position:center;
-      background-size:min(70vw, 520px);
-      opacity:var(--logo-opacity);
+      background-size:contain;
+      opacity:.06;
+      filter: grayscale(1) contrast(1.15);
+      transform: rotate(-8deg);
       pointer-events:none;
       z-index:0;
-      filter: drop-shadow(0 12px 40px rgba(0,0,0,.45));
     }
-    /* alles über dem Logo */
-    body > *{ position:relative; z-index:1; }
 
-    .wrap{ max-width:980px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
+    .wrap{ position:relative; z-index:1; max-width:1100px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
     .top{ display:flex; gap:12px; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; }
     h1{ margin:0; font-size:22px; letter-spacing:.2px; }
     .sub{ color:var(--muted); font-size:12px; margin-top:6px; }
+
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.03), transparent), var(--card);
       border:1px solid var(--border);
       border-radius:18px;
       padding:14px;
-      backdrop-filter: blur(6px);
     }
     .side{ background: linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card2); }
+
     .tabs{
       display:inline-flex; border:1px solid var(--border); border-radius:999px; overflow:hidden;
       background:rgba(255,255,255,.02);
@@ -64,135 +70,230 @@
     .tab{
       padding:9px 12px; font-size:13px; border:0; color:var(--text); background:transparent; cursor:pointer;
     }
-    .tab.active{ background:rgba(34,197,94,.15); color:#dff7e8; }
-
-    .metaRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:8px; }
-    .metaLeft{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .pill{
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.02);
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:12px;
-      color:var(--muted);
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      line-height:1.2;
-    }
-    .pill b{ color:var(--text); }
-    .pillCol{ display:flex; flex-direction:column; gap:2px; }
-    .pill small{ color:var(--muted); font-size:11px; }
-    .leftRed b{ color: var(--bad); }
+    .tab.active{ outline:2px solid rgba(96,165,250,.55); outline-offset:-2px; background:rgba(34,197,94,.14); color:#dff7e8; }
 
     .grid2{ display:grid; grid-template-columns:1fr; gap:12px; }
     @media (min-width:860px){ .grid2{ grid-template-columns:1.3fr .7fr; } }
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:10px;
-      background:rgba(0,0,0,.06);
-      border:1px solid var(--border);
-      border-radius:14px;
+    .metaRowTop{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .metaLeft{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .logoBadge{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:56px;
+      height:56px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      box-shadow:0 18px 40px rgba(0,0,0,.35);
       overflow:hidden;
     }
-    th,td{ padding:10px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left; vertical-align:top; }
-    th{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); background:rgba(255,255,255,.02); }
-    tr:last-child td{ border-bottom:0; }
-    .km{ font-variant-numeric:tabular-nums; }
-    .trend{ font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .up{ color:var(--good); } .down{ color:var(--bad); } .same{ color:var(--muted); }
-    .tag{
-      font-size:11px; color:var(--muted);
-      border:1px solid rgba(255,255,255,.08);
-      padding:2px 8px; border-radius:999px; background:rgba(255,255,255,.02); display:inline-block;
+    .logoBadge img{
+      width:44px;
+      height:44px;
+      object-fit:contain;
+      display:block;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,.35));
     }
-    .hint{ color:var(--muted); font-size:12px; line-height:1.4; margin-top:10px; }
-    .list{ display:flex; flex-direction:column; gap:6px; margin-top:8px; }
-    .li{ display:flex; justify-content:space-between; gap:10px; }
-    .li > div{ width:100%; padding:8px 10px; border:1px solid rgba(255,255,255,.06); border-radius:12px; background:rgba(255,255,255,.02); }
-    .li small{ color:var(--muted); }
 
-    .rowclick{ cursor:pointer; }
-    .caret{ width:26px; font-weight:900; }
-    img.proof{ max-height:80px; border-radius:10px; border:1px solid rgba(255,255,255,.08); display:block; }
-
-    select,input,button{ font:inherit; }
-    .adminGrid{ display:grid; gap:8px; grid-template-columns:1fr 160px 1fr; align-items:end; }
-    @media (max-width:720px){ .adminGrid{ grid-template-columns:1fr; } }
-    .inp, .sel{
-      width:100%; padding:8px; border-radius:10px; border:1px solid var(--border);
-      background:rgba(255,255,255,.02); color:var(--text);
-    }
-    .btn{
-      padding:10px 14px; border-radius:12px; border:1px solid var(--border);
-      background:rgba(255,255,255,.02); color:var(--text); cursor:pointer; font-weight:700;
-    }
-    .btnGood{ background:rgba(34,197,94,.15); color:#dff7e8; font-weight:800; }
-    .btnBad{ background:rgba(255,107,107,.12); color:#ffd6d6; font-weight:800; }
-
-    /* PODIUM / BADGES */
-    .leaderCenter{
-      display:flex;
-      justify-content:center;
-      margin-top:12px;
-      margin-bottom:6px;
-    }
-    .leaderPill{
-      border:1px solid rgba(255,255,255,.10);
+    .pill{
+      border:1px solid var(--border);
       background:rgba(255,255,255,.02);
+      padding:6px 10px;
       border-radius:999px;
-      padding:8px 12px;
       font-size:12px;
       color:var(--muted);
       display:inline-flex;
       gap:8px;
       align-items:center;
     }
-    .leaderPill b{ color:var(--text); }
-    .podiumWrap{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:8px; margin-bottom:6px; }
-    @media (min-width:700px){ .podiumWrap{ grid-template-columns:1fr 1fr 1fr; } }
-    .podiumCard{
+    .pill b{ color:var(--text); }
+    .pillCol{ display:flex; flex-direction:column; line-height:1.2; }
+
+    .pillLeft{
+      border-color:rgba(239,68,68,.35);
+      background:rgba(239,68,68,.10);
+      color:#fecaca;
+      font-weight:800;
+    }
+
+    /* Daily fun line */
+    .dailyLine{
+      margin:8px 0 4px 0;
+      padding:10px 12px;
+      border-radius:14px;
       border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;
-      background:rgba(255,255,255,.02);
-      padding:12px;
-      position:relative;
-      overflow:hidden;
+      background:rgba(255,255,255,.03);
+      color:rgba(232,238,247,.92);
+      font-size:13px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
     }
-    .podiumCard::before{
-      content:"";
-      position:absolute;
-      inset:-60px -60px auto auto;
-      width:120px;
-      height:120px;
+    .dailyLine .dot{
+      width:8px;
+      height:8px;
       border-radius:999px;
-      background:rgba(255,255,255,.05);
-      transform:rotate(20deg);
+      background:rgba(34,197,94,.9);
+      margin-top:6px;
+      flex:0 0 auto;
     }
-    .podiumTop{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
-    .podiumRank{ font-weight:900; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
-    .podiumEmoji{ font-size:20px; }
-    .podiumName{ font-weight:900; font-size:14px; margin-top:6px; }
-    .podiumMeta{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
-    .badgeMini{
-      font-size:11px;
-      padding:2px 8px;
+
+    /* Stats lines */
+    .statLine{
+      margin:6px 0;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.02);
+      background:rgba(255,255,255,.03);
+      font-size:13px;
       color:var(--muted);
+      font-weight:700;
+    }
+    .badge b{ color:var(--text); }
+    .badgeMini{
       display:inline-flex;
       gap:6px;
       align-items:center;
+      padding:3px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      white-space:nowrap;
     }
-    .badgeMini.good{ color:#dff7e8; border-color:rgba(34,197,94,.35); background:rgba(34,197,94,.12); }
-    .badgeMini.warn{ color:#ffe9c7; border-color:rgba(255,186,73,.35); background:rgba(255,186,73,.10); }
-    .badgeMini.fire{ color:#ffd1d1; border-color:rgba(255,107,107,.35); background:rgba(255,107,107,.10); }
-    .badgeMini.blue{ color:#d7e9ff; border-color:rgba(122,183,255,.35); background:rgba(122,183,255,.10); }
+    .badgeMini.blue{ border-color:rgba(96,165,250,.5); background:rgba(96,165,250,.16); }
+    .badgeMini.green{ border-color:rgba(34,197,94,.5); background:rgba(34,197,94,.14); }
+    .badgeMini.yellow{ border-color:rgba(250,204,21,.5); background:rgba(250,204,21,.12); }
+
+    /* Podium */
+    .podium{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:12px;
+      margin-top:8px;
+    }
+    @media (max-width:700px){
+      .podium{ grid-template-columns:1fr; }
+    }
+    .podiumCard{
+      border-radius:18px;
+      padding:14px;
+      border:2px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.02);
+      position:relative;
+      overflow:hidden;
+    }
+    .podiumCard.p1{ border-color:rgba(34,197,94,.45); }
+    .podiumCard.p2{ border-color:rgba(148,163,184,.35); }
+    .podiumCard.p3{ border-color:rgba(250,204,21,.35); }
+    .podiumLabel{ color:var(--muted); font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    .podiumName{ margin-top:10px; font-size:18px; font-weight:950; }
+    .podiumMeta{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+    .groupTag{
+      font-size:12px; font-weight:900;
+      border:1px solid rgba(255,255,255,.12);
+      padding:4px 10px; border-radius:999px;
+      background:rgba(255,255,255,.02);
+    }
+    .kmPill{
+      font-variant-numeric:tabular-nums;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(34,197,94,.35);
+      background:rgba(34,197,94,.12);
+      color:#dff7e8;
+      font-weight:900;
+    }
+
+    .hint{ color:var(--muted); font-size:12px; line-height:1.4; margin-top:10px; }
+
+    /* Tabellen + Mobile Fix (Problem 3) */
+    .tableWrap{
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.06);
+      margin-top:10px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:760px; /* sorgt dafür, dass am Handy nix abgeschnitten wird */
+    }
+    th,td{ padding:10px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left; vertical-align:top; }
+    th{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); background:rgba(255,255,255,.02); }
+    tr:last-child td{ border-bottom:0; }
+
+    @media (max-width:560px){
+      th,td{ padding:8px; }
+      table{ min-width:720px; }
+    }
+
+    .km{ font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .trend{ font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .up{ color:var(--good); } .down{ color:var(--bad); } .same{ color:var(--muted); }
+
+    .rowclick{ cursor:pointer; }
+    .caret{ width:26px; font-weight:950; }
+    img.proof{ max-height:90px; border-radius:10px; border:1px solid rgba(255,255,255,.10); display:block; }
+    code{ padding:1px 6px; border:1px solid rgba(255,255,255,.1); border-radius:8px; background:rgba(255,255,255,.03); }
+
+    /* Sidebar */
+    .list{ display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+    .li > div{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      background:rgba(255,255,255,.02);
+    }
+    .li small{ color:var(--muted); }
+
+    /* Admin */
+    select,input,button{ font:inherit; }
+    .adminGrid{ display:grid; gap:10px; grid-template-columns:1fr 160px 1fr; align-items:end; }
+    @media (max-width:720px){ .adminGrid{ grid-template-columns:1fr; } }
+    .inp,.sel{
+      width:100%; padding:10px; border-radius:12px; border:1px solid var(--border);
+      background:rgba(255,255,255,.02); color:var(--text);
+    }
+    .btn{
+      padding:10px 14px; border-radius:14px; border:1px solid var(--border);
+      background:rgba(255,255,255,.02); color:var(--text); cursor:pointer; font-weight:900;
+    }
+    .btnGood{ background:rgba(34,197,94,.15); color:#dff7e8; font-weight:950; }
+    .btnBad{ background:rgba(255,107,107,.12); color:#ffd6d6; font-weight:950; }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
@@ -209,8 +310,13 @@
 
     <div class="grid2">
       <div class="card" id="mainCard">
-        <div class="metaRow">
+
+        <div class="metaRowTop">
           <div class="metaLeft">
+            <div class="logoBadge" title="Vereinslogo">
+              <img src="uploads/logo.png" alt="Vereinslogo">
+            </div>
+
             <div class="pill">
               <div class="pillCol">
                 <div>Start: <b id="startDate">—</b></div>
@@ -219,8 +325,23 @@
             </div>
           </div>
 
-          <div class="pill leftRed" id="leftPill">⏳ <span><b id="daysLeft">—</b> left</span></div>
+          <div class="pill pillLeft">⏳ <span><b id="daysLeft">—</b> left</span></div>
         </div>
+
+        <div class="dailyLine" id="dailyLine">
+          <span class="dot"></span>
+          <div>—</div>
+        </div>
+
+        <div class="statLine">
+          <span class="badgeMini blue" id="longestRunBadge">🏃 Längste Einzelstrecke: —</span>
+        </div>
+
+        <div class="statLine" style="justify-content:center">
+          <span class="badge" id="leaderStreakBadge">🏁 Leader-Streak: —</span>
+        </div>
+
+        <div id="podiumMount"></div>
 
         <div id="adminBarMount"></div>
 
@@ -229,28 +350,26 @@
       </div>
 
       <div class="card side">
-        <div style="font-weight:800">Gruppen</div>
+        <div style="font-weight:950; font-size:18px">Gruppen</div>
         <div class="hint">Liste der Gruppen & Mitglieder.</div>
         <div class="list" id="groupList"></div>
-        <div class="hint" style="margin-top:12px">Daten aus <code>data.json</code>. Bilder aus <code>/uploads</code>.</div>
+        <div class="hint" style="margin-top:12px">Daten aus <code>data.json</code>. Bilder aus <code>/uploads/uploads</code>.</div>
       </div>
     </div>
   </div>
 
   <script>
-    // ====== KONFIG ======
-    const START_ISO = "2026-01-11";
-    const END_ISO   = "2026-01-31";
-
     // ====== STATE ======
     let DATA = null;
     let expandedGroup = null;
     let expandedPlayer = null;
-    let CURRENT_RANK_BY_NAME = new Map();
 
     // ====== ADMIN PASS (nur Klickschutz, nicht echte Sicherheit) ======
     const ADMIN_PASSWORD = "14492";
     const ADMIN_SESSION_KEY = "laufchallenge_admin_ok";
+
+    // Doppelte uploads-Struktur (wie du es willst)
+    const UPLOADS_BASE = "uploads/uploads";
 
     // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
@@ -261,37 +380,22 @@
       }[m]));
     }
 
-    function parseISOToLocalMidnight(iso){
-      const p = String(iso || "").split("-");
-      if (p.length !== 3) return null;
-      const y = Number(p[0]), m = Number(p[1]), d = Number(p[2]);
-      if (!y || !m || !d) return null;
-      return new Date(y, m - 1, d, 0, 0, 0, 0);
-    }
-
+    // ISO -> TT.MM.JJJJ (lokal, ohne UTC-Shift)
     function formatDateDE(iso){
-      const dt = parseISOToLocalMidnight(iso);
-      if (!dt) return esc(iso || "—");
+      if (!iso) return "—";
+      const parts = String(iso).split("-");
+      if (parts.length !== 3) return esc(iso);
+      const y = Number(parts[0]), m = Number(parts[1]), d = Number(parts[2]);
+      if (!y || !m || !d) return esc(iso);
+      const dt = new Date(y, m-1, d);
       return dt.toLocaleDateString("de-DE");
     }
 
-    function daysLeftToEnd(){
-      const end = parseISOToLocalMidnight(END_ISO);
-      if (!end) return null;
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0,0);
-      const diff = Math.ceil((end - today) / (24*60*60*1000));
-      return diff;
-    }
-
-    function kmText(v){ return `${Number(v || 0).toFixed(2)} km`; }
-
-    function playerSlug(playerName){
-      return String(playerName)
-        .toLowerCase()
-        .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
-        .replace(/[^a-z0-9]+/g,"_")
-        .replace(/^_+|_+$/g,"");
+    function toISODateLocal(d){
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
     }
 
     function adminModeEnabled(){
@@ -335,7 +439,7 @@
 
     function buildNameToGroup(){
       const map = new Map();
-      for (const g of DATA.groups) for (const m of g.members) map.set(m, g.name);
+      for (const g of (DATA.groups || [])) for (const m of (g.members || [])) map.set(m, g.name);
       return map;
     }
 
@@ -344,100 +448,6 @@
       let sum = 0;
       for (const r of runs) sum += Number(r.km || 0);
       return Number(sum.toFixed(2));
-    }
-
-    function has3DayStreak(runs){
-      if (!Array.isArray(runs) || runs.length === 0) return false;
-      const set = new Set();
-      for (const r of runs){ if (r && r.date) set.add(String(r.date)); }
-
-      const dates = Array.from(set)
-        .map(d => {
-          const dt = parseISOToLocalMidnight(d);
-          return dt ? dt.getTime() : null;
-        })
-        .filter(x => Number.isFinite(x))
-        .sort((a,b) => a - b);
-
-      if (dates.length < 3) return false;
-
-      const day = 24 * 60 * 60 * 1000;
-      let streak = 1;
-      for (let i=1;i<dates.length;i++){
-        if (dates[i] - dates[i-1] === day){
-          streak++;
-          if (streak >= 3) return true;
-        } else if (dates[i] !== dates[i-1]) {
-          streak = 1;
-        }
-      }
-      return false;
-    }
-
-    function getAllRunDatesSorted(){
-      const set = new Set();
-      for (const pl of (DATA.players || [])){
-        for (const r of (pl.runs || [])){
-          if (r && r.date) set.add(String(r.date));
-        }
-      }
-      return Array.from(set)
-        .map(iso => ({ iso, dt: parseISOToLocalMidnight(iso) }))
-        .filter(x => x.dt)
-        .sort((a,b) => a.dt - b.dt)
-        .map(x => x.iso);
-    }
-
-    function totalsUpToDateISO(dateISO){
-      const totals = new Map();
-      for (const pl of (DATA.players || [])){
-        let sum = 0;
-        for (const r of (pl.runs || [])){
-          if (!r || !r.date) continue;
-          if (String(r.date) <= String(dateISO)) sum += Number(r.km || 0);
-        }
-        totals.set(pl.name, Number(sum.toFixed(2)));
-      }
-      return totals;
-    }
-
-    function leaderOnDateISO(dateISO){
-      const totals = totalsUpToDateISO(dateISO);
-      let bestName = null;
-      let bestKm = -Infinity;
-      for (const [name, km] of totals.entries()){
-        if (km > bestKm || (km === bestKm && String(name).localeCompare(String(bestName || "")) < 0)){
-          bestKm = km;
-          bestName = name;
-        }
-      }
-      return bestName;
-    }
-
-    function defenderStreakDays(currentLeaderName){
-      const dates = getAllRunDatesSorted();
-      if (dates.length === 0) return 0;
-
-      let streak = 0;
-      let prevDt = null;
-
-      for (let i = dates.length - 1; i >= 0; i--){
-        const iso = dates[i];
-        const dt = parseISOToLocalMidnight(iso);
-        if (!dt) continue;
-
-        const leader = leaderOnDateISO(iso);
-        if (leader !== currentLeaderName) break;
-
-        if (prevDt){
-          const dayMs = 24 * 60 * 60 * 1000;
-          if ((prevDt - dt) !== dayMs) break;
-        }
-
-        streak++;
-        prevDt = dt;
-      }
-      return streak;
     }
 
     function buildPlayerRows(){
@@ -453,46 +463,207 @@
 
       const ranked = denseRank(rows, r => r.km);
 
-      CURRENT_RANK_BY_NAME = new Map(ranked.map(r => [r.name, r.current_rank]));
-
       return ranked.map(r => {
         const prev = (r.previousRank == null) ? r.current_rank : r.previousRank;
-        const delta = prev - r.current_rank;
-        return { ...r, rank_delta: delta, has_streak3: has3DayStreak(r.runs) };
+        return { ...r, rank_delta: prev - r.current_rank };
       });
     }
 
+    // ====== Problem 2 (Gruppen-Trend) + Variante B ======
     function buildGroupRows(playerRows){
       const totals = new Map((DATA.groups || []).map(g => [g.name, 0]));
       for (const p of playerRows){
         if (totals.has(p.group)) totals.set(p.group, totals.get(p.group) + p.km);
       }
+
       const rows = Array.from(totals.entries())
         .map(([group, km]) => ({ group, km: Number(km.toFixed(2)) }))
         .sort((a,b) => (b.km - a.km) || a.group.localeCompare(b.group));
+
       const ranked = denseRank(rows, r => r.km);
-      return ranked.map(r => ({ ...r, rank_delta: 0 }));
+
+      const prevMap = new Map((DATA.groups || []).map(g => [g.name, (g.previousRank ?? null)]));
+
+      return ranked.map(r => {
+        const prev = prevMap.get(r.group);
+        const usedPrev = (prev == null) ? r.current_rank : prev;
+        return { ...r, rank_delta: usedPrev - r.current_rank };
+      });
     }
 
     function membersOfGroupSorted(groupName, playerRows){
       const g = (DATA.groups || []).find(x => x.name === groupName);
-      const members = g ? g.members : [];
+      const members = g ? (g.members || []) : [];
       const kmByName = new Map(playerRows.map(p => [p.name, p.km]));
       return members
         .map(name => ({ name, km: kmByName.get(name) ?? 0 }))
         .sort((a,b) => (b.km - a.km) || a.name.localeCompare(b.name));
     }
 
-    function downloadJson(filename, obj){
-      const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+    function playerFolder(playerName){
+      return playerName
+        .toLowerCase()
+        .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
+        .replace(/[^a-z0-9]+/g,"_")
+        .replace(/^_+|_+$/g,"");
+    }
+
+    function calcDaysLeft(startISO, endISO){
+      if (!startISO || !endISO) return null;
+      const s = startISO.split("-").map(Number);
+      const e = endISO.split("-").map(Number);
+      if (s.length!==3 || e.length!==3) return null;
+
+      const start = new Date(s[0], s[1]-1, s[2]);
+      const end = new Date(e[0], e[1]-1, e[2]);
+      const today = new Date();
+      const t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+      const totalDays = Math.round((end - start) / 86400000) + 1;
+      const passed = Math.round((t - start) / 86400000);
+      const left = totalDays - passed;
+      return Math.max(0, left);
+    }
+
+    function longestSingleRun(){
+      let best = { name:null, km:0, date:null };
+      for (const p of (DATA.players || [])){
+        const runs = Array.isArray(p.runs) ? p.runs : [];
+        for (const r of runs){
+          const km = Number(r.km || 0);
+          if (km > best.km){
+            best = { name:p.name, km, date:r.date || null };
+          }
+        }
+      }
+      return best;
+    }
+
+    // Daily fun line (deterministisch pro Tag)
+    function mulberry32(seed){
+      return function(){
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function makeDailyLine(playerRows){
+      const today = new Date();
+      const isoToday = toISODateLocal(today);
+
+      const seed = Number(isoToday.replaceAll("-","")) || 1;
+      const rnd = mulberry32(seed);
+
+      // stats:
+      // most runs overall
+      let mostRuns = { name:null, cnt:0 };
+      for (const pr of playerRows){
+        const cnt = (pr.runs || []).length;
+        if (cnt > mostRuns.cnt) mostRuns = { name: pr.name, cnt };
+      }
+
+      // yesterday least km
+      const y = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+      const isoY = toISODateLocal(y);
+      let leastY = { name:null, km:Infinity };
+      let anyY = false;
+
+      for (const pr of playerRows){
+        let sum = 0;
+        for (const r of (pr.runs || [])){
+          if (String(r.date||"") === isoY) sum += Number(r.km || 0);
+        }
+        if (sum > 0) anyY = true;
+        if (sum < leastY.km){
+          leastY = { name: pr.name, km: sum };
+        }
+      }
+
+      // biggest rank up today (using current rank_delta)
+      let bestDelta = { name:null, d:0 };
+      for (const pr of playerRows){
+        if (pr.rank_delta > bestDelta.d){
+          bestDelta = { name: pr.name, d: pr.rank_delta };
+        }
+      }
+
+      // group comparison fun: pick a player and compare to a random group total
+      const groupTotals = buildGroupRows(playerRows); // has km
+      const anyGroup = groupTotals.length ? groupTotals[Math.floor(rnd()*groupTotals.length)] : null;
+
+      const lines = [];
+
+      if (anyY && leastY.name){
+        lines.push(`Gestern ist <b>${esc(leastY.name)}</b> am wenigsten gelaufen (${leastY.km.toFixed(2)} km).`);
+      } else {
+        lines.push(`Auf geht’s Jungs – heute wird gesammelt! 💪`);
+      }
+
+      if (mostRuns.name && mostRuns.cnt > 0){
+        lines.push(`<b>${esc(mostRuns.name)}</b> hat bisher die meisten Läufe (${mostRuns.cnt}).`);
+      }
+
+      if (bestDelta.name && bestDelta.d >= 2){
+        lines.push(`Heute hat <b>${esc(bestDelta.name)}</b> <b>${bestDelta.d}</b> Plätze gutgemacht. 🚀`);
+      } else {
+        // fallback
+        const leader = playerRows[0];
+        if (leader) lines.push(`<b>${esc(leader.name)}</b> hält gerade Platz 1 – wer greift an? 👀`);
+      }
+
+      if (anyGroup && playerRows.length){
+        const pick = playerRows[Math.floor(rnd()*playerRows.length)];
+        if (pick && anyGroup){
+          lines.push(`<b>${esc(pick.name)}</b> läuft fast so viel wie <b>${esc(anyGroup.group)}</b> zusammen. 😅`);
+        }
+      }
+
+      // pick one line per day
+      const idx = Math.floor(rnd() * lines.length);
+      return lines[idx] || `Auf geht’s Jungs – Gas geben!`;
+    }
+
+    function calcLeaderStreak(playerRows){
+      // einfache Version: wenn data.json ein Feld "leaderStreakDays" + "leaderName" hat, nutzen.
+      // ansonsten: fallback "1 Tage" für aktuellen #1 (weil echte Streak ohne History schwer).
+      const leader = playerRows[0];
+      if (!leader) return { name:"—", days:0 };
+
+      if (DATA.leaderStreak && DATA.leaderStreak.name && Number.isFinite(DATA.leaderStreak.days)){
+        return { name: DATA.leaderStreak.name, days: Number(DATA.leaderStreak.days) };
+      }
+
+      return { name: leader.name, days: 1 };
+    }
+
+    function buildPodium(playerRows){
+      const top3 = playerRows.slice(0,3);
+      if (!top3.length) return "";
+
+      const cards = top3.map((p, i) => {
+        const cls = i===0 ? "p1" : (i===1 ? "p2" : "p3");
+        const label = i===0 ? "Platz 1" : (i===1 ? "Platz 2" : "Platz 3");
+        const medal = i===0 ? "👑" : (i===1 ? "🥈" : "🥉");
+        return `
+          <div class="podiumCard ${cls}">
+            <div class="podiumLabel">${label}</div>
+            <div class="podiumName">${esc(p.name)} <span title="${label}">${medal}</span></div>
+            <div class="podiumMeta">
+              <span class="groupTag" style="border-color:${groupColor(p.group)}; color:${groupColor(p.group)}">
+                ${esc(p.group)}
+              </span>
+              <span class="kmPill">${p.km.toFixed(2)} km</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      return `
+        <div class="podium">${cards}</div>
+        <div class="hint" style="margin-top:10px">Ab Platz 4 geht’s in der Tabelle weiter.</div>
+      `;
     }
 
     // ====== ADMIN BAR ======
@@ -506,7 +677,7 @@
       return `
         <div class="card" style="margin-top:12px">
           <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-end;flex-wrap:wrap">
-            <div style="font-weight:900">Admin</div>
+            <div style="font-weight:950;font-size:20px">Admin</div>
             <button id="adminLogoutBtn" class="btn btnBad" type="button">Admin verlassen</button>
           </div>
 
@@ -527,27 +698,31 @@
             </div>
           </div>
 
-          <div class="adminGrid" style="margin-top:10px; grid-template-columns:1fr 160px 1fr;">
+          <div style="display:grid; gap:10px; grid-template-columns:1fr 220px; align-items:end; margin-top:10px">
             <div>
               <div class="hint" style="margin:0 0 4px 0">Bild-Dateiname (im Spieler-Ordner)</div>
-              <input id="adminImgName" class="inp" placeholder="lauf1.jpg">
-              <div class="hint" id="adminPathHint" style="margin-top:6px"></div>
+              <input id="adminImgName" class="inp" placeholder="Run1.jpg">
+              <div class="hint" style="margin-top:6px">
+                Upload nach: <code id="uploadPathHint">—</code>
+              </div>
             </div>
 
             <div>
               <div class="hint" style="margin:0 0 4px 0">Rank für Trend speichern</div>
-              <input id="adminPrevRank" class="inp" type="number" min="1" step="1" placeholder="z.B. 2">
+              <input id="adminRank" class="inp" type="number" step="1" placeholder="(optional)">
               <div class="hint" style="margin-top:6px">Schreibt <code>previousRank</code> beim Spieler.</div>
             </div>
+          </div>
 
-            <button id="adminAdd" class="btn btnGood" type="button">Lauf hinzufügen</button>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center; justify-content:flex-end">
+            <button id="adminAdd" class="btn btnGood" type="button" style="min-width:220px">Lauf hinzufügen</button>
           </div>
 
           <div id="adminHint" class="hint" style="margin-top:10px"></div>
 
-          <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center">
+          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; align-items:center">
             <button id="adminDownload" class="btn" type="button">data.json herunterladen</button>
-            <div class="hint" style="margin:0">Dann <code>data.json</code> + Bild in GitHub hochladen.</div>
+            <div class="hint" style="margin:0">Danach <code>data.json</code> + Bild in GitHub hochladen.</div>
           </div>
         </div>
       `;
@@ -556,30 +731,17 @@
     function wireAdmin(){
       if (!adminModeEnabled()) return;
 
-      const today = new Date().toISOString().slice(0,10);
-      $("adminDate").value = today;
+      const todayISO = toISODateLocal(new Date());
+      $("adminDate").value = todayISO;
 
-      const updateHints = () => {
-        const playerName = $("adminPlayer").value.trim();
-        const slug = playerSlug(playerName);
-        const p = (DATA.players || []).find(x => x.name === playerName);
-        const nextRun = (p && Array.isArray(p.runs)) ? (p.runs.length + 1) : 1;
-
-        if (!$("adminImgName").value) $("adminImgName").value = `lauf${nextRun}.jpg`;
-
-        $("adminPathHint").innerHTML = `Upload nach: <code>uploads/${esc(slug)}/</code>`;
-
-        const curRank = CURRENT_RANK_BY_NAME.get(playerName);
-        if (!$("adminPrevRank").value && Number.isFinite(curRank)) $("adminPrevRank").value = curRank;
+      const updatePathHint = () => {
+        const player = $("adminPlayer").value.trim();
+        const folder = playerFolder(player);
+        $("uploadPathHint").textContent = `${UPLOADS_BASE}/${folder}/`;
       };
 
-      $("adminPlayer").addEventListener("change", () => {
-        $("adminImgName").value = "";
-        $("adminPrevRank").value = "";
-        updateHints();
-      });
-
-      updateHints();
+      $("adminPlayer").addEventListener("change", updatePathHint);
+      updatePathHint();
 
       $("adminLogoutBtn").addEventListener("click", adminLogout);
 
@@ -588,14 +750,14 @@
         const km = Number($("adminKm").value || 0);
         const date = $("adminDate").value;
         const imgName = $("adminImgName").value.trim();
-        const prevRankInput = Number($("adminPrevRank").value || 0);
+        const rankInput = $("adminRank").value.trim();
 
         if (!playerName || !date || !Number.isFinite(km) || km <= 0){
           $("adminHint").textContent = "Bitte Spieler, Datum und Strecke > 0 ausfüllen.";
           return;
         }
         if (!imgName){
-          $("adminHint").textContent = "Bitte Bild-Dateiname eintragen (z.B. lauf1.jpg).";
+          $("adminHint").textContent = "Bitte Bild-Dateiname eintragen (z.B. Run1.jpg).";
           return;
         }
 
@@ -606,42 +768,68 @@
         }
         if (!Array.isArray(p.runs)) p.runs = [];
 
-        const slug = playerSlug(playerName);
-        const imgPath = `uploads/uploads/${slug}/${imgName}`;
+        const folder = playerFolder(playerName);
+        // ====== Problem 1 Fix: immer in uploads/uploads/<spieler>/... speichern ======
+        const imgPath = `${UPLOADS_BASE}/${folder}/${imgName}`;
 
         p.runs.push({ date, km: Number(km.toFixed(2)), img: imgPath });
 
-        if (Number.isFinite(prevRankInput) && prevRankInput >= 1){
-          p.previousRank = Math.floor(prevRankInput);
+        // optional: previousRank setzen
+        if (rankInput){
+          const pr = Number(rankInput);
+          if (Number.isFinite(pr) && pr > 0) p.previousRank = pr;
         }
 
         $("adminHint").innerHTML =
           `✅ Lauf hinzugefügt (lokal).<br>` +
-          `1) Lade das Bild nach <code>uploads/${esc(slug)}/</code> hoch und nenn es <code>${esc(imgName)}</code>.<br>` +
+          `1) Lade das Bild als <code>${esc(imgName)}</code> nach <code>${esc(UPLOADS_BASE)}/${esc(folder)}/</code> hoch.<br>` +
           `2) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.`;
-
-        $("adminKm").value = 0;
-        $("adminImgName").value = "";
-        updateHints();
 
         render();
       });
 
-      $("adminDownload").addEventListener("click", () => downloadJson("data.json", DATA));
+      // ====== Variante B: beim Download previousRank für Spieler + Gruppen automatisch setzen ======
+      $("adminDownload").addEventListener("click", () => {
+        const playerRows = buildPlayerRows();
+        const groupRows  = buildGroupRows(playerRows);
+
+        for (const pr of playerRows){
+          const p = (DATA.players || []).find(x => x.name === pr.name);
+          if (p) p.previousRank = pr.current_rank;
+        }
+        for (const gr of groupRows){
+          const g = (DATA.groups || []).find(x => x.name === gr.group);
+          if (g) g.previousRank = gr.current_rank;
+        }
+
+        const blob = new Blob([JSON.stringify(DATA, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "data.json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
     }
 
     // ====== RENDER ======
     function render(){
-      // Start / Ende
-      $("startDate").textContent = formatDateDE(START_ISO);
-      $("endDate").textContent = formatDateDE(END_ISO);
+      // Start/Ende/Days left
+      const startISO = DATA.start || DATA.startDate || "2026-01-11";
+      const endISO   = DATA.end   || DATA.endDate   || "2026-01-31";
 
-      // left counter
-      const left = daysLeftToEnd();
-      $("daysLeft").textContent = (left == null) ? "—" : String(Math.max(left, 0));
+      $("startDate").textContent = formatDateDE(startISO);
+      $("endDate").textContent = formatDateDE(endISO);
 
+      const left = calcDaysLeft(startISO, endISO);
+      $("daysLeft").textContent = (left == null) ? "—" : String(left);
+
+      // Admin Mount
       $("adminBarMount").innerHTML = renderAdminBar();
 
+      // Sidebar groups
       $("groupList").innerHTML = (DATA.groups || []).map(g => `
         <div class="li">
           <div>
@@ -654,205 +842,177 @@
       const playerRows = buildPlayerRows();
       const groupRows = buildGroupRows(playerRows);
 
-      // Leader + Verteidiger-Streak
-      const currentLeader = playerRows.find(p => p.current_rank === 1) || null;
-      const leaderDefDays = currentLeader ? defenderStreakDays(currentLeader.name) : 0;
+      // Daily line
+      $("dailyLine").innerHTML = `<span class="dot"></span><div>${makeDailyLine(playerRows)}</div>`;
 
-      // Most Improved
-      const mostImproved = playerRows
-        .filter(p => p.rank_delta > 0)
-        .sort((a,b) => (b.rank_delta - a.rank_delta) || (b.km - a.km))[0] || null;
+      // Longest single run badge
+      const lr = longestSingleRun();
+      if (lr.name){
+        $("longestRunBadge").innerHTML = `🏃 Längste Einzelstrecke: <b>${esc(lr.name)}</b> · <b>${Number(lr.km).toFixed(2)} km</b>`;
+      } else {
+        $("longestRunBadge").textContent = `🏃 Längste Einzelstrecke: —`;
+      }
 
-      const top3 = playerRows.slice(0,3);
+      // Leader streak badge
+      const ls = calcLeaderStreak(playerRows);
+      $("leaderStreakBadge").innerHTML = `🏁 Leader-Streak: <b>${esc(ls.name)}</b> · <b>${Number(ls.days).toFixed(0)} Tage</b>`;
 
-      // Players
+      // Podium
+      $("podiumMount").innerHTML = buildPodium(playerRows);
+
+      // Players view (Problem 3: tableWrap)
       $("playersView").innerHTML = `
-        ${top3.length ? `
-          <div class="leaderCenter">
-            <div class="leaderPill">
-              🏁 Leader-Streak:
-              <b>${currentLeader ? esc(currentLeader.name) : "—"}</b>
-              · <b>${leaderDefDays || 0} Tage</b>
-            </div>
-          </div>
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Trend</th>
+                <th>Rang</th>
+                <th>Spieler</th>
+                <th>Gruppe</th>
+                <th class="km">Strecke</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${playerRows.map(pr => {
+                const open = expandedPlayer === pr.name;
+                const medal = pr.current_rank === 1 ? "👑" : (pr.current_rank === 2 ? "🥈" : (pr.current_rank === 3 ? "🥉" : ""));
+                const runsSorted = [...(pr.runs||[])].sort((a,b) => String(b.date||"").localeCompare(String(a.date||"")));
 
-          <div class="podiumWrap">
-            ${top3.map((p, idx) => {
-              const rank = idx + 1;
-              const emoji = rank === 1 ? "👑" : (rank === 2 ? "🥈" : "🥉");
-              const mi = (mostImproved && mostImproved.name === p.name) ? `<span class="badgeMini blue">🚀 Most Improved</span>` : "";
-              const st = p.has_streak3 ? `<span class="badgeMini fire">🔥 3-Tage-Streak</span>` : "";
-              const def = (rank === 1 && leaderDefDays >= 3) ? `<span class="badgeMini warn">🛡 Verteidiger · ${leaderDefDays} Tage</span>` : "";
-              const gcol = groupColor(p.group);
-              return `
-                <div class="podiumCard" style="border-color:${gcol}33">
-                  <div class="podiumTop">
-                    <div class="podiumRank">Platz ${rank}</div>
-                    <div class="podiumEmoji">${emoji}</div>
-                  </div>
-                  <div class="podiumName">${esc(p.name)}</div>
-                  <div class="podiumMeta">
-                    <span class="badgeMini" style="border-color:${gcol}55;color:${gcol}">${esc(p.group)}</span>
-                    <span class="badgeMini good">${kmText(p.km)}</span>
-                    ${mi}${st}${def}
-                  </div>
-                </div>
-              `;
-            }).join("")}
-          </div>
-          <div class="hint">Ab Platz 4 geht’s in der Tabelle weiter.</div>
-        ` : ""}
+                const details = `
+                  <tr class="player-details" data-player="${esc(pr.name)}" style="${open ? "" : "display:none"}">
+                    <td colspan="6" style="padding:0">
+                      <div style="padding:12px; border-top:1px solid rgba(255,255,255,.06)">
+                        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-end;margin-bottom:8px;flex-wrap:wrap">
+                          <div style="font-weight:950;font-size:18px">${esc(pr.name)} – Läufe</div>
+                          <div style="font-size:12px;color:var(--muted)">Gesamt: ${pr.km.toFixed(2)} km</div>
+                        </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Trend</th>
-              <th>Rang</th>
-              <th>Spieler</th>
-              <th>Gruppe</th>
-              <th class="km">Strecke</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${playerRows.map(pr => {
-              const open = expandedPlayer === pr.name;
-              const medal = pr.current_rank === 1 ? "👑" : (pr.current_rank === 2 ? "🥈" : (pr.current_rank === 3 ? "🥉" : ""));
-              const miBadge = (mostImproved && mostImproved.name === pr.name) ? `<span class="badgeMini blue" style="margin-left:8px">🚀 Most Improved</span>` : "";
-              const streakBadge = pr.has_streak3 ? `<span class="badgeMini fire" style="margin-left:8px">🔥 3-Tage-Streak</span>` : "";
-              const defBadge = (pr.current_rank === 1 && leaderDefDays >= 3) ? `<span class="badgeMini warn" style="margin-left:8px">🛡 Verteidiger</span>` : "";
-
-              const runsSorted = [...(pr.runs||[])].sort((a,b) => String(b.date||"").localeCompare(String(a.date||"")));
-
-              const details = `
-                <tr class="player-details" data-player="${esc(pr.name)}" style="${open ? "" : "display:none"}">
-                  <td colspan="6" style="padding:0">
-                    <div style="padding:10px 10px 12px 10px; border-top:1px solid rgba(255,255,255,.06)">
-                      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-end;margin-bottom:8px">
-                        <div style="font-weight:900">${esc(pr.name)} – Läufe</div>
-                        <div style="font-size:12px;color:var(--muted)">Gesamt: ${kmText(pr.km)}</div>
+                        ${runsSorted.length === 0 ? `
+                          <div class="hint" style="margin:0">Noch keine Läufe eingetragen.</div>
+                        ` : `
+                          <div class="tableWrap" style="margin-top:0">
+                            <table style="min-width:680px">
+                              <thead>
+                                <tr>
+                                  <th>Run</th>
+                                  <th>Datum</th>
+                                  <th class="km">Strecke</th>
+                                  <th>Beweis</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                ${runsSorted.map((r, idx) => `
+                                  <tr>
+                                    <td>${idx+1}</td>
+                                    <td>${formatDateDE(r.date || "")}</td>
+                                    <td class="km">${Number(r.km||0).toFixed(2)} km</td>
+                                    <td>
+                                      ${r.img ? `
+                                        <a href="${esc(r.img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+                                          <img class="proof" src="${esc(r.img)}" alt="Beweis">
+                                        </a>
+                                      ` : `<span class="hint" style="margin:0">—</span>`}
+                                    </td>
+                                  </tr>
+                                `).join("")}
+                              </tbody>
+                            </table>
+                          </div>
+                        `}
                       </div>
+                    </td>
+                  </tr>
+                `;
 
-                      ${runsSorted.length === 0 ? `
-                        <div class="hint" style="margin:0">Noch keine Läufe eingetragen.</div>
-                      ` : `
-                        <table style="width:100%; border-collapse:collapse; background:rgba(0,0,0,.06); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:0">
-                          <thead>
-                            <tr>
-                              <th>Run</th>
-                              <th>Datum</th>
-                              <th class="km">Strecke</th>
-                              <th>Beweis</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            ${runsSorted.map((r, i) => `
-                              <tr style="border-top:1px solid rgba(255,255,255,.06)">
-                                <td>${i + 1}</td>
-                                <td>${formatDateDE(r.date || "")}</td>
-                                <td class="km">${kmText(r.km)}</td>
-                                <td>
-                                  ${r.img ? `
-                                    <a href="${esc(r.img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
-                                      <img class="proof" src="${esc(r.img)}" alt="Beweis">
-                                    </a>
-                                  ` : `<span class="hint" style="margin:0">—</span>`}
-                                </td>
-                              </tr>
-                            `).join("")}
-                          </tbody>
-                        </table>
-                      `}
-                    </div>
-                  </td>
-                </tr>
-              `;
-
-              return `
-                <tr class="player-row rowclick" data-player="${esc(pr.name)}">
-                  <td class="caret" style="color:${groupColor(pr.group)}">${open ? "▾" : "▸"}</td>
-                  <td>${trend(pr.rank_delta)}</td>
-                  <td>${pr.current_rank}</td>
-                  <td>
-                    <b>${esc(pr.name)}${medal ? `<span style="margin-left:6px">${medal}</span>` : ""}</b>
-                    ${miBadge}${streakBadge}${defBadge}
-                  </td>
-                  <td>
-                    <span class="tag" style="border-color:${groupColor(pr.group)}; color:${groupColor(pr.group)}">
-                      ${esc(pr.group)}
-                    </span>
-                  </td>
-                  <td class="km">${kmText(pr.km)}</td>
-                </tr>
-                ${details}
-              `;
-            }).join("")}
-          </tbody>
-        </table>
+                return `
+                  <tr class="player-row rowclick" data-player="${esc(pr.name)}">
+                    <td class="caret" style="color:${groupColor(pr.group)}">${open ? "▾" : "▸"}</td>
+                    <td>${trend(pr.rank_delta)}</td>
+                    <td>${pr.current_rank}</td>
+                    <td><b>${esc(pr.name)}</b> <span title="Top">${medal}</span></td>
+                    <td>
+                      <span class="groupTag" style="border-color:${groupColor(pr.group)}; color:${groupColor(pr.group)}">
+                        ${esc(pr.group)}
+                      </span>
+                    </td>
+                    <td class="km">${pr.km.toFixed(2)} km</td>
+                  </tr>
+                  ${details}
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
       `;
 
-      // Groups
+      // Groups view (Problem 2: Trend + Problem 3: tableWrap)
       $("groupsView").innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Trend</th>
-              <th>Rang</th>
-              <th>Gruppe</th>
-              <th class="km">Strecke</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${groupRows.map(gr => {
-              const open = expandedGroup === gr.group;
-              const members = membersOfGroupSorted(gr.group, playerRows);
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Trend</th>
+                <th>Rang</th>
+                <th>Gruppe</th>
+                <th class="km">Strecke</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${groupRows.map(gr => {
+                const open = expandedGroup === gr.group;
+                const members = membersOfGroupSorted(gr.group, playerRows);
 
-              const details = `
-                <tr class="group-details" data-group="${esc(gr.group)}" style="${open ? "" : "display:none"}">
-                  <td colspan="5" style="padding:0">
-                    <div style="padding:10px 10px 12px 10px; border-top:1px solid rgba(255,255,255,.06)">
-                      <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:8px">
-                        <div style="font-weight:900; color:${groupColor(gr.group)}">${esc(gr.group)} – Mitglieder</div>
-                        <div style="font-size:12px; color:var(--muted)">Sortiert nach Strecke</div>
+                const details = `
+                  <tr class="group-details" data-group="${esc(gr.group)}" style="${open ? "" : "display:none"}">
+                    <td colspan="5" style="padding:0">
+                      <div style="padding:12px; border-top:1px solid rgba(255,255,255,.06)">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:8px; flex-wrap:wrap">
+                          <div style="font-weight:950; font-size:18px; color:${groupColor(gr.group)}">${esc(gr.group)} – Mitglieder</div>
+                          <div style="font-size:12px; color:var(--muted)">Sortiert nach Strecke</div>
+                        </div>
+
+                        <div class="tableWrap" style="margin-top:0">
+                          <table style="min-width:560px">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Spieler</th>
+                                <th class="km">Strecke</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              ${members.map((m, idx) => `
+                                <tr>
+                                  <td>${idx+1}</td>
+                                  <td style="font-weight:900">${esc(m.name)}${idx===0 ? ` <span title="Top in Gruppe">👑</span>` : ""}</td>
+                                  <td class="km">${Number(m.km).toFixed(2)} km</td>
+                                </tr>
+                              `).join("")}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
+                    </td>
+                  </tr>
+                `;
 
-                      <table style="width:100%; border-collapse:collapse; background:rgba(0,0,0,.06); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:0">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Spieler</th>
-                            <th class="km">Strecke</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          ${members.map((m, idx) => `
-                            <tr style="border-top:1px solid rgba(255,255,255,.06)">
-                              <td>${idx+1}</td>
-                              <td style="font-weight:800">${esc(m.name)}${idx===0 ? `<span style="margin-left:8px">👑</span>` : ""}</td>
-                              <td class="km">${kmText(m.km)}</td>
-                            </tr>
-                          `).join("")}
-                        </tbody>
-                      </table>
-                    </div>
-                  </td>
-                </tr>
-              `;
-
-              return `
-                <tr class="group-row rowclick" data-group="${esc(gr.group)}">
-                  <td class="caret" style="color:${groupColor(gr.group)}">${open ? "▾" : "▸"}</td>
-                  <td>${trend(gr.rank_delta)}</td>
-                  <td>${gr.current_rank}</td>
-                  <td><b style="color:${groupColor(gr.group)}">${esc(gr.group)}</b></td>
-                  <td class="km">${kmText(gr.km)}</td>
-                </tr>
-                ${details}
-              `;
-            }).join("")}
-          </tbody>
-        </table>
+                return `
+                  <tr class="group-row rowclick" data-group="${esc(gr.group)}">
+                    <td class="caret" style="color:${groupColor(gr.group)}">${open ? "▾" : "▸"}</td>
+                    <td>${trend(gr.rank_delta)}</td>
+                    <td>${gr.current_rank}</td>
+                    <td><b style="color:${groupColor(gr.group)}">${esc(gr.group)}</b></td>
+                    <td class="km">${Number(gr.km).toFixed(2)} km</td>
+                  </tr>
+                  ${details}
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
       `;
 
       wireAdmin();
@@ -881,6 +1041,7 @@
     $("tabPlayers").addEventListener("click", () => setView("players"));
     $("tabGroups").addEventListener("click", () => setView("groups"));
 
+    // Accordions
     document.addEventListener("click", (e) => {
       const pr = e.target.closest && e.target.closest("tr.player-row");
       if (pr){
@@ -903,6 +1064,7 @@
       if (!res.ok) throw new Error("data.json nicht gefunden (Status " + res.status + ")");
       DATA = await res.json();
       if (!DATA.groups || !DATA.players) throw new Error("data.json fehlt groups/players");
+
       render();
     }
 
