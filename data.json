@@ -94,7 +94,7 @@
   "players": [
     {
       "name": "Alexander Auhagen",
-      "previousRank": null,
+      "previousRank": 2,
       "runs": [
         {
           "date": "2026-01-06",
@@ -105,6 +105,21 @@
           "date": "2026-01-06",
           "km": 10,
           "img": "uploads/Alex run 1.png"
+        },
+        {
+          "date": "2026-01-08",
+          "km": 2,
+          "img": "uploads/uploads/alexander_auhagen/lauf3.jpg"
+        },
+        {
+          "date": "2026-01-09",
+          "km": 3,
+          "img": "uploads/uploads/alexander_auhagen/lauf4.jpg"
+        },
+        {
+          "date": "2026-01-10",
+          "km": 6,
+          "img": "uploads/uploads/alexander_auhagen/lauf5.jpg"
         }
       ]
     },
@@ -131,6 +146,11 @@
           "date": "2026-01-09",
           "km": 20,
           "img": "uploads/valentin_ertl/Run2"
+        },
+        {
+          "date": "2026-01-09",
+          "km": 7,
+          "img": "uploads/uploads/valentin_ertl/lauf3.jpg"
         }
       ]
     },
