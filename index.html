@@ -72,7 +72,7 @@
     code{ padding:1px 6px; border:1px solid rgba(255,255,255,.1); border-radius:8px; background:rgba(255,255,255,.03); }
 
     select,input,button{ font:inherit; }
-    .adminGrid{ display:grid; gap:8px; grid-template-columns:1fr 140px 1fr; align-items:end; }
+    .adminGrid{ display:grid; gap:8px; grid-template-columns:1fr 160px 1fr; align-items:end; }
     @media (max-width:720px){ .adminGrid{ grid-template-columns:1fr; } }
     .inp, .sel{
       width:100%; padding:8px; border-radius:10px; border:1px solid var(--border);
@@ -85,17 +85,9 @@
     .btnGood{ background:rgba(34,197,94,.15); color:#dff7e8; font-weight:800; }
     .btnBad{ background:rgba(255,107,107,.12); color:#ffd6d6; font-weight:800; }
 
-    /* ===== PODIUM ===== */
-    .podiumWrap{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-      margin-top:12px;
-      margin-bottom:6px;
-    }
-    @media (min-width:700px){
-      .podiumWrap{ grid-template-columns:1fr 1fr 1fr; }
-    }
+    /* PODIUM / BADGES */
+    .podiumWrap{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:12px; margin-bottom:6px; }
+    @media (min-width:700px){ .podiumWrap{ grid-template-columns:1fr 1fr 1fr; } }
     .podiumCard{
       border:1px solid rgba(255,255,255,.08);
       border-radius:16px;
@@ -135,15 +127,8 @@
     .badgeMini.fire{ color:#ffd1d1; border-color:rgba(255,107,107,.35); background:rgba(255,107,107,.10); }
     .badgeMini.blue{ color:#d7e9ff; border-color:rgba(122,183,255,.35); background:rgba(122,183,255,.10); }
 
-    /* ===== CONFETTI ===== */
-    .confetti{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:9999;
-      overflow:hidden;
-      display:none;
-    }
+    /* CONFETTI */
+    .confetti{ position:fixed; inset:0; pointer-events:none; z-index:9999; overflow:hidden; display:none; }
     .confetti.show{ display:block; }
     .confetti span{
       position:absolute;
@@ -153,9 +138,7 @@
       opacity:.95;
       filter: drop-shadow(0 4px 10px rgba(0,0,0,.45));
     }
-    @keyframes fall{
-      to{ transform:translateY(110vh) rotate(360deg); opacity:0.9; }
-    }
+    @keyframes fall{ to{ transform:translateY(110vh) rotate(360deg); opacity:0.9; } }
   </style>
 </head>
 <body>
@@ -203,6 +186,9 @@
     let expandedGroup = null;
     let expandedPlayer = null;
 
+    // Map: Name -> aktueller Rang (für Admin-Vorschläge)
+    let CURRENT_RANK_BY_NAME = new Map();
+
     // ====== ADMIN PASS (nur Klickschutz, nicht echte Sicherheit) ======
     const ADMIN_PASSWORD = "14492";
     const ADMIN_SESSION_KEY = "laufchallenge_admin_ok";
@@ -216,7 +202,7 @@
       }[m]));
     }
 
-    // ISO (YYYY-MM-DD) -> TT.MM.JJJJ (lokal, ohne UTC-Shift)
+    // ISO (YYYY-MM-DD) -> TT.MM.JJJJ (lokal)
     function formatDateDE(iso){
       if (!iso) return "—";
       const parts = String(iso).split("-");
@@ -227,13 +213,18 @@
       return dt.toLocaleDateString("de-DE");
     }
 
-    function kmText(v){
-      return `${Number(v || 0).toFixed(2)} km`;
+    function kmText(v){ return `${Number(v || 0).toFixed(2)} km`; }
+
+    function playerSlug(playerName){
+      return String(playerName)
+        .toLowerCase()
+        .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
+        .replace(/[^a-z0-9]+/g,"_")
+        .replace(/^_+|_+$/g,"");
     }
 
     function adminModeEnabled(){
       if (location.hash !== "#admin") return false;
-
       if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "1") return true;
 
       const pw = prompt("Admin-Passwort:");
@@ -287,11 +278,9 @@
     // ===== STREAK (Spieler): 3 Tage am Stück gelaufen? =====
     function has3DayStreak(runs){
       if (!Array.isArray(runs) || runs.length === 0) return false;
-
       const set = new Set();
-      for (const r of runs){
-        if (r && r.date) set.add(String(r.date));
-      }
+      for (const r of runs){ if (r && r.date) set.add(String(r.date)); }
+
       const dates = Array.from(set)
         .map(d => {
           const p = d.split("-");
@@ -406,6 +395,9 @@
 
       const ranked = denseRank(rows, r => r.km);
 
+      // current rank map für Admin
+      CURRENT_RANK_BY_NAME = new Map(ranked.map(r => [r.name, r.current_rank]));
+
       return ranked.map(r => {
         const prev = (r.previousRank == null) ? r.current_rank : r.previousRank;
         const delta = prev - r.current_rank;
@@ -418,11 +410,9 @@
       for (const p of playerRows){
         if (totals.has(p.group)) totals.set(p.group, totals.get(p.group) + p.km);
       }
-
       const rows = Array.from(totals.entries())
         .map(([group, km]) => ({ group, km: Number(km.toFixed(2)) }))
         .sort((a,b) => (b.km - a.km) || a.group.localeCompare(b.group));
-
       const ranked = denseRank(rows, r => r.km);
       return ranked.map(r => ({ ...r, rank_delta: 0 }));
     }
@@ -434,15 +424,6 @@
       return members
         .map(name => ({ name, km: kmByName.get(name) ?? 0 }))
         .sort((a,b) => (b.km - a.km) || a.name.localeCompare(b.name));
-    }
-
-    function suggestedFileName(playerName, dateStr){
-      const safe = playerName
-        .toLowerCase()
-        .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
-        .replace(/[^a-z0-9]+/g,"_")
-        .replace(/^_+|_+$/g,"_");
-      return `${safe}_${dateStr}.jpg`;
     }
 
     function downloadJson(filename, obj){
@@ -469,13 +450,9 @@
       for (let i=0;i<count;i++){
         const s = document.createElement("span");
         s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-        const left = Math.random()*100;
-        const delay = Math.random()*0.35;
-        const dur = 1.5 + Math.random()*1.2;
-        s.style.left = left + "vw";
-        s.style.animationDelay = delay + "s";
-        s.style.animationDuration = dur + "s";
-        s.style.transform = `translateY(-20px) rotate(${Math.random()*120}deg)`;
+        s.style.left = (Math.random()*100) + "vw";
+        s.style.animationDelay = (Math.random()*0.35) + "s";
+        s.style.animationDuration = (1.5 + Math.random()*1.2) + "s";
         el.appendChild(s);
       }
 
@@ -486,7 +463,6 @@
     }
 
     function maybeConfettiForNewLeader(playerRows){
-      if (!playerRows || playerRows.length === 0) return;
       const leader = playerRows.find(p => p.current_rank === 1);
       if (!leader) return;
 
@@ -532,11 +508,19 @@
             </div>
           </div>
 
-          <div style="display:grid; gap:8px; grid-template-columns:1fr auto; align-items:end; margin-top:10px">
+          <div class="adminGrid" style="margin-top:10px; grid-template-columns:1fr 160px 1fr;">
             <div>
-              <div class="hint" style="margin:0 0 4px 0">Beweisbild-Dateiname (hochladen nach <code>/uploads</code>)</div>
-              <input id="adminImgName" class="inp" placeholder="z.B. valentin_2026-01-06.jpg">
+              <div class="hint" style="margin:0 0 4px 0">Bild-Dateiname (im Spieler-Ordner)</div>
+              <input id="adminImgName" class="inp" placeholder="lauf1.jpg">
+              <div class="hint" id="adminPathHint" style="margin-top:6px"></div>
             </div>
+
+            <div>
+              <div class="hint" style="margin:0 0 4px 0">Rank für Trend speichern</div>
+              <input id="adminPrevRank" class="inp" type="number" min="1" step="1" placeholder="z.B. 2">
+              <div class="hint" style="margin-top:6px">Schreibt <code>previousRank</code> beim Spieler (für ▲/▼).</div>
+            </div>
+
             <button id="adminAdd" class="btn btnGood" type="button">Lauf hinzufügen</button>
           </div>
 
@@ -544,7 +528,7 @@
 
           <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center">
             <button id="adminDownload" class="btn" type="button">data.json herunterladen</button>
-            <div class="hint" style="margin:0">Danach <code>data.json</code> + Bild in GitHub hochladen → Link bleibt gleich.</div>
+            <div class="hint" style="margin:0">Dann <code>data.json</code> + Bild in GitHub hochladen → Link bleibt gleich.</div>
           </div>
         </div>
       `;
@@ -556,16 +540,30 @@
       const today = new Date().toISOString().slice(0,10);
       $("adminDate").value = today;
 
-      const updateSuggested = () => {
-        const player = $("adminPlayer").value.trim();
-        const date = $("adminDate").value || today;
-        const sug = suggestedFileName(player, date);
-        if (!$("adminImgName").value) $("adminImgName").value = sug;
+      const updateHints = () => {
+        const playerName = $("adminPlayer").value.trim();
+        const slug = playerSlug(playerName);
+        const p = (DATA.players || []).find(x => x.name === playerName);
+        const nextRun = (p && Array.isArray(p.runs)) ? (p.runs.length + 1) : 1;
+
+        // Vorschlag: laufX.jpg (nur Dateiname)
+        if (!$("adminImgName").value) $("adminImgName").value = `lauf${nextRun}.jpg`;
+
+        // Path-Hint
+        $("adminPathHint").innerHTML = `Upload nach: <code>uploads/${esc(slug)}/</code>`;
+
+        // Vorschlag für previousRank (aktueller Rang)
+        const curRank = CURRENT_RANK_BY_NAME.get(playerName);
+        if (!$("adminPrevRank").value && Number.isFinite(curRank)) $("adminPrevRank").value = curRank;
       };
 
-      $("adminPlayer").addEventListener("change", updateSuggested);
-      $("adminDate").addEventListener("change", updateSuggested);
-      updateSuggested();
+      $("adminPlayer").addEventListener("change", () => {
+        $("adminImgName").value = "";
+        $("adminPrevRank").value = "";
+        updateHints();
+      });
+
+      updateHints();
 
       $("adminLogoutBtn").addEventListener("click", adminLogout);
 
@@ -574,13 +572,14 @@
         const km = Number($("adminKm").value || 0);
         const date = $("adminDate").value;
         const imgName = $("adminImgName").value.trim();
+        const prevRankInput = Number($("adminPrevRank").value || 0);
 
         if (!playerName || !date || !Number.isFinite(km) || km <= 0){
           $("adminHint").textContent = "Bitte Spieler, Datum und Strecke > 0 ausfüllen.";
           return;
         }
         if (!imgName){
-          $("adminHint").innerHTML = `Bitte Bild-Dateiname eintragen (z.B. <code>${esc(suggestedFileName(playerName, date))}</code>).`;
+          $("adminHint").textContent = "Bitte Bild-Dateiname eintragen (z.B. lauf1.jpg).";
           return;
         }
 
@@ -591,12 +590,25 @@
         }
         if (!Array.isArray(p.runs)) p.runs = [];
 
-        p.runs.push({ date, km: Number(km.toFixed(2)), img: `uploads/${imgName}` });
+        const slug = playerSlug(playerName);
+        const imgPath = `uploads/${slug}/${imgName}`;
+
+        p.runs.push({ date, km: Number(km.toFixed(2)), img: imgPath });
+
+        // previousRank setzen (damit Trend beim nächsten Stand korrekt ist)
+        if (Number.isFinite(prevRankInput) && prevRankInput >= 1){
+          p.previousRank = Math.floor(prevRankInput);
+        }
 
         $("adminHint").innerHTML =
           `✅ Lauf hinzugefügt (lokal).<br>` +
-          `1) Lade das Bild als <code>${esc(imgName)}</code> nach <code>/uploads</code> hoch.<br>` +
+          `1) Lade das Bild nach <code>uploads/${esc(slug)}/</code> hoch und nenn es <code>${esc(imgName)}</code>.<br>` +
           `2) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.`;
+
+        // reset nur km + bildname auto fürs nächste
+        $("adminKm").value = 0;
+        $("adminImgName").value = "";
+        updateHints();
 
         render();
       });
@@ -633,13 +645,13 @@
         .filter(p => p.rank_delta > 0)
         .sort((a,b) => (b.rank_delta - a.rank_delta) || (b.km - a.km))[0] || null;
 
-      // Podium (Top 3)
+      // Podium Top 3
       const top3 = playerRows.slice(0,3);
 
-      // Confetti ggf. für neuen Leader
+      // Confetti ggf. für neuen Leader (nur wenn previousRank gepflegt ist)
       maybeConfettiForNewLeader(playerRows);
 
-      // Players view
+      // Players
       $("playersView").innerHTML = `
         ${top3.length ? `
           <div class="podiumWrap">
@@ -660,9 +672,7 @@
                   <div class="podiumMeta">
                     <span class="badgeMini" style="border-color:${gcol}55;color:${gcol}">${esc(p.group)}</span>
                     <span class="badgeMini good">${kmText(p.km)}</span>
-                    ${mi}
-                    ${st}
-                    ${def}
+                    ${mi}${st}${def}
                   </div>
                 </div>
               `;
@@ -743,10 +753,8 @@
                   <td>${trend(pr.rank_delta)}</td>
                   <td>${pr.current_rank}</td>
                   <td>
-                    <b>${esc(pr.name)} ${medal ? `<span style="margin-left:6px">${medal}</span>` : ""}</b>
-                    ${miBadge}
-                    ${streakBadge}
-                    ${defBadge}
+                    <b>${esc(pr.name)}${medal ? `<span style="margin-left:6px">${medal}</span>` : ""}</b>
+                    ${miBadge}${streakBadge}${defBadge}
                   </td>
                   <td>
                     <span class="tag" style="border-color:${groupColor(pr.group)}; color:${groupColor(pr.group)}">
@@ -762,7 +770,7 @@
         </table>
       `;
 
-      // Groups view
+      // Groups
       $("groupsView").innerHTML = `
         <table>
           <thead>
@@ -852,7 +860,6 @@
     $("tabPlayers").addEventListener("click", () => setView("players"));
     $("tabGroups").addEventListener("click", () => setView("groups"));
 
-    // Accordions
     document.addEventListener("click", (e) => {
       const pr = e.target.closest && e.target.closest("tr.player-row");
       if (pr){
