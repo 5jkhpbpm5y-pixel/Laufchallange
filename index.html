@@ -421,6 +421,9 @@
     let expandedGroup = null;
     let expandedPlayer = null;
 
+    // NEU: merkt sich, welche Ansicht aktiv ist (für Podium)
+    let currentView = "players";
+
     // ====== ADMIN PASS (nur Klickschutz) ======
     const ADMIN_PASSWORD = "14492";
     const ADMIN_SESSION_KEY = "laufchallenge_admin_ok";
@@ -883,6 +886,9 @@
 
     // ====== VIEW SWITCH ======
     function setView(which){
+      // NEU: merkt sich Ansicht für das Podium
+      currentView = (which === "groups") ? "groups" : "players";
+
       const pv = $("playersView");
       const gv = $("groupsView");
       const tp = $("tabPlayers");
@@ -940,32 +946,66 @@
         ? `🏁 Leader-Streak: <b>${esc(streak.name)}</b> · <b>${streak.days}</b> Tag${streak.days===1?"":"e"}`
         : `🏁 Leader-Streak: —`;
 
-      // Podium (Top 3)
-      const top3 = playerRows.slice(0,3);
-      const podiumHtml = `
-        <div class="podiumWrap">
-          ${top3.map((p, idx) => {
-            const cls = idx===0 ? "p1" : (idx===1 ? "p2" : "p3");
-            const medal = idx===0 ? "👑" : (idx===1 ? "🥈" : "🥉");
-            const groupCol = groupColor(p.group);
-            return `
-              <div class="podiumCard ${cls}">
-                <div class="pTitle">
-                  <span>Platz ${idx+1}</span>
-                  <span style="opacity:.9">${medal}</span>
+      // ===== Podium (Top 3) — abhängig von View =====
+      if (currentView === "groups") {
+        const top3g = groupRows.slice(0, 3);
+
+        $("podiumMount").innerHTML = `
+          <div class="podiumWrap">
+            ${top3g.map((g, idx) => {
+              const cls = idx===0 ? "p1" : (idx===1 ? "p2" : "p3");
+              const medal = idx===0 ? "👑" : (idx===1 ? "🥈" : "🥉");
+              const col = groupColor(g.group);
+
+              const members = (DATA.groups || []).find(x => x.name === g.group)?.members || [];
+              const memberCount = members.length;
+
+              return `
+                <div class="podiumCard ${cls}">
+                  <div class="pTitle">
+                    <span>Platz ${idx+1}</span>
+                    <span style="opacity:.9">${medal}</span>
+                  </div>
+                  <div class="pName" style="color:${col}">${esc(g.group)}</div>
+                  <div class="pMeta">
+                    <span class="tag" style="border-color:${col}; color:${col}">
+                      ${memberCount} Mitglied${memberCount===1?"":"er"}
+                    </span>
+                    <span class="kmPill">${Number(g.km).toFixed(2)} km</span>
+                  </div>
                 </div>
-                <div class="pName">${esc(p.name)}</div>
-                <div class="pMeta">
-                  <span class="tag" style="border-color:${groupCol}; color:${groupCol}">${esc(p.group)}</span>
-                  <span class="kmPill">${p.km.toFixed(2)} km</span>
+              `;
+            }).join("")}
+          </div>
+        `;
+        $("podiumHint").textContent = "Ab Platz 4 geht’s in der Gruppen-Tabelle weiter.";
+      } else {
+        const top3 = playerRows.slice(0,3);
+
+        $("podiumMount").innerHTML = `
+          <div class="podiumWrap">
+            ${top3.map((p, idx) => {
+              const cls = idx===0 ? "p1" : (idx===1 ? "p2" : "p3");
+              const medal = idx===0 ? "👑" : (idx===1 ? "🥈" : "🥉");
+              const groupCol = groupColor(p.group);
+              return `
+                <div class="podiumCard ${cls}">
+                  <div class="pTitle">
+                    <span>Platz ${idx+1}</span>
+                    <span style="opacity:.9">${medal}</span>
+                  </div>
+                  <div class="pName">${esc(p.name)}</div>
+                  <div class="pMeta">
+                    <span class="tag" style="border-color:${groupCol}; color:${groupCol}">${esc(p.group)}</span>
+                    <span class="kmPill">${p.km.toFixed(2)} km</span>
+                  </div>
                 </div>
-              </div>
-            `;
-          }).join("")}
-        </div>
-      `;
-      $("podiumMount").innerHTML = podiumHtml;
-      $("podiumHint").textContent = "Ab Platz 4 geht’s in der Tabelle weiter.";
+              `;
+            }).join("")}
+          </div>
+        `;
+        $("podiumHint").textContent = "Ab Platz 4 geht’s in der Tabelle weiter.";
+      }
 
       // Players table + details
       $("playersView").innerHTML = `
