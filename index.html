@@ -103,18 +103,20 @@
     }
 
     .dailyLine{
-      width:100%;
-      max-width:900px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.02);
-      border-radius:16px;
-      padding:10px 12px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      color:var(--text);
-      font-weight:800;
-    }
+  width:100%;
+  max-width:900px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.02);
+  border-radius:16px;
+  padding:10px 16px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;   /* 👈 NEU */
+  text-align:center;        /* 👈 NEU */
+  color:var(--text);
+  font-weight:800;
+}
     .dailyLine .dot{
       width:10px; height:10px; border-radius:999px;
       background:rgba(34,197,94,.7);
