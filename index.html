@@ -932,6 +932,8 @@
 
       const playerRows = buildPlayerRows();
       const groupRows = buildGroupRows(playerRows);
+      const totalAllKm = playerRows.reduce((sum, p) => sum + (Number(p.km) || 0), 0);
+
 
       // Daily line + longest run + leader streak
       $("dailyLine").innerHTML = `<span class="dot"></span><div>${makeDailyLine(playerRows, groupRows)}</div>`;
@@ -1094,6 +1096,9 @@
             </tbody>
           </table>
         </div>
+        <div style="margin-top:12px; display:flex; justify-content:flex-end;">
+  <span class="badge">Σ Gesamt: <b>${totalAllKm.toFixed(2)} km</b></span>
+</div>
       `;
 
       // Groups table + expand
