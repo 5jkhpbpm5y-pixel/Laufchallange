@@ -1235,12 +1235,65 @@
       `;
 
       // Rewards placeholder
-      $("rewardsView").innerHTML = `
-        <div class="card" style="background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:14px; margin-top:10px">
-          <div style="font-weight:1000; font-size:18px">Belohnung / Bestrafung</div>
-          <div class="hint" style="margin-top:6px">Hier kommt später der Inhalt rein.</div>
-        </div>
-      `;
+      // Rewards / Bestrafung
+const leaderGroupName = (DATA.groups || []).some(g => g.name === "Leader Gruppe")
+  ? "Leader Gruppe"
+  : (groupRows[0]?.group || null);
+
+const leaderGroupKm = leaderGroupName
+  ? Number((groupRows.find(gr => gr.group === leaderGroupName)?.km) || 0)
+  : 0;
+
+const punishmentGroups = groupRows
+  .filter(gr => gr.group !== leaderGroupName && Number(gr.km) < leaderGroupKm)
+  .map(gr => gr.group);
+
+const topPlayer = playerRows[0] || null;
+
+$("rewardsView").innerHTML = `
+  <div class="card">
+    <div style="font-weight:1000; font-size:18px; margin-bottom:10px">
+      Belohnung & Bestrafung
+    </div>
+
+    <div class="hint" style="font-size:14px; line-height:1.65">
+      In der <b>Einzelwertung</b> geht’s ganz oben um <b>Ruhm & Ehre</b> – wer die meisten Kilometer sammelt, setzt das Zeichen.
+      <br><br>
+      In der <b>Gruppenwertung</b> holt sich die beste Gruppe einen <b>Preis</b>. Was genau das ist, bleibt bis zum Ende der Laufchallenge geheim.
+      <br><br>
+      Und ja: Es gibt auch eine <b>Bestrafung</b> – für die Gruppe(n), die am Ende <b>hinter der Leader Gruppe</b> landen.
+      <br><br>
+      <b>Bitte bis Donnerstag (HIT Training) Vorschläge mitbringen, damit wir das gemeinsam festzurren.</b>
+    </div>
+
+    <div style="margin-top:16px; text-align:center">
+      <div style="font-weight:1000">Bestrafungsgruppen:</div>
+
+      ${
+        punishmentGroups.length
+          ? `<div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap">
+              ${punishmentGroups.map(name => {
+                const col = groupColor(name);
+                return `<span class="tag" style="border-color:${col}; color:${col}">${esc(name)}</span>`;
+              }).join("")}
+            </div>`
+          : `<div class="hint" style="margin-top:8px">Aktuell keine – niemand liegt hinter der Leader Gruppe.</div>`
+      }
+    </div>
+
+    <div style="margin-top:18px; text-align:center">
+      <div style="font-weight:1000">Ruhm & Ehre geht an:</div>
+
+      ${
+        topPlayer
+          ? `<div style="margin-top:10px; display:flex; justify-content:center">
+               <span class="badgeMini blue">👑 <b>${esc(topPlayer.name)}</b> · <b>${Number(topPlayer.km).toFixed(2)} km</b></span>
+             </div>`
+          : `<div class="hint" style="margin-top:8px">—</div>`
+      }
+    </div>
+  </div>
+`;
 
       wireAdmin(playerRows, groupRows);
     }
