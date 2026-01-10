@@ -350,11 +350,12 @@
         <div class="sub">Einzelrangliste & Gruppenübersicht · sortiert nach Strecke · Klick für Details</div>
       </div>
 
-      <div class="tabs" role="tablist">
-        <button class="tab active" id="tabPlayers" type="button">Einzel</button>
-        <button class="tab" id="tabGroups" type="button">Gruppen</button>
-      </div>
-    </div>
+    <div class="tabs" role="tablist">
+  <button class="tab active" id="tabPlayers" type="button">Einzel</button>
+  <button class="tab" id="tabGroups" type="button">Gruppen</button>
+  <button class="tab" id="tabRewards" type="button">Belohnung/Bestrafung</button>
+</div>
+
 
     <div class="grid2">
       <div class="card" id="mainCard">
@@ -404,6 +405,7 @@
         <!-- Views -->
         <div id="playersView"></div>
         <div id="groupsView" style="display:none"></div>
+        <dic id=rewardsView" style=display:none"></div>
       </div>
 
       <div class="card side">
@@ -961,26 +963,36 @@ function computeGroupLeaderStreak(playerRows, groupRows){
 
     // ====== VIEW SWITCH ======
     function setView(which){
-      // NEU: merkt sich Ansicht für das Podium
-      currentView = (which === "groups") ? "groups" : "players";
+  currentView = (which === "groups") ? "groups" : (which === "rewards" ? "rewards" : "players");
 
-      const pv = $("playersView");
-      const gv = $("groupsView");
-      const tp = $("tabPlayers");
-      const tg = $("tabGroups");
+  const pv = $("playersView");
+  const gv = $("groupsView");
+  const rv = $("rewardsView");
 
-      if (which === "groups"){
-        pv.style.display = "none";
-        gv.style.display = "block";
-        tp.classList.remove("active");
-        tg.classList.add("active");
-      } else {
-        gv.style.display = "none";
-        pv.style.display = "block";
-        tg.classList.remove("active");
-        tp.classList.add("active");
-      }
-    }
+  const tp = $("tabPlayers");
+  const tg = $("tabGroups");
+  const tr = $("tabRewards");
+
+  // alles aus
+  pv.style.display = "none";
+  gv.style.display = "none";
+  rv.style.display = "none";
+  tp.classList.remove("active");
+  tg.classList.remove("active");
+  tr.classList.remove("active");
+
+  if (which === "groups"){
+    gv.style.display = "block";
+    tg.classList.add("active");
+  } else if (which === "rewards"){
+    rv.style.display = "block";
+    tr.classList.add("active");
+  } else {
+    pv.style.display = "block";
+    tp.classList.add("active");
+  }
+}
+
 
     // ====== RENDER ======
     function render(){
@@ -1250,6 +1262,12 @@ $("leaderStreakBadge").innerHTML = streak
 
         <div class="hint">Gruppen-Trend funktioniert, wenn du einmal <b>Ränge snapshotten</b> nutzt und dann <code>data.json</code> hochlädst.</div>
       `;
+// Rewards / Bestrafung – Platzhalter
+$("rewardsView").innerHTML = `
+  <div class="hint">
+    Belohnung / Bestrafung – kommt noch.
+  </div>
+`;
 
       // Wire admin (needs current rows)
       wireAdmin(playerRows, groupRows);
@@ -1258,6 +1276,8 @@ $("leaderStreakBadge").innerHTML = streak
     // Tabs
     $("tabPlayers").addEventListener("click", () => { setView("players"); render(); });
     $("tabGroups").addEventListener("click", () => { setView("groups"); render(); });
+    $("tabRewards").addEventListener("click", () => { setView("rewards"); render(); });
+
 
     // Accordions
     document.addEventListener("click", (e) => {
