@@ -344,20 +344,22 @@
 
 <body>
   <div class="wrap">
-    <div class="top">
-      <div>
-        <h1>⚽ Laufchallenge</h1>
-        <div class="sub">Einzelrangliste & Gruppenübersicht · sortiert nach Strecke · Klick für Details</div>
-      </div>
+   <div class="top">
+  <div>
+    <h1>⚽ BERG Laufchallenge</h1>
+    <div class="sub">Einzelrangliste & Gruppenübersicht · sortiert nach Strecke · Klick für Details</div>
+  </div>
 
-    <div class="tabs" role="tablist">
-  <button class="tab active" id="tabPlayers" type="button">Einzel</button>
-  <button class="tab" id="tabGroups" type="button">Gruppen</button>
-  <button class="tab" id="tabRewards" type="button">Belohnung/Bestrafung</button>
+  <div class="tabs" role="tablist">
+    <button class="tab active" id="tabPlayers" type="button">Einzel</button>
+    <button class="tab" id="tabGroups" type="button">Gruppen</button>
+    <button class="tab" id="tabRewards" type="button">Belohnung/Bestrafung</button>
+  </div>
 </div>
 
+<div class="grid2">
 
-    <div class="grid2">
+
       <div class="card" id="mainCard">
         <!-- Top Meta -->
         <div class="metaRowTop">
@@ -405,7 +407,7 @@
         <!-- Views -->
         <div id="playersView"></div>
         <div id="groupsView" style="display:none"></div>
-        <dic id=rewardsView" style=display:none"></div>
+       <div id="rewardsView" style="display:none"></div>
       </div>
 
       <div class="card side">
@@ -962,7 +964,7 @@ function computeGroupLeaderStreak(playerRows, groupRows){
     }
 
     // ====== VIEW SWITCH ======
-    function setView(which){
+ function setView(which){
   currentView = (which === "groups") ? "groups" : (which === "rewards" ? "rewards" : "players");
 
   const pv = $("playersView");
@@ -973,25 +975,26 @@ function computeGroupLeaderStreak(playerRows, groupRows){
   const tg = $("tabGroups");
   const tr = $("tabRewards");
 
-  // alles aus
-  pv.style.display = "none";
-  gv.style.display = "none";
-  rv.style.display = "none";
-  tp.classList.remove("active");
-  tg.classList.remove("active");
-  tr.classList.remove("active");
+  if (pv) pv.style.display = "none";
+  if (gv) gv.style.display = "none";
+  if (rv) rv.style.display = "none";
+
+  if (tp) tp.classList.remove("active");
+  if (tg) tg.classList.remove("active");
+  if (tr) tr.classList.remove("active");
 
   if (which === "groups"){
-    gv.style.display = "block";
-    tg.classList.add("active");
+    if (gv) gv.style.display = "block";
+    if (tg) tg.classList.add("active");
   } else if (which === "rewards"){
-    rv.style.display = "block";
-    tr.classList.add("active");
+    if (rv) rv.style.display = "block";
+    if (tr) tr.classList.add("active");
   } else {
-    pv.style.display = "block";
-    tp.classList.add("active");
+    if (pv) pv.style.display = "block";
+    if (tp) tp.classList.add("active");
   }
 }
+
 
 
     // ====== RENDER ======
