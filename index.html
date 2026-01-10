@@ -1177,8 +1177,8 @@
     }
 
     // Tabs
-    $("tabPlayers").addEventListener("click", () => setView("players"));
-    $("tabGroups").addEventListener("click", () => setView("groups"));
+    $("tabPlayers").addEventListener("click", () => { setView("players"); render(); });
+    $("tabGroups").addEventListener("click", () => { setView("groups"); render(); });
 
     // Accordions
     document.addEventListener("click", (e) => {
