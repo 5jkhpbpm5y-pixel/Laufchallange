@@ -339,6 +339,49 @@
       color:var(--text);
       font-weight:800;
     }
+    @media (max-width:720px){
+  body{ overflow-x:hidden; }
+  .wrap, .grid2, .card{ overflow-x:hidden; }
+
+  .tableWrap{ overflow-x:hidden; }
+
+  table{ min-width:0 !important; }
+  table[style*="min-width"]{ min-width:0 !important; }
+
+  thead{ display:none; }
+
+  tr.player-row, tr.group-row{
+    display:block;
+    margin:10px 8px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    background:rgba(255,255,255,.02);
+    overflow:hidden;
+  }
+
+  tr.player-row td, tr.group-row td{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+
+  tr.player-row td:last-child,
+  tr.group-row td:last-child{
+    border-bottom:0;
+  }
+
+  td.caret{ display:none !important; }
+
+  tr.player-details,
+  tr.group-details{
+    display:block;
+    margin:0 8px 12px;
+  }
+}
+
   </style>
 </head>
 
@@ -424,7 +467,7 @@
   <script>
     // ====== STATE ======
     // ====== CHALLENGE ZEITRAUM ======
-    const CHALLENGE_START = "2026-01-11"; // YYYY-MM-DD
+    const CHALLENGE_START = "2026-01-10"; // YYYY-MM-DD
     const CHALLENGE_END   = "2026-01-31"; // YYYY-MM-DD
 
     let DATA = null;
@@ -1172,20 +1215,29 @@ $("leaderStreakBadge").innerHTML = streak
                 const medal = pr.current_rank === 1 ? "👑" : (pr.current_rank === 2 ? "🥈" : (pr.current_rank === 3 ? "🥉" : ""));
 
                 return `
-                  <tr class="player-row rowclick" data-player="${esc(pr.name)}">
-                    <td class="caret" style="color:${groupCol}">${open ? "▾" : "▸"}</td>
-                    <td>${trend(pr.rank_delta)}</td>
-                    <td class="num">${pr.current_rank}</td>
-                    <td style="font-weight:1000">${esc(pr.name)} <span style="opacity:.95">${medal}</span></td>
-                    <td>
-                      <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
-                        ${esc(pr.group)}
-                      </span>
-                    </td>
-                    <td class="num" style="font-weight:1000">${pr.km.toFixed(2)} km</td>
-                  </tr>
-                  ${details}
-                `;
+  <tr class="player-row rowclick" data-player="${esc(pr.name)}">
+    <td class="caret" style="color:${groupCol}">${open ? "▾" : "▸"}</td>
+
+    <td data-label="Trend">${trend(pr.rank_delta)}</td>
+    <td class="num" data-label="Rang">${pr.current_rank}</td>
+
+    <td data-label="Spieler" style="font-weight:1000">
+      ${esc(pr.name)} <span style="opacity:.95">${medal}</span>
+    </td>
+
+    <td data-label="Gruppe">
+      <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
+        ${esc(pr.group)}
+      </span>
+    </td>
+
+    <td class="num" data-label="Strecke" style="font-weight:1000">
+      ${pr.km.toFixed(2)} km
+    </td>
+  </tr>
+  ${details}
+`;
+
               }).join("")}
             </tbody>
           </table>
@@ -1249,15 +1301,23 @@ $("leaderStreakBadge").innerHTML = streak
                 `;
 
                 return `
-                  <tr class="group-row rowclick" data-group="${esc(gr.group)}">
-                    <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
-                    <td>${trend(gr.rank_delta)}</td>
-                    <td class="num">${gr.current_rank}</td>
-                    <td style="font-weight:1000; color:${col}">${esc(gr.group)}</td>
-                    <td class="num" style="font-weight:1000">${Number(gr.km).toFixed(2)} km</td>
-                  </tr>
-                  ${details}
-                `;
+  <tr class="group-row rowclick" data-group="${esc(gr.group)}">
+    <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
+
+    <td data-label="Trend">${trend(gr.rank_delta)}</td>
+    <td class="num" data-label="Rang">${gr.current_rank}</td>
+
+    <td data-label="Gruppe" style="font-weight:1000; color:${col}">
+      ${esc(gr.group)}
+    </td>
+
+    <td class="num" data-label="Strecke" style="font-weight:1000">
+      ${Number(gr.km).toFixed(2)} km
+    </td>
+  </tr>
+  ${details}
+`;
+
               }).join("")}
             </tbody>
           </table>
