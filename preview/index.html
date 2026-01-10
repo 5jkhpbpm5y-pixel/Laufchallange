@@ -337,6 +337,53 @@
       color:var(--text);
       font-weight:800;
     }
+    /* ===== WARNUNG (Leader-Gruppe) ===== */
+.warnBlock{
+  border:1px solid rgba(250,204,21,.35);
+  background:rgba(250,204,21,.08);
+  border-radius:16px;
+  padding:14px 16px;
+  margin-top:12px;
+  text-align:center;
+}
+.warnTitle{
+  font-weight:1000;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#fde68a;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:8px;
+}
+.warnList{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  margin-top:10px;
+}
+.warnPill{
+  border:1px solid rgba(250,204,21,.35);
+  background:rgba(250,204,21,.10);
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:1000;
+  color:#fde68a;
+}
+
+.warnIcon{
+  color:#facc15;
+  font-weight:1000;
+  margin-left:8px;
+}
+
+tr.losingRow td{
+  background: rgba(255, 107, 107, .08);
+}
+
   </style>
 </head>
 
@@ -991,6 +1038,38 @@
       const playerRows = buildPlayerRows();
       const groupRows = buildGroupRows(playerRows);
       const totalAllKm = playerRows.reduce((sum, p) => sum + (Number(p.km) || 0), 0);
+      // ===== Leader-Gruppe "Bestrafung" (bei Gleichstand trotzdem verloren) =====
+const LEADER_GROUP_NAME = "Leader Gruppe";
+const leaderRow = groupRows.find(g => g.group === LEADER_GROUP_NAME);
+const leaderKm = leaderRow ? Number(leaderRow.km) : 0;
+
+// verlieren: alle Gruppen, die <= Leader-Gruppe sind (Gleichstand zählt als verloren), außer die Leader-Gruppe selbst
+const losingGroups = groupRows
+  .filter(g => g.group !== LEADER_GROUP_NAME && Number(g.km) <= leaderKm)
+  .map(g => g.group);
+
+const losingSet = new Set(losingGroups);
+
+const warnLines = [
+  "⚠️ Wer hinter der Leader Gruppe ist - schwach von euch, die sind nur zu dritt 😄",
+  "Aufgehts Männer, zieht an – Ausreden zählen nicht! ⚠️"
+];
+const warnLine = warnLines[Math.floor(mulberry32(Number(toISODateLocal(new Date()).replaceAll('-','')) || 1)() * warnLines.length)];
+
+const warnBlockHTML = `
+  <div class="warnBlock">
+    <div class="warnTitle">⚠️ Aktuelle Bestrafungsgruppen</div>
+    <div style="color:var(--muted); font-weight:800">${esc(warnLine)}</div>
+    <div class="warnList">
+      ${
+        losingGroups.length
+          ? losingGroups.map(g => `<span class="warnPill">${esc(g)}</span>`).join("")
+          : `<span class="warnPill">Keine 😇</span>`
+      }
+    </div>
+  </div>
+`;
+
 
       $("dailyLine").innerHTML = `<span class="dot"></span><div>${makeDailyLine(playerRows, groupRows)}</div>`;
 
@@ -1039,7 +1118,7 @@
             }).join("")}
           </div>
         `;
-        $("podiumHint").textContent = "Ab Platz 4 geht’s in der Gruppen-Tabelle weiter.";
+        $("podiumHint").textContent = "";
       } else if (currentView === "players") {
         const top3 = playerRows.slice(0,3);
 
@@ -1144,7 +1223,12 @@
                     <td class="caret" style="color:${groupCol}">${open ? "▾" : "▸"}</td>
                     <td>${trend(pr.rank_delta)}</td>
                     <td class="num">${pr.current_rank}</td>
-                    <td style="font-weight:1000">${esc(pr.name)} <span style="opacity:.95">${medal}</span></td>
+                    <td style="font-weight:1000">
+  ${esc(pr.name)}
+  <span style="opacity:.95">${medal}</span>
+  ${losingSet.has(pr.group) ? `<span class="warnIcon">⚠️</span>` : ""}
+</td>
+
                     <td>
                       <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
                         ${esc(pr.group)}
@@ -1217,7 +1301,7 @@
                 `;
 
                 return `
-                  <tr class="group-row rowclick" data-group="${esc(gr.group)}">
+                  <tr class="group-row rowclick ${losingSet.has(gr.group) ? "losingRow" : ""}" data-group="${esc(gr.group)}">
                     <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
                     <td>${trend(gr.rank_delta)}</td>
                     <td class="num">${gr.current_rank}</td>
@@ -1231,7 +1315,7 @@
           </table>
         </div>
 
-        <div class="hint">Gruppen-Trend funktioniert, wenn du einmal <b>Ränge snapshotten</b> nutzt und dann <code>data.json</code> hochlädst.</div>
+        ${warnBlockHTML}
       `;
 
       // Rewards placeholder
