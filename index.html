@@ -1268,7 +1268,14 @@
     });
 
     async function init(){
-      const res = await fetch("data.json", { cache: "no-store" });
+      const params = new URLSearchParams(location.search);
+const key = params.get("key");
+
+const useDraft = (key === "donnerstag2026");
+const file = useDraft ? "data_draft.json" : "data_public.json";
+
+const res = await fetch(file, { cache: "no-store" });
+
       if (!res.ok) throw new Error("data.json nicht gefunden (Status " + res.status + ")");
       DATA = await res.json();
 
