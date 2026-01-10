@@ -417,6 +417,10 @@
 
   <script>
     // ====== STATE ======
+    // ====== CHALLENGE ZEITRAUM ======
+    const CHALLENGE_START = "2026-01-06"; // YYYY-MM-DD
+    const CHALLENGE_END   = "2026-02-06"; // YYYY-MM-DD
+
     let DATA = null;
     let expandedGroup = null;
     let expandedPlayer = null;
@@ -1202,6 +1206,9 @@
       const res = await fetch("data.json", { cache: "no-store" });
       if (!res.ok) throw new Error("data.json nicht gefunden (Status " + res.status + ")");
       DATA = await res.json();
+      // Start / Ende aus Index erzwingen
+      DATA.start = CHALLENGE_START;
+      DATA.end = CHALLENGE_END;
 
       // Pflichtfelder minimal absichern
       if (!DATA.groups || !DATA.players) throw new Error("data.json fehlt groups/players");
