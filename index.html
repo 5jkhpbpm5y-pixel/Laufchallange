@@ -46,6 +46,7 @@
     .tab{
       padding:10px 14px; font-size:14px; border:0; color:var(--text); background:transparent; cursor:pointer;
       font-weight:800;
+      white-space:nowrap;
     }
     .tab.active{ background:rgba(34,197,94,.15); color:#dff7e8; box-shadow: inset 0 0 0 1px rgba(34,197,94,.25); }
 
@@ -103,20 +104,20 @@
     }
 
     .dailyLine{
-  width:100%;
-  max-width:900px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.02);
-  border-radius:16px;
-  padding:10px 16px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:center;   /* 👈 NEU */
-  text-align:center;        /* 👈 NEU */
-  color:var(--text);
-  font-weight:800;
-}
+      width:100%;
+      max-width:900px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.02);
+      border-radius:16px;
+      padding:10px 16px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:var(--text);
+      font-weight:800;
+    }
     .dailyLine .dot{
       width:10px; height:10px; border-radius:999px;
       background:rgba(34,197,94,.7);
@@ -180,7 +181,6 @@
       width:160px; height:160px;
       border-radius:999px;
       background:rgba(255,255,255,.03);
-      filter: blur(0px);
     }
     .pTitle{
       font-size:14px;
@@ -230,7 +230,6 @@
       color:#dff7e8;
     }
 
-    /* Podium-Rahmen: Gold / Silber / Bronze */
     .podiumCard.p1{ border-color: var(--gold); box-shadow: 0 0 0 1px rgba(251,191,36,.20) inset; }
     .podiumCard.p2{ border-color: var(--silver); box-shadow: 0 0 0 1px rgba(148,163,184,.20) inset; }
     .podiumCard.p3{ border-color: var(--bronze); box-shadow: 0 0 0 1px rgba(217,119,6,.18) inset; }
@@ -261,7 +260,7 @@
     table{
       width:100%;
       border-collapse:collapse;
-      min-width:720px; /* verhindert “abgeschnitten” am Handy -> dann scroll */
+      min-width:720px;
     }
     th,td{
       padding:12px 12px;
@@ -290,7 +289,6 @@
       background:rgba(255,255,255,.03);
     }
 
-    /* Mobile: weniger Padding */
     @media (max-width:520px){
       body{ padding:12px; }
       .podiumCard{ min-height:150px; }
@@ -339,86 +337,25 @@
       color:var(--text);
       font-weight:800;
     }
-    /* ===== Mobile Tabellen-Fix ===== */
-@media (max-width:720px){
-  body{
-    padding:10px;
-    overflow-x:hidden;
-  }
-
-  .wrap{
-    max-width:100%;
-    overflow-x:hidden;
-  }
-
-  .tableWrap{
-    overflow-x:hidden;
-  }
-
-  table{
-    width:100%;
-    min-width:0 !important;
-    font-size:13px;
-  }
-
-  th, td{
-    padding:8px 6px;
-    white-space:normal;
-  }
-
-  th{
-    font-size:10px;
-  }
-
-  .caret{
-    display:none;
-  }
-}
-
-  tr.player-row td, tr.group-row td{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
-    border-bottom:1px solid rgba(255,255,255,.06);
-  }
-
-  tr.player-row td:last-child,
-  tr.group-row td:last-child{
-    border-bottom:0;
-  }
-
-  td.caret{ display:none !important; }
-
-  tr.player-details,
-  tr.group-details{
-    display:block;
-    margin:0 8px 12px;
-  }
-}
-
   </style>
 </head>
 
 <body>
   <div class="wrap">
-   <div class="top">
-  <div>
-    <h1>⚽ BERG Laufchallenge</h1>
-    <div class="sub">Einzelrangliste & Gruppenübersicht · sortiert nach Strecke · Klick für Details</div>
-  </div>
+    <div class="top">
+      <div>
+        <h1>⚽ Laufchallenge</h1>
+        <div class="sub">Einzelrangliste & Gruppenübersicht · sortiert nach Strecke · Klick für Details</div>
+      </div>
 
-  <div class="tabs" role="tablist">
-    <button class="tab active" id="tabPlayers" type="button">Einzel</button>
-    <button class="tab" id="tabGroups" type="button">Gruppen</button>
-    <button class="tab" id="tabRewards" type="button">Belohnung/Bestrafung</button>
-  </div>
-</div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tabPlayers" type="button">Einzel</button>
+        <button class="tab" id="tabGroups" type="button">Gruppen</button>
+        <button class="tab" id="tabRewards" type="button">Belohnung/Bestrafung</button>
+      </div>
+    </div><!-- ✅ top geschlossen -->
 
-<div class="grid2">
-
-
+    <div class="grid2">
       <div class="card" id="mainCard">
         <!-- Top Meta -->
         <div class="metaRowTop">
@@ -466,7 +403,7 @@
         <!-- Views -->
         <div id="playersView"></div>
         <div id="groupsView" style="display:none"></div>
-       <div id="rewardsView" style="display:none"></div>
+        <div id="rewardsView" style="display:none"></div>
       </div>
 
       <div class="card side">
@@ -481,16 +418,15 @@
   </div>
 
   <script>
-    // ====== STATE ======
-    // ====== CHALLENGE ZEITRAUM ======
-    const CHALLENGE_START = "2026-01-10"; // YYYY-MM-DD
-    const CHALLENGE_END   = "2026-01-31"; // YYYY-MM-DD
+    // ====== CHALLENGE ZEITRAUM (fix) ======
+    const CHALLENGE_START = "2026-01-11";
+    const CHALLENGE_END   = "2026-01-31";
 
     let DATA = null;
     let expandedGroup = null;
     let expandedPlayer = null;
 
-    // NEU: merkt sich, welche Ansicht aktiv ist (für Podium)
+    // merkt sich, welche Ansicht aktiv ist
     let currentView = "players";
 
     // ====== ADMIN PASS (nur Klickschutz) ======
@@ -513,7 +449,6 @@
       return `${y}-${m}-${d}`;
     }
 
-    // ISO (YYYY-MM-DD) -> TT.MM.JJJJ (lokal, ohne UTC-Shift)
     function formatDateDE(iso){
       if (!iso) return "—";
       const parts = String(iso).split("-");
@@ -586,7 +521,6 @@
 
     function buildPlayerRows(){
       const nameToGroup = buildNameToGroup();
-
       const rows = (DATA.players || []).map(p => ({
         name: p.name,
         group: nameToGroup.get(p.name) || "—",
@@ -642,7 +576,6 @@
       }
     }
 
-    // Days left: wie Google (heute NICHT mitzählen) -> end - today
     function calcDaysLeft(endISO){
       if (!endISO) return null;
       const e = endISO.split("-").map(Number);
@@ -668,140 +601,131 @@
       }
       return best.name ? { ...best, km:Number(best.km.toFixed(2)) } : null;
     }
-    // Leader streak (Spieler): täglicher Leader (Totals bis zum Tag), zählt consecutive days bis heute
-function computeLeaderStreak(){
-  const startISO = DATA.start;
-  const endISO = DATA.end;
-  if (!startISO || !endISO) return null;
 
-  const s = startISO.split("-").map(Number);
-  const e = endISO.split("-").map(Number);
-  if (s.length!==3 || e.length!==3) return null;
+    function computeLeaderStreak(){
+      const startISO = DATA.start;
+      const endISO = DATA.end;
+      if (!startISO || !endISO) return null;
 
-  const start = new Date(s[0], s[1]-1, s[2]);
-  const end = new Date(e[0], e[1]-1, e[2]);
+      const s = startISO.split("-").map(Number);
+      const e = endISO.split("-").map(Number);
+      if (s.length!==3 || e.length!==3) return null;
 
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const lastDay = (today < start) ? start : (today > end ? end : today);
+      const start = new Date(s[0], s[1]-1, s[2]);
+      const end = new Date(e[0], e[1]-1, e[2]);
 
-  // Pre-aggregate runs per player per date
-  const byPlayer = new Map();
-  for (const p of (DATA.players || [])){
-    const m = new Map();
-    for (const r of (p.runs || [])){
-      if (!r.date) continue;
-      m.set(r.date, (m.get(r.date) || 0) + Number(r.km || 0));
-    }
-    byPlayer.set(p.name, m);
-  }
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const lastDay = (today < start) ? start : (today > end ? end : today);
 
-  // Walk day by day, maintain totals
-  const totals = new Map((DATA.players || []).map(p => [p.name, 0]));
-  const leaders = [];
-
-  for (let d = new Date(start); d <= lastDay; d.setDate(d.getDate()+1)){
-    const iso = toISODateLocal(d);
-
-    for (const [name, m] of byPlayer.entries()){
-      const add = m.get(iso) || 0;
-      if (add) totals.set(name, (totals.get(name) || 0) + add);
-    }
-
-    // determine leader (bei Gleichstand alphabetisch)
-    let bestName = null;
-    let bestKm = -1;
-    for (const [name, km] of totals.entries()){
-      if (km > bestKm || (km === bestKm && String(name).localeCompare(String(bestName)) < 0)){
-        bestKm = km;
-        bestName = name;
+      const byPlayer = new Map();
+      for (const p of (DATA.players || [])){
+        const m = new Map();
+        for (const r of (p.runs || [])){
+          if (!r.date) continue;
+          m.set(r.date, (m.get(r.date) || 0) + Number(r.km || 0));
+        }
+        byPlayer.set(p.name, m);
       }
-    }
-    leaders.push(bestName);
-  }
 
-  if (!leaders.length) return null;
+      const totals = new Map((DATA.players || []).map(p => [p.name, 0]));
+      const leaders = [];
 
-  const current = leaders[leaders.length-1];
-  let streak = 1;
-  for (let i = leaders.length-2; i >= 0; i--){
-    if (leaders[i] === current) streak++;
-    else break;
-  }
-  return { name: current, days: streak };
-}
+      for (let d = new Date(start); d <= lastDay; d.setDate(d.getDate()+1)){
+        const iso = toISODateLocal(d);
 
-   // Group Leader streak: täglicher Leader (Gruppen-Totals bis zum Tag), zählt consecutive days bis heute
-function computeGroupLeaderStreak(playerRows, groupRows){
-  const startISO = DATA.start;
-  const endISO = DATA.end;
-  if (!startISO || !endISO) return null;
+        for (const [name, m] of byPlayer.entries()){
+          const add = m.get(iso) || 0;
+          if (add) totals.set(name, (totals.get(name) || 0) + add);
+        }
 
-  const s = startISO.split("-").map(Number);
-  const e = endISO.split("-").map(Number);
-  if (s.length!==3 || e.length!==3) return null;
-
-  const start = new Date(s[0], s[1]-1, s[2]);
-  const end = new Date(e[0], e[1]-1, e[2]);
-
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const lastDay = (today < start) ? start : (today > end ? end : today);
-
-  const nameToGroup = buildNameToGroup();
-
-  // Pre-aggregate: km pro Gruppe pro Datum
-  const byGroup = new Map();
-  for (const g of (DATA.groups || [])) byGroup.set(g.name, new Map());
-
-  for (const p of (DATA.players || [])){
-    const gname = nameToGroup.get(p.name);
-    if (!gname) continue;
-
-    const m = byGroup.get(gname);
-    for (const r of (p.runs || [])){
-      if (!r.date) continue;
-      m.set(r.date, (m.get(r.date) || 0) + Number(r.km || 0));
-    }
-  }
-
-  // Totals pro Gruppe
-  const totals = new Map((groupRows || []).map(gr => [gr.group, 0]));
-  const leaders = [];
-
-  for (let d = new Date(start); d <= lastDay; d.setDate(d.getDate()+1)){
-    const iso = toISODateLocal(d);
-
-    for (const [gname, m] of byGroup.entries()){
-      const add = m.get(iso) || 0;
-      if (add) totals.set(gname, (totals.get(gname) || 0) + add);
-    }
-
-    // Leader bestimmen (bei Gleichstand alphabetisch)
-    let bestName = null;
-    let bestKm = -1;
-    for (const [gname, km] of totals.entries()){
-      if (km > bestKm || (km === bestKm && String(gname).localeCompare(String(bestName)) < 0)){
-        bestKm = km;
-        bestName = gname;
+        let bestName = null;
+        let bestKm = -1;
+        for (const [name, km] of totals.entries()){
+          if (km > bestKm || (km === bestKm && String(name).localeCompare(String(bestName)) < 0)){
+            bestKm = km;
+            bestName = name;
+          }
+        }
+        leaders.push(bestName);
       }
+
+      if (!leaders.length) return null;
+
+      const current = leaders[leaders.length-1];
+      let streak = 1;
+      for (let i = leaders.length-2; i >= 0; i--){
+        if (leaders[i] === current) streak++;
+        else break;
+      }
+      return { name: current, days: streak };
     }
-    leaders.push(bestName);
-  }
 
-  if (!leaders.length) return null;
+    function computeGroupLeaderStreak(playerRows, groupRows){
+      const startISO = DATA.start;
+      const endISO = DATA.end;
+      if (!startISO || !endISO) return null;
 
-  const current = leaders[leaders.length-1];
-  let streak = 1;
-  for (let i = leaders.length-2; i >= 0; i--){
-    if (leaders[i] === current) streak++;
-    else break;
-  }
-  return { name: current, days: streak };
-}
+      const s = startISO.split("-").map(Number);
+      const e = endISO.split("-").map(Number);
+      if (s.length!==3 || e.length!==3) return null;
 
+      const start = new Date(s[0], s[1]-1, s[2]);
+      const end = new Date(e[0], e[1]-1, e[2]);
 
-    // Daily line: nur sinnvolle Fakten (kein “alle 0” Quatsch)
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const lastDay = (today < start) ? start : (today > end ? end : today);
+
+      const nameToGroup = buildNameToGroup();
+
+      const byGroup = new Map();
+      for (const g of (DATA.groups || [])) byGroup.set(g.name, new Map());
+
+      for (const p of (DATA.players || [])){
+        const gname = nameToGroup.get(p.name);
+        if (!gname) continue;
+
+        const m = byGroup.get(gname);
+        for (const r of (p.runs || [])){
+          if (!r.date) continue;
+          m.set(r.date, (m.get(r.date) || 0) + Number(r.km || 0));
+        }
+      }
+
+      const totals = new Map((groupRows || []).map(gr => [gr.group, 0]));
+      const leaders = [];
+
+      for (let d = new Date(start); d <= lastDay; d.setDate(d.getDate()+1)){
+        const iso = toISODateLocal(d);
+
+        for (const [gname, m] of byGroup.entries()){
+          const add = m.get(iso) || 0;
+          if (add) totals.set(gname, (totals.get(gname) || 0) + add);
+        }
+
+        let bestName = null;
+        let bestKm = -1;
+        for (const [gname, km] of totals.entries()){
+          if (km > bestKm || (km === bestKm && String(gname).localeCompare(String(bestName)) < 0)){
+            bestKm = km;
+            bestName = gname;
+          }
+        }
+        leaders.push(bestName);
+      }
+
+      if (!leaders.length) return null;
+
+      const current = leaders[leaders.length-1];
+      let streak = 1;
+      for (let i = leaders.length-2; i >= 0; i--){
+        if (leaders[i] === current) streak++;
+        else break;
+      }
+      return { name: current, days: streak };
+    }
+
     function makeDailyLine(playerRows, groupRows){
       const isoToday = toISODateLocal(new Date());
       const seed = Number(isoToday.replaceAll("-","")) || 1;
@@ -814,7 +738,6 @@ function computeGroupLeaderStreak(playerRows, groupRows){
         lines.push(`<b>${esc(leader.name)}</b> führt mit <b>${leader.km.toFixed(2)} km</b>. 👑`);
       }
 
-      // Most runs (nur wenn >0)
       let mostRuns = { name:null, cnt:0 };
       for (const pr of playerRows){
         const cnt = (pr.runs || []).length;
@@ -824,7 +747,6 @@ function computeGroupLeaderStreak(playerRows, groupRows){
         lines.push(`<b>${esc(mostRuns.name)}</b> hat die meisten Läufe (${mostRuns.cnt}). 🏃`);
       }
 
-      // Biggest improver (nur wenn >=1)
       let bestDelta = { name:null, d:0 };
       for (const pr of playerRows){
         if (pr.rank_delta > bestDelta.d){
@@ -835,7 +757,6 @@ function computeGroupLeaderStreak(playerRows, groupRows){
         lines.push(`<b>${esc(bestDelta.name)}</b> ist um <b>${bestDelta.d}</b> Platz/Plätze nach vorne. 🚀`);
       }
 
-      // Vergleich Spieler vs Gruppe (nur wenn beide >0 und Vergleich nah)
       const gpos = (groupRows || []).filter(g => g.km > 0);
       const ppos = playerRows.filter(p => p.km > 0);
       if (gpos.length && ppos.length){
@@ -865,7 +786,6 @@ function computeGroupLeaderStreak(playerRows, groupRows){
       URL.revokeObjectURL(url);
     }
 
-    // Snapshot: speichert aktuelle Ränge (Spieler + Gruppen) als previousRank / groupPrev
     function snapshotAllRanks(playerRows, groupRows){
       const byName = new Map(playerRows.map(p => [p.name, p.current_rank]));
       for (const p of (DATA.players || [])){
@@ -954,7 +874,6 @@ function computeGroupLeaderStreak(playerRows, groupRows){
         const slug = slugifyName(name);
         $("adminUploadPath").textContent = `uploads/${slug}/`;
 
-        // current rank for selected player
         const pr = playerRows.find(x => x.name === name);
         $("adminPrevRank").value = pr ? pr.current_rank : 1;
       };
@@ -986,7 +905,6 @@ function computeGroupLeaderStreak(playerRows, groupRows){
           return;
         }
 
-        // Snapshot automatisch, falls noch keiner da ist (damit Überholte auch Trend bekommen)
         if (!DATA.lastSnapshot){
           snapshotAllRanks(playerRows, groupRows);
         }
@@ -998,13 +916,10 @@ function computeGroupLeaderStreak(playerRows, groupRows){
         }
         if (!Array.isArray(p.runs)) p.runs = [];
 
-        // previousRank setzen (für deinen “nicht vergessen” Wunsch)
         if (Number.isFinite(prevRank) && prevRank >= 1) p.previousRank = prevRank;
 
         const slug = slugifyName(playerName);
 
-        // WICHTIG: imgPath darf NICHT doppelt "uploads/uploads" werden.
-        // Wenn der Admin "uploads/..." eintippt, entfernen wir das Präfix.
         const imgName = imgNameRaw.replace(/^\/?uploads\/+/i, "");
         const imgPath = `uploads/${slug}/${imgName}`;
 
@@ -1023,42 +938,38 @@ function computeGroupLeaderStreak(playerRows, groupRows){
     }
 
     // ====== VIEW SWITCH ======
- function setView(which){
-  currentView = (which === "groups") ? "groups" : (which === "rewards" ? "rewards" : "players");
+    function setView(which){
+      currentView = (which === "groups") ? "groups" : (which === "rewards" ? "rewards" : "players");
 
-  const pv = $("playersView");
-  const gv = $("groupsView");
-  const rv = $("rewardsView");
+      const pv = $("playersView");
+      const gv = $("groupsView");
+      const rv = $("rewardsView");
 
-  const tp = $("tabPlayers");
-  const tg = $("tabGroups");
-  const tr = $("tabRewards");
+      const tp = $("tabPlayers");
+      const tg = $("tabGroups");
+      const tr = $("tabRewards");
 
-  if (pv) pv.style.display = "none";
-  if (gv) gv.style.display = "none";
-  if (rv) rv.style.display = "none";
+      pv.style.display = "none";
+      gv.style.display = "none";
+      rv.style.display = "none";
+      tp.classList.remove("active");
+      tg.classList.remove("active");
+      tr.classList.remove("active");
 
-  if (tp) tp.classList.remove("active");
-  if (tg) tg.classList.remove("active");
-  if (tr) tr.classList.remove("active");
-
-  if (which === "groups"){
-    if (gv) gv.style.display = "block";
-    if (tg) tg.classList.add("active");
-  } else if (which === "rewards"){
-    if (rv) rv.style.display = "block";
-    if (tr) tr.classList.add("active");
-  } else {
-    if (pv) pv.style.display = "block";
-    if (tp) tp.classList.add("active");
-  }
-}
-
-
+      if (which === "groups"){
+        gv.style.display = "block";
+        tg.classList.add("active");
+      } else if (which === "rewards"){
+        rv.style.display = "block";
+        tr.classList.add("active");
+      } else {
+        pv.style.display = "block";
+        tp.classList.add("active");
+      }
+    }
 
     // ====== RENDER ======
     function render(){
-      // Start/End + left
       const startISO = DATA.start;
       const endISO = DATA.end;
       $("startDate").textContent = startISO ? formatDateDE(startISO) : "—";
@@ -1066,10 +977,8 @@ function computeGroupLeaderStreak(playerRows, groupRows){
       const left = endISO ? calcDaysLeft(endISO) : null;
       $("daysLeft").textContent = (left == null) ? "—" : String(left);
 
-      // Admin mount
       $("adminBarMount").innerHTML = renderAdminBar();
 
-      // Sidebar groups
       $("groupList").innerHTML = (DATA.groups || []).map(g => `
         <div class="li">
           <div>
@@ -1083,8 +992,6 @@ function computeGroupLeaderStreak(playerRows, groupRows){
       const groupRows = buildGroupRows(playerRows);
       const totalAllKm = playerRows.reduce((sum, p) => sum + (Number(p.km) || 0), 0);
 
-
-      // Daily line + longest run + leader streak
       $("dailyLine").innerHTML = `<span class="dot"></span><div>${makeDailyLine(playerRows, groupRows)}</div>`;
 
       const longest = findLongestSingleRun();
@@ -1093,15 +1000,14 @@ function computeGroupLeaderStreak(playerRows, groupRows){
         : `🏃 Längste Einzelstrecke: —`;
 
       const streak = (currentView === "groups")
-  ? computeGroupLeaderStreak(playerRows, groupRows)
-  : computeLeaderStreak();
+        ? computeGroupLeaderStreak(playerRows, groupRows)
+        : computeLeaderStreak();
 
-$("leaderStreakBadge").innerHTML = streak
-  ? `🏁 Leader-Streak: <b>${esc(streak.name)}</b> · <b>${streak.days}</b> Tag${streak.days===1?"":"e"}`
-  : `🏁 Leader-Streak: —`;
+      $("leaderStreakBadge").innerHTML = streak
+        ? `🏁 Leader-Streak: <b>${esc(streak.name)}</b> · <b>${streak.days}</b> Tag${streak.days===1?"":"e"}`
+        : `🏁 Leader-Streak: —`;
 
-
-      // ===== Podium (Top 3) — abhängig von View =====
+      // ===== Podium =====
       if (currentView === "groups") {
         const top3g = groupRows.slice(0, 3);
 
@@ -1134,7 +1040,7 @@ $("leaderStreakBadge").innerHTML = streak
           </div>
         `;
         $("podiumHint").textContent = "Ab Platz 4 geht’s in der Gruppen-Tabelle weiter.";
-      } else {
+      } else if (currentView === "players") {
         const top3 = playerRows.slice(0,3);
 
         $("podiumMount").innerHTML = `
@@ -1160,9 +1066,12 @@ $("leaderStreakBadge").innerHTML = streak
           </div>
         `;
         $("podiumHint").textContent = "Ab Platz 4 geht’s in der Tabelle weiter.";
+      } else {
+        $("podiumMount").innerHTML = "";
+        $("podiumHint").textContent = "";
       }
 
-      // Players table + details
+      // Players table
       $("playersView").innerHTML = `
         <div class="tableWrap">
           <table>
@@ -1231,39 +1140,30 @@ $("leaderStreakBadge").innerHTML = streak
                 const medal = pr.current_rank === 1 ? "👑" : (pr.current_rank === 2 ? "🥈" : (pr.current_rank === 3 ? "🥉" : ""));
 
                 return `
-  <tr class="player-row rowclick" data-player="${esc(pr.name)}">
-    <td class="caret" style="color:${groupCol}">${open ? "▾" : "▸"}</td>
-
-    <td data-label="Trend">${trend(pr.rank_delta)}</td>
-    <td class="num" data-label="Rang">${pr.current_rank}</td>
-
-    <td data-label="Spieler" style="font-weight:1000">
-      ${esc(pr.name)} <span style="opacity:.95">${medal}</span>
-    </td>
-
-    <td data-label="Gruppe">
-      <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
-        ${esc(pr.group)}
-      </span>
-    </td>
-
-    <td class="num" data-label="Strecke" style="font-weight:1000">
-      ${pr.km.toFixed(2)} km
-    </td>
-  </tr>
-  ${details}
-`;
-
+                  <tr class="player-row rowclick" data-player="${esc(pr.name)}">
+                    <td class="caret" style="color:${groupCol}">${open ? "▾" : "▸"}</td>
+                    <td>${trend(pr.rank_delta)}</td>
+                    <td class="num">${pr.current_rank}</td>
+                    <td style="font-weight:1000">${esc(pr.name)} <span style="opacity:.95">${medal}</span></td>
+                    <td>
+                      <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
+                        ${esc(pr.group)}
+                      </span>
+                    </td>
+                    <td class="num" style="font-weight:1000">${pr.km.toFixed(2)} km</td>
+                  </tr>
+                  ${details}
+                `;
               }).join("")}
             </tbody>
           </table>
         </div>
         <div style="margin-top:12px; display:flex; justify-content:flex-end;">
-  <span class="badge">Σ Gesamt: <b>${totalAllKm.toFixed(2)} km</b></span>
-</div>
+          <span class="badge">Σ Gesamt: <b>${totalAllKm.toFixed(2)} km</b></span>
+        </div>
       `;
 
-      // Groups table + expand
+      // Groups table
       $("groupsView").innerHTML = `
         <div class="tableWrap">
           <table>
@@ -1317,23 +1217,15 @@ $("leaderStreakBadge").innerHTML = streak
                 `;
 
                 return `
-  <tr class="group-row rowclick" data-group="${esc(gr.group)}">
-    <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
-
-    <td data-label="Trend">${trend(gr.rank_delta)}</td>
-    <td class="num" data-label="Rang">${gr.current_rank}</td>
-
-    <td data-label="Gruppe" style="font-weight:1000; color:${col}">
-      ${esc(gr.group)}
-    </td>
-
-    <td class="num" data-label="Strecke" style="font-weight:1000">
-      ${Number(gr.km).toFixed(2)} km
-    </td>
-  </tr>
-  ${details}
-`;
-
+                  <tr class="group-row rowclick" data-group="${esc(gr.group)}">
+                    <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
+                    <td>${trend(gr.rank_delta)}</td>
+                    <td class="num">${gr.current_rank}</td>
+                    <td style="font-weight:1000; color:${col}">${esc(gr.group)}</td>
+                    <td class="num" style="font-weight:1000">${Number(gr.km).toFixed(2)} km</td>
+                  </tr>
+                  ${details}
+                `;
               }).join("")}
             </tbody>
           </table>
@@ -1341,14 +1233,15 @@ $("leaderStreakBadge").innerHTML = streak
 
         <div class="hint">Gruppen-Trend funktioniert, wenn du einmal <b>Ränge snapshotten</b> nutzt und dann <code>data.json</code> hochlädst.</div>
       `;
-// Rewards / Bestrafung – Platzhalter
-$("rewardsView").innerHTML = `
-  <div class="hint">
-    Belohnung / Bestrafung – kommt noch.
-  </div>
-`;
 
-      // Wire admin (needs current rows)
+      // Rewards placeholder
+      $("rewardsView").innerHTML = `
+        <div class="card" style="background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:14px; margin-top:10px">
+          <div style="font-weight:1000; font-size:18px">Belohnung / Bestrafung</div>
+          <div class="hint" style="margin-top:6px">Hier kommt später der Inhalt rein.</div>
+        </div>
+      `;
+
       wireAdmin(playerRows, groupRows);
     }
 
@@ -1356,7 +1249,6 @@ $("rewardsView").innerHTML = `
     $("tabPlayers").addEventListener("click", () => { setView("players"); render(); });
     $("tabGroups").addEventListener("click", () => { setView("groups"); render(); });
     $("tabRewards").addEventListener("click", () => { setView("rewards"); render(); });
-
 
     // Accordions
     document.addEventListener("click", (e) => {
@@ -1375,19 +1267,21 @@ $("rewardsView").innerHTML = `
       }
     });
 
-    // ====== INIT ======
     async function init(){
       const res = await fetch("data.json", { cache: "no-store" });
       if (!res.ok) throw new Error("data.json nicht gefunden (Status " + res.status + ")");
       DATA = await res.json();
+
       // Start / Ende aus Index erzwingen
       DATA.start = CHALLENGE_START;
       DATA.end = CHALLENGE_END;
 
-      // Pflichtfelder minimal absichern
       if (!DATA.groups || !DATA.players) throw new Error("data.json fehlt groups/players");
       if (!DATA.colors) DATA.colors = {};
       if (!DATA.groupPrev) DATA.groupPrev = {};
+
+      // Default View korrekt setzen
+      setView(currentView);
 
       render();
     }
