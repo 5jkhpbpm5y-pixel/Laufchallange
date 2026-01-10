@@ -605,6 +605,68 @@
       }
       return best.name ? { ...best, km:Number(best.km.toFixed(2)) } : null;
     }
+    // Leader streak (Spieler): täglicher Leader (Totals bis zum Tag), zählt consecutive days bis heute
+function computeLeaderStreak(){
+  const startISO = DATA.start;
+  const endISO = DATA.end;
+  if (!startISO || !endISO) return null;
+
+  const s = startISO.split("-").map(Number);
+  const e = endISO.split("-").map(Number);
+  if (s.length!==3 || e.length!==3) return null;
+
+  const start = new Date(s[0], s[1]-1, s[2]);
+  const end = new Date(e[0], e[1]-1, e[2]);
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const lastDay = (today < start) ? start : (today > end ? end : today);
+
+  // Pre-aggregate runs per player per date
+  const byPlayer = new Map();
+  for (const p of (DATA.players || [])){
+    const m = new Map();
+    for (const r of (p.runs || [])){
+      if (!r.date) continue;
+      m.set(r.date, (m.get(r.date) || 0) + Number(r.km || 0));
+    }
+    byPlayer.set(p.name, m);
+  }
+
+  // Walk day by day, maintain totals
+  const totals = new Map((DATA.players || []).map(p => [p.name, 0]));
+  const leaders = [];
+
+  for (let d = new Date(start); d <= lastDay; d.setDate(d.getDate()+1)){
+    const iso = toISODateLocal(d);
+
+    for (const [name, m] of byPlayer.entries()){
+      const add = m.get(iso) || 0;
+      if (add) totals.set(name, (totals.get(name) || 0) + add);
+    }
+
+    // determine leader (bei Gleichstand alphabetisch)
+    let bestName = null;
+    let bestKm = -1;
+    for (const [name, km] of totals.entries()){
+      if (km > bestKm || (km === bestKm && String(name).localeCompare(String(bestName)) < 0)){
+        bestKm = km;
+        bestName = name;
+      }
+    }
+    leaders.push(bestName);
+  }
+
+  if (!leaders.length) return null;
+
+  const current = leaders[leaders.length-1];
+  let streak = 1;
+  for (let i = leaders.length-2; i >= 0; i--){
+    if (leaders[i] === current) streak++;
+    else break;
+  }
+  return { name: current, days: streak };
+}
 
    // Group Leader streak: täglicher Leader (Gruppen-Totals bis zum Tag), zählt consecutive days bis heute
 function computeGroupLeaderStreak(playerRows, groupRows){
