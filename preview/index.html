@@ -1051,14 +1051,17 @@ const losingGroups = groupRows
 const losingSet = new Set(losingGroups);
 
 const warnLines = [
-  "⚠️ Wer hinter der Leader Gruppe ist - schwach von euch, die sind nur zu dritt 😄",
+  "⚠️ Wer hinter der Leader Gruppe ist – schwach von euch, die sind nur zu dritt 😁",
   "Aufgehts Männer, zieht an – Ausreden zählen nicht! ⚠️"
 ];
-const warnLine = warnLines[Math.floor(mulberry32(Number(toISODateLocal(new Date()).replaceAll('-','')) || 1)() * warnLines.length)];
+
+// beide immer anzeigen
+const warnLine = warnLines.join("<br>");
+
 
 const warnBlockHTML = `
   <div class="warnBlock">
-    <div class="warnTitle">⚠️ Aktuelle Bestrafungsgruppen</div>
+    <div class="warnTitle">⚠️ Aktuelle Bestrafungsgruppen ⚠️</div>
     <div style="color:var(--muted); font-weight:800">${esc(warnLine)}</div>
     <div class="warnList">
       ${
