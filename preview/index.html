@@ -409,46 +409,70 @@
     .thShort, .nameShort, .groupShort, .kmShort { display:none; }
     .thFull, .nameFull, .groupFull, .kmFull { display:inline; }
 
+    /* Name-Zelle: default */
+    .playerNameCell{ color: var(--text); }
+    .playerNameCell .nameFull,
+    .playerNameCell .nameShort{ white-space:nowrap; }
+
     /* ===== Mobile: no horizontal scroll + compact table/podium ===== */
     @media (max-width:560px){
-      /* Gruppe kompakt */
-.tag{
-  padding:4px 6px;
-  font-size:12px;
-  min-width:26px;
-  text-align:center;
-}
       body{ padding:12px; }
+
+      /* Podium kompakter */
       .podiumCard{ min-height:auto; padding:12px; border-radius:18px; }
-      .pName{ font-size:22px; }
+      .pName{ font-size:22px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
       .pTitle{ font-size:12px; }
       .pMeta{ margin-top:10px; gap:8px; }
       .podiumWrap{ gap:10px; }
 
+      /* Tabellen ohne horizontal scroll */
       .tableWrap{ overflow-x:hidden; }
       table{ min-width:0; }
       th,td{ padding:7px 6px; }
-      .tableWrap{ overflow-x:hidden; }
-table{ min-width:0; }
-th,td{ padding:8px 8px; }
 
-/* >>> HIER EINFÜGEN <<< */
-th:nth-child(2), td:nth-child(2){ width:26px; text-align:center; padding-left:4px; padding-right:4px; } /* Trend */
-th:nth-child(3), td:nth-child(3){ width:30px; text-align:center; padding-left:4px; padding-right:4px; } /* Rang */
-th:nth-child(5), td:nth-child(5){ width:34px; text-align:center; padding-left:4px; padding-right:4px; } /* Gruppe */
-th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4px; padding-right:4px; } /* Strecke */
-/* >>> BIS HIER <<< */
-
-
-      /* Caret-Spalte ausblenden (spart Breite) */
+      /* Caret-Spalte ausblenden */
       th.caretH, td.caret{ display:none; }
 
-      /* Short headers + short content */
+      /* Mobile Defaults: kurze Labels an */
       .thShort, .nameShort, .groupShort, .kmShort { display:inline; }
       .thFull, .nameFull, .groupFull, .kmFull { display:none; }
 
+      /* Spaltenbreiten über Klassen (stabil) */
+      th.colTrend, td.colTrend{ width:26px; text-align:center; padding-left:4px; padding-right:4px; }
+      th.colRank,  td.colRank { width:30px; text-align:center; padding-left:4px; padding-right:4px; }
+      th.colKm,    td.colKm   { width:72px; text-align:right;  padding-left:4px; padding-right:4px; }
+
+      /* EINZEL: Gruppe komplett raus, Name in Gruppenfarbe, immer 1 Zeile */
+      .playersTable th.colGroup, .playersTable td.colGroup{ display:none; }
+      .playersTable .playerNameCell{
+        color: var(--pcol);
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .playersTable td.playerNameCell{ max-width: 1px; } /* damit Ellipsis greift */
+      .playersTable td.playerNameCell *{ white-space:nowrap; }
+
+      /* Gruppen-Short-Badge kleiner */
+      .tag{ padding:4px 6px; font-size:12px; min-width:26px; text-align:center; }
+
+      /* GRUPPEN: volle Gruppennamen auf Mobile (Problem 2) */
+      .groupsTable .nameFull{ display:inline; }
+      .groupsTable .nameShort{ display:none; }
+
+      /* Mitgliederliste (Ausschnitt 3): 1 Zeile, links startend, km mit Einheit */
+      .membersTable td.memberNameCell{
+        text-align:left !important;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .membersTable td.kmCell{
+        white-space:nowrap;
+        text-align:right;
+      }
+
       img.proof{ max-height:64px; }
-      .tag{ padding:4px 8px; font-size:12px; }
     }
   </style>
 </head>
@@ -612,7 +636,7 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
       const g = String(groupName || "");
       if (isLeaderGroupName(g)) return "L";
       const m = g.match(/(\d+)/);
-      if (m) return m[1];       // nur Zahl (wie Bundesliga)
+      if (m) return m[1];
       return g.trim().charAt(0).toUpperCase() || "—";
     }
 
@@ -1076,7 +1100,6 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
 
         const slug = slugifyName(playerName);
 
-        // nur Dateiname akzeptieren, egal was eingegeben wurde
         const cleanFile = (v) => String(v || "")
           .trim()
           .replace(/^\/+/,"")
@@ -1168,7 +1191,6 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
       const groupRows = buildGroupRows(playerRows);
       const totalAllKm = playerRows.reduce((sum, p) => sum + (Number(p.km) || 0), 0);
 
-      // ===== Leader-Gruppe "Bestrafung" (bei Gleichstand trotzdem verloren) =====
       const LEADER_GROUP_NAME = "Leader Gruppe";
       const leaderRow = groupRows.find(g => g.group === LEADER_GROUP_NAME);
       const leaderKm = leaderRow ? Number(leaderRow.km) : 0;
@@ -1279,24 +1301,24 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
       // Players table
       $("playersView").innerHTML = `
         <div class="tableWrap">
-          <table>
+          <table class="playersTable">
             <thead>
               <tr>
                 <th class="caretH"></th>
-                <th>
+                <th class="colTrend">
                   <span class="thFull">Trend</span>
                   <span class="thShort">T</span>
                 </th>
-                <th>
+                <th class="colRank">
                   <span class="thFull">Rang</span>
                   <span class="thShort">P</span>
                 </th>
                 <th>Spieler</th>
-                <th>
+                <th class="colGroup">
                   <span class="thFull">Gruppe</span>
                   <span class="thShort">G</span>
                 </th>
-                <th class="num">
+                <th class="num colKm">
                   <span class="thFull">Strecke</span>
                   <span class="thShort">S</span>
                 </th>
@@ -1338,7 +1360,7 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
                                     <tr>
                                       <td class="num">${idx+1}</td>
                                       <td>${formatDateDE(r.date || "")}</td>
-                                      <td class="num">${Number(r.km||0).toFixed(2)}</td>
+                                      <td class="num">${Number(r.km||0).toFixed(2)} km</td>
                                       <td>
                                         <div class="proofWrap">
                                           ${img ? `
@@ -1370,21 +1392,21 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
                 return `
                   <tr class="player-row rowclick" data-player="${esc(pr.name)}">
                     <td class="caret" style="color:${groupCol}">${open ? "▾" : "▸"}</td>
-                    <td>${trend(pr.rank_delta)}</td>
-                    <td class="num">${pr.current_rank}</td>
-                    <td style="font-weight:1000">
+                    <td class="colTrend">${trend(pr.rank_delta)}</td>
+                    <td class="num colRank">${pr.current_rank}</td>
+                    <td class="playerNameCell" style="--pcol:${groupCol}; font-weight:1000">
                       <span class="nameFull">${esc(pr.name)}</span>
                       <span class="nameShort">${esc(abbrevPlayerName(pr.name))}</span>
                       <span style="opacity:.95">${medal}</span>
                       ${losingSet.has(pr.group) ? `<span class="warnIcon">⚠️</span>` : ""}
                     </td>
-                    <td>
+                    <td class="colGroup">
                       <span class="tag groupFull" style="border-color:${groupCol}; color:${groupCol}">${esc(pr.group)}</span>
                       <span class="tag groupShort" style="border-color:${groupCol}; color:${groupCol}">${esc(groupShortValue(pr.group))}</span>
                     </td>
-                    <td class="num" style="font-weight:1000">
+                    <td class="num colKm" style="font-weight:1000; white-space:nowrap">
                       <span class="kmFull">${pr.km.toFixed(2)} km</span>
-                      <span class="kmShort">${pr.km.toFixed(2)}</span>
+                      <span class="kmShort">${pr.km.toFixed(2)}km</span>
                     </td>
                   </tr>
                   ${details}
@@ -1401,14 +1423,14 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
       // Groups table
       $("groupsView").innerHTML = `
         <div class="tableWrap">
-          <table>
+          <table class="groupsTable">
             <thead>
               <tr>
                 <th class="caretH"></th>
-                <th><span class="thFull">Trend</span><span class="thShort">T</span></th>
-                <th><span class="thFull">Rang</span><span class="thShort">P</span></th>
+                <th class="colTrend"><span class="thFull">Trend</span><span class="thShort">T</span></th>
+                <th class="colRank"><span class="thFull">Rang</span><span class="thShort">P</span></th>
                 <th><span class="thFull">Gruppe</span><span class="thShort">G</span></th>
-                <th class="num"><span class="thFull">Strecke</span><span class="thShort">S</span></th>
+                <th class="num colKm"><span class="thFull">Strecke</span><span class="thShort">S</span></th>
               </tr>
             </thead>
             <tbody>
@@ -1427,20 +1449,23 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
                         </div>
 
                         <div class="tableWrap" style="margin-top:0">
-                          <table style="min-width:0;width:100%">
+                          <table class="membersTable" style="min-width:0;width:100%">
                             <thead>
                               <tr>
-                                <th>#</th>
+                                <th style="width:34px">#</th>
                                 <th>Spieler</th>
-                                <th class="num">S</th>
+                                <th class="num" style="width:86px">S</th>
                               </tr>
                             </thead>
                             <tbody>
                               ${members.map((m, idx) => `
                                 <tr>
                                   <td class="num">${idx+1}</td>
-                                  <td style="font-weight:1000">${esc(m.name)} ${idx===0 ? "👑" : ""}</td>
-                                  <td class="num" style="font-weight:1000">${Number(m.km).toFixed(2)}</td>
+                                  <td class="memberNameCell" style="font-weight:1000; text-align:left">${esc(m.name)} ${idx===0 ? "👑" : ""}</td>
+                                  <td class="num kmCell" style="font-weight:1000; white-space:nowrap">
+                                    <span class="kmFull">${Number(m.km).toFixed(2)} km</span>
+                                    <span class="kmShort">${Number(m.km).toFixed(2)}km</span>
+                                  </td>
                                 </tr>
                               `).join("")}
                             </tbody>
@@ -1454,15 +1479,15 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
                 return `
                   <tr class="group-row rowclick ${losingSet.has(gr.group) ? "losingRow" : ""}" data-group="${esc(gr.group)}">
                     <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
-                    <td>${trend(gr.rank_delta)}</td>
-                    <td class="num">${gr.current_rank}</td>
+                    <td class="colTrend">${trend(gr.rank_delta)}</td>
+                    <td class="num colRank">${gr.current_rank}</td>
                     <td style="font-weight:1000">
-                      <span class="nameFull" style="color:${col}">${esc(gr.group)}</span>
+                      <span class="nameFull" style="color:${col}; white-space:nowrap">${esc(gr.group)}</span>
                       <span class="tag nameShort" style="border-color:${col}; color:${col}">${esc(groupShortValue(gr.group))}</span>
                     </td>
-                    <td class="num" style="font-weight:1000">
+                    <td class="num colKm" style="font-weight:1000; white-space:nowrap">
                       <span class="kmFull">${Number(gr.km).toFixed(2)} km</span>
-                      <span class="kmShort">${Number(gr.km).toFixed(2)}</span>
+                      <span class="kmShort">${Number(gr.km).toFixed(2)}km</span>
                     </td>
                   </tr>
                   ${details}
@@ -1561,14 +1586,12 @@ th:nth-child(6), td:nth-child(6){ width:64px; text-align:right;  padding-left:4p
     });
 
     async function init(){
-      // Logo im Preview korrekt setzen
       $("clubLogo").src = resolveAsset("uploads/logo.png");
 
       const res = await fetch("./data.json", { cache: "no-store" });
       if (!res.ok) throw new Error("data.json nicht gefunden (Status " + res.status + ")");
       DATA = await res.json();
 
-      // Start / Ende aus Index erzwingen
       DATA.start = CHALLENGE_START;
       DATA.end = CHALLENGE_END;
 
