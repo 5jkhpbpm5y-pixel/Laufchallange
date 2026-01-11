@@ -85,6 +85,7 @@
         "Edi Gashi",
         "Elias Angulanza",
         "Tim Seibold"
+        "Patric Pausch"
       ],
       "previousRank": null
     }
@@ -303,6 +304,11 @@
       "previousRank": 1,
       "runs": []
     },
+    {
+  "name": "Patric Pausch",
+  "previousRank": 1,
+  "runs": []
+},
     {
       "name": "Edi Gashi",
       "previousRank": 1,
