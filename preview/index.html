@@ -997,10 +997,11 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
         const slug = slugifyName(playerName);
 
         const imgName = imgNameRaw
-  .replace(/^\/?(uploads\/)+/i, "")
-  .replace(/^\/+/,"");
+  .replace(/^\/?uploads\/+uploads\/+/i, "")
+  .replace(/^\/?uploads\/+/i, "");
 
-const imgPath = `uploads/uploads/${slug}/${imgName}`;
+const imgPath = `${UPLOADS_BASE}/${slug}/${imgName}`;
+
 
 
 
