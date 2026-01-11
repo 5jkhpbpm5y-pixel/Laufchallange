@@ -508,6 +508,8 @@ tr.losingRow td{
     // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
     const UPLOAD_BASE = "uploads/uploads";
+    const IN_PREVIEW = location.pathname.includes("/preview/");
+const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
 
 
     function esc(s){
@@ -995,10 +997,11 @@ tr.losingRow td{
         const slug = slugifyName(playerName);
 
         const imgName = imgNameRaw
-  .replace(/^\/?(uploads\/)+/i, "")   // entfernt "uploads/" oder "uploads/uploads/" vorne, falls jemand das eintippt
-  .replace(/^\/+/,"");               // entfernt führende Slashes
+  .replace(/^\/?(uploads\/)+/i, "")
+  .replace(/^\/+/,"");
 
 const imgPath = `${UPLOAD_BASE}/${slug}/${imgName}`;
+
 
 
         p.runs.push({ date, km: Number(km.toFixed(2)), img: imgPath });
