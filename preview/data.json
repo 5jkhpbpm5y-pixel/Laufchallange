@@ -84,7 +84,7 @@
         "Kevin Treis",
         "Edi Gashi",
         "Elias Angulanza",
-        "Tim Seibold"
+        "Tim Seibold",
         "Patric Pausch"
       ],
       "previousRank": null
@@ -305,11 +305,6 @@
       "runs": []
     },
     {
-  "name": "Patric Pausch",
-  "previousRank": 1,
-  "runs": []
-},
-    {
       "name": "Edi Gashi",
       "previousRank": 1,
       "runs": []
@@ -328,6 +323,11 @@
     },
     {
       "name": "Tim Seibold",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Patric Pausch",
       "previousRank": 1,
       "runs": []
     }
