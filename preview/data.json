@@ -114,13 +114,27 @@
     },
     {
       "name": "Thomas Kümmerle",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 9,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 10.15,
+          "img": "uploads/thomas_kuemmerle/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Fabian Füßl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 8,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 7.42,
+          "img": "uploads/fabian_fuessl/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Valentin Ertl",
@@ -240,8 +254,15 @@
     },
     {
       "name": "Sebastian Seidl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 10,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 5.03,
+          "img": "uploads/sebastian_seidl/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "David Neumann",
