@@ -95,6 +95,27 @@
     }
     .logoBadge img{ width:66px; height:66px; display:block; border-radius:16px; }
 
+    /* Legend neben Logo */
+    .warnLegend{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-left:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.08);
+      color:#fde68a;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .warnLegend .warnIcon{
+      color:#facc15;
+      font-size:18px;
+    }
+
     .centerStack{
       display:flex;
       flex-direction:column;
@@ -216,6 +237,7 @@
       align-items:center;
       font-weight:900;
       color:var(--muted);
+      white-space:nowrap;
     }
     .kmPill{
       font-size:12px;
@@ -228,6 +250,7 @@
       align-items:center;
       font-weight:1000;
       color:#dff7e8;
+      white-space:nowrap;
     }
 
     .podiumCard.p1{ border-color: var(--gold); box-shadow: 0 0 0 1px rgba(251,191,36,.20) inset; }
@@ -288,13 +311,57 @@
       display:block;
       background:rgba(255,255,255,.03);
     }
+    .proofWrap{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
 
-    @media (max-width:520px){
-      body{ padding:12px; }
-      .podiumCard{ min-height:150px; }
-      .pName{ font-size:24px; }
-      th,td{ padding:10px; }
-      table{ min-width:680px; }
+    /* ===== WARNUNG (Leader-Gruppe) ===== */
+    .warnBlock{
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.08);
+      border-radius:16px;
+      padding:14px 16px;
+      margin-top:12px;
+      text-align:center;
+    }
+    .warnTitle{
+      font-weight:1000;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#fde68a;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:8px;
+    }
+    .warnList{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-top:10px;
+    }
+    .warnPill{
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.10);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:1000;
+      color:#fde68a;
+      white-space:nowrap;
+    }
+    .warnIcon{
+      color:#facc15;
+      font-weight:1000;
+      margin-left:8px;
+    }
+    tr.losingRow td{
+      background: rgba(255, 107, 107, .08);
     }
 
     /* Admin */
@@ -337,6 +404,76 @@
       color:var(--text);
       font-weight:800;
     }
+
+    /* ===== Responsive Switch: Full vs Short Labels ===== */
+    .thShort, .nameShort, .groupShort, .kmShort { display:none; }
+    .thFull, .nameFull, .groupFull, .kmFull { display:inline; }
+
+    /* Name-Zelle: default */
+    .playerNameCell{ color: var(--text); }
+    .playerNameCell .nameFull,
+    .playerNameCell .nameShort{ white-space:nowrap; }
+
+    /* ===== Mobile: no horizontal scroll + compact table/podium ===== */
+    @media (max-width:560px){
+      body{ padding:12px; }
+
+      /* Podium kompakter */
+      .podiumCard{ min-height:auto; padding:12px; border-radius:18px; }
+      .pName{ font-size:22px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .pTitle{ font-size:12px; }
+      .pMeta{ margin-top:10px; gap:8px; }
+      .podiumWrap{ gap:10px; }
+
+      /* Tabellen ohne horizontal scroll */
+      .tableWrap{ overflow-x:hidden; }
+      table{ min-width:0; }
+      th,td{ padding:7px 6px; }
+
+      /* Caret-Spalte ausblenden */
+      th.caretH, td.caret{ display:none; }
+
+      /* Mobile Defaults: kurze Labels an */
+      .thShort, .nameShort, .groupShort, .kmShort { display:inline; }
+      .thFull, .nameFull, .groupFull, .kmFull { display:none; }
+
+      /* Spaltenbreiten über Klassen (stabil) */
+      th.colTrend, td.colTrend{ width:26px; text-align:center; padding-left:4px; padding-right:4px; }
+      th.colRank,  td.colRank { width:30px; text-align:center; padding-left:4px; padding-right:4px; }
+      th.colKm,    td.colKm   { width:72px; text-align:right;  padding-left:4px; padding-right:4px; }
+
+      /* EINZEL: Gruppe komplett raus, Name in Gruppenfarbe, immer 1 Zeile */
+      .playersTable th.colGroup, .playersTable td.colGroup{ display:none; }
+      .playersTable .playerNameCell{
+        color: var(--pcol);
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .playersTable td.playerNameCell{ max-width: 1px; } /* damit Ellipsis greift */
+      .playersTable td.playerNameCell *{ white-space:nowrap; }
+
+      /* Gruppen-Short-Badge kleiner */
+      .tag{ padding:4px 6px; font-size:12px; min-width:26px; text-align:center; }
+
+      /* GRUPPEN: volle Gruppennamen auf Mobile (Problem 2) */
+      .groupsTable .nameFull{ display:inline; }
+      .groupsTable .nameShort{ display:none; }
+
+      /* Mitgliederliste (Ausschnitt 3): 1 Zeile, links startend, km mit Einheit */
+      .membersTable td.memberNameCell{
+        text-align:left !important;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .membersTable td.kmCell{
+        white-space:nowrap;
+        text-align:right;
+      }
+
+      img.proof{ max-height:64px; }
+    }
   </style>
 </head>
 
@@ -353,7 +490,7 @@
         <button class="tab" id="tabGroups" type="button">Gruppen</button>
         <button class="tab" id="tabRewards" type="button">Belohnung/Bestrafung</button>
       </div>
-    </div><!-- ✅ top geschlossen -->
+    </div>
 
     <div class="grid2">
       <div class="card" id="mainCard">
@@ -361,7 +498,12 @@
         <div class="metaRowTop">
           <div class="metaLeft">
             <div class="logoBadge" title="Vereinslogo">
-              <img src="uploads/logo.png" alt="Vereinslogo">
+              <img id="clubLogo" src="uploads/logo.png" alt="Vereinslogo">
+            </div>
+
+            <div class="warnLegend" title="⚠️ = aktuell bestrafungsgefährdet">
+              <span class="warnIcon">⚠️</span>
+              <span>auf Strafkurs</span>
             </div>
           </div>
 
@@ -425,13 +567,24 @@
     let DATA = null;
     let expandedGroup = null;
     let expandedPlayer = null;
-
-    // merkt sich, welche Ansicht aktiv ist
     let currentView = "players";
 
     // ====== ADMIN PASS (nur Klickschutz) ======
     const ADMIN_PASSWORD = "14492";
     const ADMIN_SESSION_KEY = "laufchallenge_admin_ok";
+
+    // ====== PATHS (Uploads) ======
+    // data.json speichert IMMER "uploads/..." (produktionspfad)
+    // preview rendert "uploads/..." automatisch als "../uploads/..."
+    const IN_PREVIEW = location.pathname.includes("/preview/");
+    const DATA_UPLOAD_BASE = "uploads";
+
+    function resolveAsset(path){
+      if (!path) return null;
+      let p = String(path).replace(/^\.\//, "");
+      if (IN_PREVIEW && p.startsWith("uploads/")) return "../" + p;
+      return p;
+    }
 
     // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
@@ -465,6 +618,26 @@
         .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
         .replace(/[^a-z0-9]+/g,"_")
         .replace(/^_+|_+$/g,"");
+    }
+
+    function abbrevPlayerName(name){
+      const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+      if (parts.length <= 1) return parts[0] || "—";
+      const first = parts[0];
+      const last = parts[parts.length - 1];
+      return `${first} ${String(last).charAt(0).toUpperCase()}.`;
+    }
+
+    function isLeaderGroupName(groupName){
+      return String(groupName || "").toLowerCase().includes("leader");
+    }
+
+    function groupShortValue(groupName){
+      const g = String(groupName || "");
+      if (isLeaderGroupName(g)) return "L";
+      const m = g.match(/(\d+)/);
+      if (m) return m[1];
+      return g.trim().charAt(0).toUpperCase() || "—";
     }
 
     function adminModeEnabled(){
@@ -840,6 +1013,12 @@
             <div>
               <div class="hint" style="margin:0 0 4px 0">Bild-Dateiname (im Spieler-Ordner)</div>
               <input id="adminImgName" class="inp" placeholder="Run1.jpg">
+
+              <div style="margin-top:10px">
+                <div class="hint" style="margin:0 0 4px 0">Selfie (optional, gleicher Ordner)</div>
+                <input id="adminSelfieName" class="inp" placeholder="Selfie1.jpg">
+              </div>
+
               <div class="hint" style="margin:6px 0 0 0">
                 Upload nach: <code id="adminUploadPath">uploads/…/</code>
               </div>
@@ -894,6 +1073,7 @@
         const km = Number($("adminKm").value || 0);
         const date = $("adminDate").value;
         const imgNameRaw = $("adminImgName").value.trim();
+        const selfieNameRaw = $("adminSelfieName").value.trim();
         const prevRank = Number($("adminPrevRank").value || 0);
 
         if (!playerName || !date || !Number.isFinite(km) || km <= 0){
@@ -920,14 +1100,33 @@
 
         const slug = slugifyName(playerName);
 
-        const imgName = imgNameRaw.replace(/^\/?uploads\/+/i, "");
-        const imgPath = `uploads/${slug}/${imgName}`;
+        const cleanFile = (v) => String(v || "")
+          .trim()
+          .replace(/^\/+/,"")
+          .replace(/^uploads\/+/i,"")
+          .replace(new RegExp("^" + slug + "\\/+","i"), "")
+          .split("/").pop();
 
-        p.runs.push({ date, km: Number(km.toFixed(2)), img: imgPath });
+        const imgName = cleanFile(imgNameRaw);
+        const imgPath = `${DATA_UPLOAD_BASE}/${slug}/${imgName}`;
+
+        let selfiePath = null;
+        if (selfieNameRaw){
+          const selfieName = cleanFile(selfieNameRaw);
+          selfiePath = `${DATA_UPLOAD_BASE}/${slug}/${selfieName}`;
+        }
+
+        p.runs.push({
+          date,
+          km: Number(km.toFixed(2)),
+          img: imgPath,
+          selfie: selfiePath
+        });
 
         $("adminHint").innerHTML =
           `✅ Lauf hinzugefügt (lokal).<br>` +
           `1) Lade das Bild exakt als <code>${esc(imgName)}</code> nach <code>uploads/${esc(slug)}/</code> hoch.<br>` +
+          (selfiePath ? `Selfie: <code>${esc(selfiePath.split("/").pop())}</code> im selben Ordner.<br>` : ``) +
           `2) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.<br>` +
           `<span class="hint">Hinweis: GitHub Pages ist case-sensitiv. <code>Run1.jpg</code> ≠ <code>run1.jpg</code>.</span>`;
 
@@ -992,6 +1191,36 @@
       const groupRows = buildGroupRows(playerRows);
       const totalAllKm = playerRows.reduce((sum, p) => sum + (Number(p.km) || 0), 0);
 
+      const LEADER_GROUP_NAME = "Leader Gruppe";
+      const leaderRow = groupRows.find(g => g.group === LEADER_GROUP_NAME);
+      const leaderKm = leaderRow ? Number(leaderRow.km) : 0;
+
+      const losingGroups = groupRows
+        .filter(g => g.group !== LEADER_GROUP_NAME && Number(g.km) <= leaderKm)
+        .map(g => g.group);
+
+      const losingSet = new Set(losingGroups);
+
+      const warnLines = [
+        " 🤣 Hinter der Leader Gruppe? Jungs… die sind zu dritt. Reißt euch zusammen 🤣 ",
+        "Aufgehts Männer, zieht an – Ausreden zählen nicht! "
+      ];
+      const warnLine = warnLines.join("<br>");
+
+      const warnBlockHTML = `
+        <div class="warnBlock">
+          <div class="warnTitle">⚠️ Aktuelle Bestrafungsgruppen ⚠️</div>
+          <div style="color:var(--muted); font-weight:800">${warnLine}</div>
+          <div class="warnList">
+            ${
+              losingGroups.length
+                ? losingGroups.map(g => `<span class="warnPill">${esc(g)}</span>`).join("")
+                : `<span class="warnPill">Keine 😇</span>`
+            }
+          </div>
+        </div>
+      `;
+
       $("dailyLine").innerHTML = `<span class="dot"></span><div>${makeDailyLine(playerRows, groupRows)}</div>`;
 
       const longest = findLongestSingleRun();
@@ -1010,7 +1239,6 @@
       // ===== Podium =====
       if (currentView === "groups") {
         const top3g = groupRows.slice(0, 3);
-
         $("podiumMount").innerHTML = `
           <div class="podiumWrap">
             ${top3g.map((g, idx) => {
@@ -1039,10 +1267,9 @@
             }).join("")}
           </div>
         `;
-        $("podiumHint").textContent = "Ab Platz 4 geht’s in der Gruppen-Tabelle weiter.";
+        $("podiumHint").textContent = "";
       } else if (currentView === "players") {
         const top3 = playerRows.slice(0,3);
-
         $("podiumMount").innerHTML = `
           <div class="podiumWrap">
             ${top3.map((p, idx) => {
@@ -1074,15 +1301,27 @@
       // Players table
       $("playersView").innerHTML = `
         <div class="tableWrap">
-          <table>
+          <table class="playersTable">
             <thead>
               <tr>
-                <th></th>
-                <th>Trend</th>
-                <th>Rang</th>
+                <th class="caretH"></th>
+                <th class="colTrend">
+                  <span class="thFull">Trend</span>
+                  <span class="thShort">T</span>
+                </th>
+                <th class="colRank">
+                  <span class="thFull">Rang</span>
+                  <span class="thShort">P</span>
+                </th>
                 <th>Spieler</th>
-                <th>Gruppe</th>
-                <th class="num">Strecke</th>
+                <th class="colGroup">
+                  <span class="thFull">Gruppe</span>
+                  <span class="thShort">G</span>
+                </th>
+                <th class="num colKm">
+                  <span class="thFull">Strecke</span>
+                  <span class="thShort">S</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -1104,30 +1343,41 @@
                           <div class="hint" style="margin:0">Noch keine Läufe eingetragen.</div>
                         ` : `
                           <div class="tableWrap" style="margin-top:0">
-                            <table style="min-width:640px">
+                            <table style="min-width:0;width:100%">
                               <thead>
                                 <tr>
                                   <th>Run</th>
                                   <th>Datum</th>
-                                  <th class="num">Strecke</th>
+                                  <th class="num">S</th>
                                   <th>Beweis</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                ${runsSorted.map((r, idx) => `
-                                  <tr>
-                                    <td class="num">${idx+1}</td>
-                                    <td>${formatDateDE(r.date || "")}</td>
-                                    <td class="num">${Number(r.km||0).toFixed(2)} km</td>
-                                    <td>
-                                      ${r.img ? `
-                                        <a href="${esc(r.img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
-                                          <img class="proof" src="${esc(r.img)}" alt="Beweis" loading="lazy">
-                                        </a>
-                                      ` : `<span class="hint" style="margin:0">—</span>`}
-                                    </td>
-                                  </tr>
-                                `).join("")}
+                                ${runsSorted.map((r, idx) => {
+                                  const img = resolveAsset(r.img);
+                                  const selfie = resolveAsset(r.selfie);
+                                  return `
+                                    <tr>
+                                      <td class="num">${idx+1}</td>
+                                      <td>${formatDateDE(r.date || "")}</td>
+                                      <td class="num">${Number(r.km||0).toFixed(2)} km</td>
+                                      <td>
+                                        <div class="proofWrap">
+                                          ${img ? `
+                                            <a href="${esc(img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+                                              <img class="proof" src="${esc(img)}" alt="Beweis" loading="lazy">
+                                            </a>
+                                          ` : ``}
+                                          ${selfie ? `
+                                            <a href="${esc(selfie)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+                                              <img class="proof" src="${esc(selfie)}" alt="Selfie" loading="lazy">
+                                            </a>
+                                          ` : ``}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  `;
+                                }).join("")}
                               </tbody>
                             </table>
                           </div>
@@ -1142,15 +1392,22 @@
                 return `
                   <tr class="player-row rowclick" data-player="${esc(pr.name)}">
                     <td class="caret" style="color:${groupCol}">${open ? "▾" : "▸"}</td>
-                    <td>${trend(pr.rank_delta)}</td>
-                    <td class="num">${pr.current_rank}</td>
-                    <td style="font-weight:1000">${esc(pr.name)} <span style="opacity:.95">${medal}</span></td>
-                    <td>
-                      <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
-                        ${esc(pr.group)}
-                      </span>
+                    <td class="colTrend">${trend(pr.rank_delta)}</td>
+                    <td class="num colRank">${pr.current_rank}</td>
+                    <td class="playerNameCell" style="--pcol:${groupCol}; font-weight:1000">
+                      <span class="nameFull">${esc(pr.name)}</span>
+                      <span class="nameShort">${esc(abbrevPlayerName(pr.name))}</span>
+                      <span style="opacity:.95">${medal}</span>
+                      ${losingSet.has(pr.group) ? `<span class="warnIcon">⚠️</span>` : ""}
                     </td>
-                    <td class="num" style="font-weight:1000">${pr.km.toFixed(2)} km</td>
+                    <td class="colGroup">
+                      <span class="tag groupFull" style="border-color:${groupCol}; color:${groupCol}">${esc(pr.group)}</span>
+                      <span class="tag groupShort" style="border-color:${groupCol}; color:${groupCol}">${esc(groupShortValue(pr.group))}</span>
+                    </td>
+                    <td class="num colKm" style="font-weight:1000; white-space:nowrap">
+                      <span class="kmFull">${pr.km.toFixed(2)} km</span>
+                      <span class="kmShort">${pr.km.toFixed(2)}km</span>
+                    </td>
                   </tr>
                   ${details}
                 `;
@@ -1166,14 +1423,14 @@
       // Groups table
       $("groupsView").innerHTML = `
         <div class="tableWrap">
-          <table>
+          <table class="groupsTable">
             <thead>
               <tr>
-                <th></th>
-                <th>Trend</th>
-                <th>Rang</th>
-                <th>Gruppe</th>
-                <th class="num">Strecke</th>
+                <th class="caretH"></th>
+                <th class="colTrend"><span class="thFull">Trend</span><span class="thShort">T</span></th>
+                <th class="colRank"><span class="thFull">Rang</span><span class="thShort">P</span></th>
+                <th><span class="thFull">Gruppe</span><span class="thShort">G</span></th>
+                <th class="num colKm"><span class="thFull">Strecke</span><span class="thShort">S</span></th>
               </tr>
             </thead>
             <tbody>
@@ -1192,20 +1449,23 @@
                         </div>
 
                         <div class="tableWrap" style="margin-top:0">
-                          <table style="min-width:520px">
+                          <table class="membersTable" style="min-width:0;width:100%">
                             <thead>
                               <tr>
-                                <th>#</th>
+                                <th style="width:34px">#</th>
                                 <th>Spieler</th>
-                                <th class="num">Strecke</th>
+                                <th class="num" style="width:86px">S</th>
                               </tr>
                             </thead>
                             <tbody>
                               ${members.map((m, idx) => `
                                 <tr>
                                   <td class="num">${idx+1}</td>
-                                  <td style="font-weight:1000">${esc(m.name)} ${idx===0 ? "👑" : ""}</td>
-                                  <td class="num" style="font-weight:1000">${Number(m.km).toFixed(2)} km</td>
+                                  <td class="memberNameCell" style="font-weight:1000; text-align:left">${esc(m.name)} ${idx===0 ? "👑" : ""}</td>
+                                  <td class="num kmCell" style="font-weight:1000; white-space:nowrap">
+                                    <span class="kmFull">${Number(m.km).toFixed(2)} km</span>
+                                    <span class="kmShort">${Number(m.km).toFixed(2)}km</span>
+                                  </td>
                                 </tr>
                               `).join("")}
                             </tbody>
@@ -1217,12 +1477,18 @@
                 `;
 
                 return `
-                  <tr class="group-row rowclick" data-group="${esc(gr.group)}">
+                  <tr class="group-row rowclick ${losingSet.has(gr.group) ? "losingRow" : ""}" data-group="${esc(gr.group)}">
                     <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
-                    <td>${trend(gr.rank_delta)}</td>
-                    <td class="num">${gr.current_rank}</td>
-                    <td style="font-weight:1000; color:${col}">${esc(gr.group)}</td>
-                    <td class="num" style="font-weight:1000">${Number(gr.km).toFixed(2)} km</td>
+                    <td class="colTrend">${trend(gr.rank_delta)}</td>
+                    <td class="num colRank">${gr.current_rank}</td>
+                    <td style="font-weight:1000">
+                      <span class="nameFull" style="color:${col}; white-space:nowrap">${esc(gr.group)}</span>
+                      <span class="tag nameShort" style="border-color:${col}; color:${col}">${esc(groupShortValue(gr.group))}</span>
+                    </td>
+                    <td class="num colKm" style="font-weight:1000; white-space:nowrap">
+                      <span class="kmFull">${Number(gr.km).toFixed(2)} km</span>
+                      <span class="kmShort">${Number(gr.km).toFixed(2)}km</span>
+                    </td>
                   </tr>
                   ${details}
                 `;
@@ -1231,69 +1497,68 @@
           </table>
         </div>
 
-        <div class="hint">Gruppen-Trend funktioniert, wenn du einmal <b>Ränge snapshotten</b> nutzt und dann <code>data.json</code> hochlädst.</div>
+        ${warnBlockHTML}
       `;
 
-      // Rewards placeholder
-      // Rewards / Bestrafung
-const leaderGroupName = (DATA.groups || []).some(g => g.name === "Leader Gruppe")
-  ? "Leader Gruppe"
-  : (groupRows[0]?.group || null);
+      // ===== Rewards / Bestrafung =====
+      const leaderGroupName = (DATA.groups || []).some(g => g.name === "Leader Gruppe")
+        ? "Leader Gruppe"
+        : (groupRows[0]?.group || null);
 
-const leaderGroupKm = leaderGroupName
-  ? Number((groupRows.find(gr => gr.group === leaderGroupName)?.km) || 0)
-  : 0;
+      const leaderGroupKm = leaderGroupName
+        ? Number((groupRows.find(gr => gr.group === leaderGroupName)?.km) || 0)
+        : 0;
 
-const punishmentGroups = groupRows
-  .filter(gr => gr.group !== leaderGroupName && Number(gr.km) < leaderGroupKm)
-  .map(gr => gr.group);
+      const punishmentGroups = groupRows
+        .filter(gr => gr.group !== leaderGroupName && Number(gr.km) <= leaderGroupKm)
+        .map(gr => gr.group);
 
-const topPlayer = playerRows[0] || null;
+      const topPlayer = playerRows[0] || null;
 
-$("rewardsView").innerHTML = `
-  <div class="card">
-    <div style="font-weight:1000; font-size:18px; margin-bottom:10px">
-      Belohnung & Bestrafung
-    </div>
+      $("rewardsView").innerHTML = `
+        <div class="card">
+          <div style="font-weight:1000; font-size:18px; margin-bottom:10px">
+            Belohnung & Bestrafung
+          </div>
 
-    <div class="hint" style="font-size:14px; line-height:1.65">
-      In der <b>Einzelwertung</b> geht’s ganz oben um <b>Ruhm & Ehre</b> – wer die meisten Kilometer sammelt, setzt das Zeichen.
-      <br><br>
-      In der <b>Gruppenwertung</b> holt sich die beste Gruppe einen <b>Preis</b>. Was genau das ist, bleibt bis zum Ende der Laufchallenge geheim.
-      <br><br>
-      Und ja: Es gibt auch eine <b>Bestrafung</b> – für die Gruppe(n), die am Ende <b>hinter der Leader Gruppe</b> landen.
-      <br><br>
-      <b>Bitte bis Donnerstag (HIT Training) Vorschläge mitbringen, damit wir das gemeinsam festlegen.</b>
-    </div>
+          <div class="hint" style="font-size:14px; line-height:1.65">
+            In der <b>Einzelwertung</b> geht’s ganz oben um <b>Ruhm & Ehre</b>.
+            <br><br>
+            In der <b>Gruppenwertung</b> holt sich die beste Gruppe einen <b>Preis</b> (bleibt bis zum Ende geheim).
+            <br><br>
+            Es gibt auch eine <b>Bestrafung</b> – für die Gruppe(n), die am Ende <b>hinter der Leader Gruppe</b> landen.
+            <br><br>
+            <b>Bitte bis Donnerstag (HIT Training) Vorschläge mitbringen.</b>
+          </div>
 
-    <div style="margin-top:16px; text-align:center">
-      <div style="font-weight:1000">Bestrafungsgruppen:</div>
+          <div style="margin-top:16px; text-align:center">
+            <div style="font-weight:1000">Bestrafungsgruppen:</div>
 
-      ${
-        punishmentGroups.length
-          ? `<div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap">
-              ${punishmentGroups.map(name => {
-                const col = groupColor(name);
-                return `<span class="tag" style="border-color:${col}; color:${col}">${esc(name)}</span>`;
-              }).join("")}
-            </div>`
-          : `<div class="hint" style="margin-top:8px">Aktuell keine – niemand liegt hinter der Leader Gruppe.</div>`
-      }
-    </div>
+            ${
+              punishmentGroups.length
+                ? `<div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap">
+                    ${punishmentGroups.map(name => {
+                      const col = groupColor(name);
+                      return `<span class="tag" style="border-color:${col}; color:${col}">${esc(name)}</span>`;
+                    }).join("")}
+                  </div>`
+                : `<div class="hint" style="margin-top:8px">Aktuell keine – niemand liegt hinter der Leader Gruppe.</div>`
+            }
+          </div>
 
-    <div style="margin-top:18px; text-align:center">
-      <div style="font-weight:1000">Ruhm & Ehre geht an:</div>
+          <div style="margin-top:18px; text-align:center">
+            <div style="font-weight:1000">Ruhm & Ehre geht an:</div>
 
-      ${
-        topPlayer
-          ? `<div style="margin-top:10px; display:flex; justify-content:center">
-               <span class="badgeMini blue">👑 <b>${esc(topPlayer.name)}</b> · <b>${Number(topPlayer.km).toFixed(2)} km</b></span>
-             </div>`
-          : `<div class="hint" style="margin-top:8px">—</div>`
-      }
-    </div>
-  </div>
-`;
+            ${
+              topPlayer
+                ? `<div style="margin-top:10px; display:flex; justify-content:center">
+                     <span class="badgeMini blue">👑 <b>${esc(topPlayer.name)}</b> · <b>${Number(topPlayer.km).toFixed(2)} km</b></span>
+                   </div>`
+                : `<div class="hint" style="margin-top:8px">—</div>`
+            }
+          </div>
+        </div>
+      `;
 
       wireAdmin(playerRows, groupRows);
     }
@@ -1321,11 +1586,12 @@ $("rewardsView").innerHTML = `
     });
 
     async function init(){
-      const res = await fetch("data.json", { cache: "no-store" });
+      $("clubLogo").src = resolveAsset("uploads/logo.png");
+
+      const res = await fetch("./data.json", { cache: "no-store" });
       if (!res.ok) throw new Error("data.json nicht gefunden (Status " + res.status + ")");
       DATA = await res.json();
 
-      // Start / Ende aus Index erzwingen
       DATA.start = CHALLENGE_START;
       DATA.end = CHALLENGE_END;
 
@@ -1333,9 +1599,7 @@ $("rewardsView").innerHTML = `
       if (!DATA.colors) DATA.colors = {};
       if (!DATA.groupPrev) DATA.groupPrev = {};
 
-      // Default View korrekt setzen
       setView(currentView);
-
       render();
     }
 
