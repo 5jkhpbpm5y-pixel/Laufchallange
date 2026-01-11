@@ -916,6 +916,12 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
             <div>
               <div class="hint" style="margin:0 0 4px 0">Bild-Dateiname (im Spieler-Ordner)</div>
               <input id="adminImgName" class="inp" placeholder="Run1.jpg">
+              <div style="margin-top:10px">
+  <div class="hint" style="margin:0 0 4px 0">
+    Selfie (optional, gleicher Ordner)
+  </div>
+  <input id="adminSelfieName" class="inp" placeholder="Selfie1.jpg">
+</div>
               <div class="hint" style="margin:6px 0 0 0">
                 Upload nach: <code id="adminUploadPath">uploads/…/</code>
               </div>
@@ -970,6 +976,7 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
         const km = Number($("adminKm").value || 0);
         const date = $("adminDate").value;
         const imgNameRaw = $("adminImgName").value.trim();
+        const selfieNameRaw = $("adminSelfieName").value.trim();
         const prevRank = Number($("adminPrevRank").value || 0);
 
         if (!playerName || !date || !Number.isFinite(km) || km <= 0){
@@ -1002,10 +1009,20 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
 
 const imgPath = `${UPLOADS_BASE}/${slug}/${imgName}`;
 
+let selfiePath = null;
+if (selfieNameRaw){
+  const selfieName = selfieNameRaw
+    .replace(/^\/?uploads\/+uploads\/+/i, "")
+    .replace(/^\/?uploads\/+/i, "");
 
-
-
-        p.runs.push({ date, km: Number(km.toFixed(2)), img: imgPath });
+  selfiePath = `${UPLOADS_BASE}/${slug}/${selfieName}`;
+}
+        p.runs.push({
+  date,
+  km: Number(km.toFixed(2)),
+  img: imgPath,
+  selfie: selfiePath
+});
 
         $("adminHint").innerHTML =
           `✅ Lauf hinzugefügt (lokal).<br>` +
@@ -1237,12 +1254,19 @@ const warnBlockHTML = `
                                     <td>${formatDateDE(r.date || "")}</td>
                                     <td class="num">${Number(r.km||0).toFixed(2)} km</td>
                                     <td>
-                                      ${r.img ? `
-                                        <a href="${esc(r.img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
-                                          <img class="proof" src="${esc(r.img)}" alt="Beweis" loading="lazy">
-                                        </a>
-                                      ` : `<span class="hint" style="margin:0">—</span>`}
-                                    </td>
+  ${r.img ? `
+    <a href="${esc(r.img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+      <img class="proof" src="${esc(r.img)}" alt="Beweis" loading="lazy">
+    </a>
+  ` : ``}
+
+  ${r.selfie ? `
+    <a href="${esc(r.selfie)}" target="_blank" rel="noreferrer" style="margin-left:8px;color:var(--text);text-decoration:none">
+      <img class="proof" src="${esc(r.selfie)}" alt="Selfie" loading="lazy">
+    </a>
+  ` : ``}
+</td>
+
                                   </tr>
                                 `).join("")}
                               </tbody>
