@@ -94,26 +94,26 @@
       overflow:hidden;
     }
     .logoBadge img{ width:66px; height:66px; display:block; border-radius:16px; }
-    /* Legend neben Logo */
-.warnLegend{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-left:10px;
-  padding:8px 10px;
-  border-radius:999px;
-  border:1px solid rgba(250,204,21,.35);
-  background:rgba(250,204,21,.08);
-  color:#fde68a;
-  font-size:13px;
-  font-weight:1000;
-  line-height:1;
-}
-.warnLegend .warnIcon{
-  color:#facc15;
-  font-size:18px;
-}
 
+    /* Legend neben Logo */
+    .warnLegend{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-left:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.08);
+      color:#fde68a;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1;
+    }
+    .warnLegend .warnIcon{
+      color:#facc15;
+      font-size:18px;
+    }
 
     .centerStack{
       display:flex;
@@ -357,53 +357,53 @@
       color:var(--text);
       font-weight:800;
     }
+
     /* ===== WARNUNG (Leader-Gruppe) ===== */
-.warnBlock{
-  border:1px solid rgba(250,204,21,.35);
-  background:rgba(250,204,21,.08);
-  border-radius:16px;
-  padding:14px 16px;
-  margin-top:12px;
-  text-align:center;
-}
-.warnTitle{
-  font-weight:1000;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:#fde68a;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:8px;
-}
-.warnList{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  align-items:center;
-  justify-content:center;
-  margin-top:10px;
-}
-.warnPill{
-  border:1px solid rgba(250,204,21,.35);
-  background:rgba(250,204,21,.10);
-  padding:6px 10px;
-  border-radius:999px;
-  font-weight:1000;
-  color:#fde68a;
-}
+    .warnBlock{
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.08);
+      border-radius:16px;
+      padding:14px 16px;
+      margin-top:12px;
+      text-align:center;
+    }
+    .warnTitle{
+      font-weight:1000;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#fde68a;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:8px;
+    }
+    .warnList{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-top:10px;
+    }
+    .warnPill{
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.10);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:1000;
+      color:#fde68a;
+    }
 
-.warnIcon{
-  color:#facc15;
-  font-weight:1000;
-  margin-left:8px;
-}
+    .warnIcon{
+      color:#facc15;
+      font-weight:1000;
+      margin-left:8px;
+    }
 
-tr.losingRow td{
-  background: rgba(255, 107, 107, .08);
-}
-
+    tr.losingRow td{
+      background: rgba(255, 107, 107, .08);
+    }
   </style>
 </head>
 
@@ -420,7 +420,7 @@ tr.losingRow td{
         <button class="tab" id="tabGroups" type="button">Gruppen</button>
         <button class="tab" id="tabRewards" type="button">Belohnung/Bestrafung</button>
       </div>
-    </div><!-- ✅ top geschlossen -->
+    </div>
 
     <div class="grid2">
       <div class="card" id="mainCard">
@@ -428,14 +428,14 @@ tr.losingRow td{
         <div class="metaRowTop">
           <div class="metaLeft">
             <div class="logoBadge" title="Vereinslogo">
-              <img src="uploads/logo.png" alt="Vereinslogo">
+              <img id="clubLogo" src="" alt="Vereinslogo">
             </div>
+
             <div class="warnLegend" title="⚠️ = aktuell bestrafungsgefährdet">
-  <span class="warnIcon">⚠️</span>
-  <span>auf Strafkurs</span>
-</div>
+              <span class="warnIcon">⚠️</span>
+              <span>auf Strafkurs</span>
+            </div>
           </div>
-          
 
           <div class="metaRight">
             <div class="pill">
@@ -483,7 +483,7 @@ tr.losingRow td{
         <div class="hint">Liste der Gruppen & Mitglieder.</div>
         <div class="list" id="groupList"></div>
         <div class="hint" style="margin-top:12px">
-          Daten aus <code>data.json</code> · Bilder in <code>/uploads/uploads/&lt;spieler&gt;/</code>
+          Daten aus <code>data.json</code> · Bilder in <code>/uploads/&lt;spieler&gt;/</code>
         </div>
       </div>
     </div>
@@ -505,17 +505,31 @@ tr.losingRow td{
     const ADMIN_PASSWORD = "14492";
     const ADMIN_SESSION_KEY = "laufchallenge_admin_ok";
 
+    // ====== PATHS (Preview vs Public) ======
+    const IN_PREVIEW = location.pathname.includes("/preview/");
+    function resolveAssetPath(p){
+      if (!p) return p;
+      const s = String(p).replace(/^\.\//, "");
+      if (IN_PREVIEW && s.startsWith("uploads/")) return "../" + s;
+      return s;
+    }
+
     // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
-    const UPLOAD_BASE = "uploads/uploads";
-    const IN_PREVIEW = location.pathname.includes("/preview/");
-const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
-
 
     function esc(s){
       return String(s).replace(/[&<>"']/g, m => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
       }[m]));
+    }
+
+    function cleanFileName(raw){
+      const s = String(raw || "").trim().replace(/\\/g, "/");
+      if (!s) return "";
+      const stripped = s
+        .replace(/^\.?\/*/,"")
+        .replace(/^uploads\//i,"");
+      return stripped.split("/").pop();
     }
 
     function toISODateLocal(dateObj){
@@ -892,7 +906,7 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
           </div>
 
           <div class="hint" style="margin-top:8px">
-            Workflow: <b>1)</b> Lauf hinzufügen → <b>2)</b> <code>data.json</code> herunterladen → <b>3)</b> Datei im Repo ersetzen → <b>4)</b> Bild in den Spieler-Ordner hochladen.
+            Workflow: <b>1)</b> Lauf hinzufügen → <b>2)</b> <code>data.json</code> herunterladen → <b>3)</b> Datei im Repo ersetzen → <b>4)</b> Bilder in den Spieler-Ordner hochladen.
           </div>
 
           <div class="adminGrid">
@@ -914,14 +928,14 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
 
           <div style="display:grid; gap:10px; grid-template-columns:1fr 220px; align-items:end; margin-top:10px">
             <div>
-              <div class="hint" style="margin:0 0 4px 0">Bild-Dateiname (im Spieler-Ordner)</div>
+              <div class="hint" style="margin:0 0 4px 0">Beweis (Pflicht, im Spieler-Ordner)</div>
               <input id="adminImgName" class="inp" placeholder="Run1.jpg">
+
               <div style="margin-top:10px">
-  <div class="hint" style="margin:0 0 4px 0">
-    Selfie (optional, gleicher Ordner)
-  </div>
-  <input id="adminSelfieName" class="inp" placeholder="Selfie1.jpg">
-</div>
+                <div class="hint" style="margin:0 0 4px 0">Selfie (optional, gleicher Ordner)</div>
+                <input id="adminSelfieName" class="inp" placeholder="Selfie1.jpg">
+              </div>
+
               <div class="hint" style="margin:6px 0 0 0">
                 Upload nach: <code id="adminUploadPath">uploads/…/</code>
               </div>
@@ -954,7 +968,7 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
       const refreshUploadPathAndRank = () => {
         const name = $("adminPlayer").value.trim();
         const slug = slugifyName(name);
-        $("adminUploadPath").textContent = `uploads/uploads/${slug}/`;
+        $("adminUploadPath").textContent = `uploads/${slug}/`;
 
         const pr = playerRows.find(x => x.name === name);
         $("adminPrevRank").value = pr ? pr.current_rank : 1;
@@ -975,16 +989,18 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
         const playerName = $("adminPlayer").value.trim();
         const km = Number($("adminKm").value || 0);
         const date = $("adminDate").value;
-        const imgNameRaw = $("adminImgName").value.trim();
-        const selfieNameRaw = $("adminSelfieName").value.trim();
+
+        const imgName = cleanFileName($("adminImgName").value);
+        const selfieName = cleanFileName($("adminSelfieName").value);
+
         const prevRank = Number($("adminPrevRank").value || 0);
 
         if (!playerName || !date || !Number.isFinite(km) || km <= 0){
           $("adminHint").textContent = "Bitte Spieler, Datum und Strecke > 0 ausfüllen.";
           return;
         }
-        if (!imgNameRaw){
-          $("adminHint").innerHTML = `Bitte Bild-Dateiname eintragen (z.B. <code>Run1.jpg</code>).`;
+        if (!imgName){
+          $("adminHint").innerHTML = `Bitte Beweis-Dateiname eintragen (z.B. <code>Run1.jpg</code>).`;
           return;
         }
 
@@ -1003,31 +1019,22 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
 
         const slug = slugifyName(playerName);
 
-        const imgName = imgNameRaw
-  .replace(/^\/?uploads\/+uploads\/+/i, "")
-  .replace(/^\/?uploads\/+/i, "");
+        // canonical paths (immer "uploads/...", damit data.json public-kompatibel bleibt)
+        const imgPath = `uploads/${slug}/${imgName}`;
+        const selfiePath = selfieName ? `uploads/${slug}/${selfieName}` : null;
 
-const imgPath = `${UPLOADS_BASE}/${slug}/${imgName}`;
-
-let selfiePath = null;
-if (selfieNameRaw){
-  const selfieName = selfieNameRaw
-    .replace(/^\/?uploads\/+uploads\/+/i, "")
-    .replace(/^\/?uploads\/+/i, "");
-
-  selfiePath = `${UPLOADS_BASE}/${slug}/${selfieName}`;
-}
         p.runs.push({
-  date,
-  km: Number(km.toFixed(2)),
-  img: imgPath,
-  selfie: selfiePath
-});
+          date,
+          km: Number(km.toFixed(2)),
+          img: imgPath,
+          selfie: selfiePath
+        });
 
         $("adminHint").innerHTML =
           `✅ Lauf hinzugefügt (lokal).<br>` +
-          `1) Lade das Bild exakt als <code>${esc(imgName)}</code> nach <code>uploads/${esc(slug)}/</code> hoch.<br>` +
-          `2) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.<br>` +
+          `1) Lade das Beweisbild exakt als <code>${esc(imgName)}</code> nach <code>uploads/${esc(slug)}/</code> hoch.<br>` +
+          (selfieName ? `2) Lade das Selfie exakt als <code>${esc(selfieName)}</code> nach <code>uploads/${esc(slug)}/</code> hoch.<br>` : ``) +
+          `3) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.<br>` +
           `<span class="hint">Hinweis: GitHub Pages ist case-sensitiv. <code>Run1.jpg</code> ≠ <code>run1.jpg</code>.</span>`;
 
         render();
@@ -1090,41 +1097,37 @@ if (selfieNameRaw){
       const playerRows = buildPlayerRows();
       const groupRows = buildGroupRows(playerRows);
       const totalAllKm = playerRows.reduce((sum, p) => sum + (Number(p.km) || 0), 0);
+
       // ===== Leader-Gruppe "Bestrafung" (bei Gleichstand trotzdem verloren) =====
-const LEADER_GROUP_NAME = "Leader Gruppe";
-const leaderRow = groupRows.find(g => g.group === LEADER_GROUP_NAME);
-const leaderKm = leaderRow ? Number(leaderRow.km) : 0;
+      const LEADER_GROUP_NAME = "Leader Gruppe";
+      const leaderRow = groupRows.find(g => g.group === LEADER_GROUP_NAME);
+      const leaderKm = leaderRow ? Number(leaderRow.km) : 0;
 
-// verlieren: alle Gruppen, die <= Leader-Gruppe sind (Gleichstand zählt als verloren), außer die Leader-Gruppe selbst
-const losingGroups = groupRows
-  .filter(g => g.group !== LEADER_GROUP_NAME && Number(g.km) <= leaderKm)
-  .map(g => g.group);
+      const losingGroups = groupRows
+        .filter(g => g.group !== LEADER_GROUP_NAME && Number(g.km) <= leaderKm)
+        .map(g => g.group);
 
-const losingSet = new Set(losingGroups);
+      const losingSet = new Set(losingGroups);
 
-const warnLines = [
-  " 🤣 Hinter der Leader Gruppe? Jungs… die sind zu dritt. Reißt euch zusammen 🤣 ",
-  "Aufgehts Männer, zieht an – Ausreden zählen nicht! "
-];
+      const warnLines = [
+        " 🤣 Hinter der Leader Gruppe? Jungs… die sind zu dritt. Reißt euch zusammen 🤣 ",
+        "Aufgehts Männer, zieht an – Ausreden zählen nicht! "
+      ];
+      const warnLine = warnLines.join("<br>");
 
-// beide immer anzeigen
-const warnLine = warnLines.join("<br>");
-
-
-const warnBlockHTML = `
-  <div class="warnBlock">
-    <div class="warnTitle">⚠️ Aktuelle Bestrafungsgruppen ⚠️</div>
-    <div style="color:var(--muted); font-weight:800">${warnLine}</div>
-    <div class="warnList">
-      ${
-        losingGroups.length
-          ? losingGroups.map(g => `<span class="warnPill">${esc(g)}</span>`).join("")
-          : `<span class="warnPill">Keine 😇</span>`
-      }
-    </div>
-  </div>
-`;
-
+      const warnBlockHTML = `
+        <div class="warnBlock">
+          <div class="warnTitle">⚠️ Aktuelle Bestrafungsgruppen ⚠️</div>
+          <div style="color:var(--muted); font-weight:800">${warnLine}</div>
+          <div class="warnList">
+            ${
+              losingGroups.length
+                ? losingGroups.map(g => `<span class="warnPill">${esc(g)}</span>`).join("")
+                : `<span class="warnPill">Keine 😇</span>`
+            }
+          </div>
+        </div>
+      `;
 
       $("dailyLine").innerHTML = `<span class="dot"></span><div>${makeDailyLine(playerRows, groupRows)}</div>`;
 
@@ -1244,31 +1247,34 @@ const warnBlockHTML = `
                                   <th>Run</th>
                                   <th>Datum</th>
                                   <th class="num">Strecke</th>
-                                  <th>Beweis</th>
+                                  <th>Beweis / Selfie</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                ${runsSorted.map((r, idx) => `
-                                  <tr>
-                                    <td class="num">${idx+1}</td>
-                                    <td>${formatDateDE(r.date || "")}</td>
-                                    <td class="num">${Number(r.km||0).toFixed(2)} km</td>
-                                    <td>
-  ${r.img ? `
-    <a href="${esc(r.img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
-      <img class="proof" src="${esc(r.img)}" alt="Beweis" loading="lazy">
-    </a>
-  ` : ``}
+                                ${runsSorted.map((r, idx) => {
+                                  const proof = r.img ? resolveAssetPath(r.img) : "";
+                                  const selfie = r.selfie ? resolveAssetPath(r.selfie) : "";
+                                  return `
+                                    <tr>
+                                      <td class="num">${idx+1}</td>
+                                      <td>${formatDateDE(r.date || "")}</td>
+                                      <td class="num">${Number(r.km||0).toFixed(2)} km</td>
+                                      <td style="display:flex; gap:8px; align-items:flex-start">
+                                        ${proof ? `
+                                          <a href="${esc(proof)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+                                            <img class="proof" src="${esc(proof)}" alt="Beweis" loading="lazy">
+                                          </a>
+                                        ` : `<span class="hint" style="margin:0">—</span>`}
 
-  ${r.selfie ? `
-    <a href="${esc(r.selfie)}" target="_blank" rel="noreferrer" style="margin-left:8px;color:var(--text);text-decoration:none">
-      <img class="proof" src="${esc(r.selfie)}" alt="Selfie" loading="lazy">
-    </a>
-  ` : ``}
-</td>
-
-                                  </tr>
-                                `).join("")}
+                                        ${selfie ? `
+                                          <a href="${esc(selfie)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+                                            <img class="proof" src="${esc(selfie)}" alt="Selfie" loading="lazy">
+                                          </a>
+                                        ` : ``}
+                                      </td>
+                                    </tr>
+                                  `;
+                                }).join("")}
                               </tbody>
                             </table>
                           </div>
@@ -1286,11 +1292,10 @@ const warnBlockHTML = `
                     <td>${trend(pr.rank_delta)}</td>
                     <td class="num">${pr.current_rank}</td>
                     <td style="font-weight:1000">
-  ${esc(pr.name)}
-  <span style="opacity:.95">${medal}</span>
-  ${losingSet.has(pr.group) ? `<span class="warnIcon">⚠️</span>` : ""}
-</td>
-
+                      ${esc(pr.name)}
+                      <span style="opacity:.95">${medal}</span>
+                      ${losingSet.has(pr.group) ? `<span class="warnIcon">⚠️</span>` : ""}
+                    </td>
                     <td>
                       <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
                         ${esc(pr.group)}
@@ -1380,68 +1385,65 @@ const warnBlockHTML = `
         ${warnBlockHTML}
       `;
 
-      // ===== Rewards / Bestrafung (wie öffentlich) =====
-const leaderGroupName = (DATA.groups || []).some(g => g.name === "Leader Gruppe")
-  ? "Leader Gruppe"
-  : (groupRows[0]?.group || null);
+      // ===== Rewards / Bestrafung =====
+      const leaderGroupName = (DATA.groups || []).some(g => g.name === "Leader Gruppe")
+        ? "Leader Gruppe"
+        : (groupRows[0]?.group || null);
 
-const leaderGroupKm = leaderGroupName
-  ? Number((groupRows.find(gr => gr.group === leaderGroupName)?.km) || 0)
-  : 0;
+      const leaderGroupKm = leaderGroupName
+        ? Number((groupRows.find(gr => gr.group === leaderGroupName)?.km) || 0)
+        : 0;
 
-// Bestrafungsgruppen: aktuell schlechter als Leader Gruppe
-// (wenn du "bei Gleichstand trotzdem verloren" willst: < statt <= anpassen)
-const punishmentGroups = groupRows
-  .filter(gr => gr.group !== leaderGroupName && Number(gr.km) <= leaderGroupKm)
-  .map(gr => gr.group);
+      const punishmentGroups = groupRows
+        .filter(gr => gr.group !== leaderGroupName && Number(gr.km) <= leaderGroupKm)
+        .map(gr => gr.group);
 
-const topPlayer = playerRows[0] || null;
+      const topPlayer = playerRows[0] || null;
 
-$("rewardsView").innerHTML = `
-  <div class="card">
-    <div style="font-weight:1000; font-size:18px; margin-bottom:10px">
-      Belohnung & Bestrafung
-    </div>
+      $("rewardsView").innerHTML = `
+        <div class="card">
+          <div style="font-weight:1000; font-size:18px; margin-bottom:10px">
+            Belohnung & Bestrafung
+          </div>
 
-    <div class="hint" style="font-size:14px; line-height:1.65">
-      In der <b>Einzelwertung</b> geht’s ganz oben um <b>Ruhm & Ehre</b> – wer die meisten Kilometer sammelt, setzt das Zeichen.
-      <br><br>
-      In der <b>Gruppenwertung</b> holt sich die beste Gruppe einen <b>Preis</b>. Was genau das ist, bleibt bis zum Ende der Laufchallenge geheim.
-      <br><br>
-      Und ja: Es gibt auch eine <b>Bestrafung</b> – für die Gruppe(n), die am Ende <b>hinter der Leader Gruppe</b> landen.
-      <br><br>
-      <b>Bitte bis Donnerstag (HIT Training) Vorschläge mitbringen, damit wir das gemeinsam festlegen.</b>
-    </div>
+          <div class="hint" style="font-size:14px; line-height:1.65">
+            In der <b>Einzelwertung</b> geht’s ganz oben um <b>Ruhm & Ehre</b> – wer die meisten Kilometer sammelt, setzt das Zeichen.
+            <br><br>
+            In der <b>Gruppenwertung</b> holt sich die beste Gruppe einen <b>Preis</b>. Was genau das ist, bleibt bis zum Ende der Laufchallenge geheim.
+            <br><br>
+            Und ja: Es gibt auch eine <b>Bestrafung</b> – für die Gruppe(n), die am Ende <b>hinter der Leader Gruppe</b> landen.
+            <br><br>
+            <b>Bitte bis Donnerstag (HIT Training) Vorschläge mitbringen, damit wir das gemeinsam festlegen.</b>
+          </div>
 
-    <div style="margin-top:16px; text-align:center">
-      <div style="font-weight:1000">Bestrafungsgruppen:</div>
+          <div style="margin-top:16px; text-align:center">
+            <div style="font-weight:1000">Bestrafungsgruppen:</div>
 
-      ${
-        punishmentGroups.length
-          ? `<div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap">
-              ${punishmentGroups.map(name => {
-                const col = groupColor(name);
-                return `<span class="tag" style="border-color:${col}; color:${col}">${esc(name)}</span>`;
-              }).join("")}
-            </div>`
-          : `<div class="hint" style="margin-top:8px">Aktuell keine – niemand liegt hinter der Leader Gruppe.</div>`
-      }
-    </div>
+            ${
+              punishmentGroups.length
+                ? `<div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap">
+                    ${punishmentGroups.map(name => {
+                      const col = groupColor(name);
+                      return `<span class="tag" style="border-color:${col}; color:${col}">${esc(name)}</span>`;
+                    }).join("")}
+                  </div>`
+                : `<div class="hint" style="margin-top:8px">Aktuell keine – niemand liegt hinter der Leader Gruppe.</div>`
+            }
+          </div>
 
-    <div style="margin-top:18px; text-align:center">
-      <div style="font-weight:1000">Ruhm & Ehre geht an:</div>
+          <div style="margin-top:18px; text-align:center">
+            <div style="font-weight:1000">Ruhm & Ehre geht an:</div>
 
-      ${
-        topPlayer
-          ? `<div style="margin-top:10px; display:flex; justify-content:center">
-               <span class="badgeMini blue">👑 <b>${esc(topPlayer.name)}</b> · <b>${Number(topPlayer.km).toFixed(2)} km</b></span>
-             </div>`
-          : `<div class="hint" style="margin-top:8px">—</div>`
-      }
-    </div>
-  </div>
-`;
-
+            ${
+              topPlayer
+                ? `<div style="margin-top:10px; display:flex; justify-content:center">
+                    <span class="badgeMini blue">👑 <b>${esc(topPlayer.name)}</b> · <b>${Number(topPlayer.km).toFixed(2)} km</b></span>
+                  </div>`
+                : `<div class="hint" style="margin-top:8px">—</div>`
+            }
+          </div>
+        </div>
+      `;
 
       wireAdmin(playerRows, groupRows);
     }
@@ -1481,9 +1483,11 @@ $("rewardsView").innerHTML = `
       if (!DATA.colors) DATA.colors = {};
       if (!DATA.groupPrev) DATA.groupPrev = {};
 
+      // Logo korrekt (Preview/Public)
+      $("clubLogo").src = resolveAssetPath("uploads/logo.png");
+
       // Default View korrekt setzen
       setView(currentView);
-
       render();
     }
 
@@ -1491,10 +1495,9 @@ $("rewardsView").innerHTML = `
       init().catch(err => {
         console.error(err);
         $("playersView").innerHTML =
-          `<div class="hint">Fehler: ${esc(err.message)}<br>Prüfe, ob <code>data.json</code> im Repo-Root liegt und gültiges JSON ist.</div>`;
+          `<div class="hint">Fehler: ${esc(err.message)}<br>Prüfe, ob <code>data.json</code> im gleichen Ordner liegt und gültiges JSON ist.</div>`;
       });
     });
   </script>
 </body>
 </html>
-
