@@ -948,7 +948,7 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
       const refreshUploadPathAndRank = () => {
         const name = $("adminPlayer").value.trim();
         const slug = slugifyName(name);
-        $("adminUploadPath").textContent = `${UPLOAD_BASE}/${slug}/`;
+        $("adminUploadPath").textContent = `uploads/uploads/${slug}/`;
 
         const pr = playerRows.find(x => x.name === name);
         $("adminPrevRank").value = pr ? pr.current_rank : 1;
@@ -1000,7 +1000,7 @@ const UPLOAD_BASE = IN_PREVIEW ? "../uploads/uploads" : "uploads/uploads";
   .replace(/^\/?(uploads\/)+/i, "")
   .replace(/^\/+/,"");
 
-const imgPath = `${UPLOAD_BASE}/${slug}/${imgName}`;
+const imgPath = `uploads/uploads/${slug}/${imgName}`;
 
 
 
