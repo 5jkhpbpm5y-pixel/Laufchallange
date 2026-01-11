@@ -136,8 +136,15 @@
     },
     {
       "name": "Martin Winklmaier",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 6,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 11.26,
+          "img": "uploads/martin_winklmaier/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Lucas Gschmeidler",
@@ -282,8 +289,15 @@
     },
     {
       "name": "Elias Angulanza",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 7,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 5.3,
+          "img": "uploads/elias_angulanza/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Tim Seibold",
