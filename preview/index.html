@@ -483,7 +483,7 @@ tr.losingRow td{
         <div class="hint">Liste der Gruppen & Mitglieder.</div>
         <div class="list" id="groupList"></div>
         <div class="hint" style="margin-top:12px">
-          Daten aus <code>data.json</code> · Bilder in <code>/uploads/&lt;spieler&gt;/</code>
+          Daten aus <code>data.json</code> · Bilder in <code>/uploads/uploads/&lt;spieler&gt;/</code>
         </div>
       </div>
     </div>
@@ -507,6 +507,8 @@ tr.losingRow td{
 
     // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
+    const UPLOAD_BASE = "uploads/uploads";
+
 
     function esc(s){
       return String(s).replace(/[&<>"']/g, m => ({
@@ -944,7 +946,7 @@ tr.losingRow td{
       const refreshUploadPathAndRank = () => {
         const name = $("adminPlayer").value.trim();
         const slug = slugifyName(name);
-        $("adminUploadPath").textContent = `uploads/${slug}/`;
+        $("adminUploadPath").textContent = `${UPLOAD_BASE}/${slug}/`;
 
         const pr = playerRows.find(x => x.name === name);
         $("adminPrevRank").value = pr ? pr.current_rank : 1;
@@ -992,8 +994,12 @@ tr.losingRow td{
 
         const slug = slugifyName(playerName);
 
-        const imgName = imgNameRaw.replace(/^\/?uploads\/+/i, "");
-        const imgPath = `uploads/${slug}/${imgName}`;
+        const imgName = imgNameRaw
+  .replace(/^\/?(uploads\/)+/i, "")   // entfernt "uploads/" oder "uploads/uploads/" vorne, falls jemand das eintippt
+  .replace(/^\/+/,"");               // entfernt führende Slashes
+
+const imgPath = `${UPLOAD_BASE}/${slug}/${imgName}`;
+
 
         p.runs.push({ date, km: Number(km.toFixed(2)), img: imgPath });
 
