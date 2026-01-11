@@ -328,8 +328,15 @@
     },
     {
       "name": "Patric Pausch",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 11,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 6.13,
+          "img": "uploads/patric_pausch/Run1.jpg",
+          "selfie": null
+        }
+      ]
     }
   ],
   "start": "2026-01-11",
