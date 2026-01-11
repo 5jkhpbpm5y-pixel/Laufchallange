@@ -4,49 +4,89 @@
     {
       "id": "lg",
       "name": "Leader Gruppe",
-      "members": ["Alexander Auhagen", "Thomas Kümmerle", "Fabian Füßl"],
+      "members": [
+        "Alexander Auhagen",
+        "Thomas Kümmerle",
+        "Fabian Füßl"
+      ],
       "previousRank": null
     },
     {
       "id": "g1",
       "name": "Gruppe 1",
-      "members": ["Valentin Ertl", "Martin Winklmaier", "Lucas Gschmeidler", "Vinzenz Ertl"],
+      "members": [
+        "Valentin Ertl",
+        "Martin Winklmaier",
+        "Lucas Gschmeidler",
+        "Vinzenz Ertl"
+      ],
       "previousRank": null
     },
     {
       "id": "g2",
       "name": "Gruppe 2",
-      "members": ["Nac", "Alois Breu", "Luis Müller", "Lukas Zieglmaier"],
+      "members": [
+        "Nac",
+        "Alois Breu",
+        "Luis Müller",
+        "Lukas Zieglmaier"
+      ],
       "previousRank": null
     },
     {
       "id": "g3",
       "name": "Gruppe 3",
-      "members": ["Alexandru Kohonicz", "Lukas Königer", "Philipp Gschaider", "Philipp Köhl"],
+      "members": [
+        "Alexandru Kohonicz",
+        "Lukas Königer",
+        "Philipp Gschaider",
+        "Philipp Köhl"
+      ],
       "previousRank": null
     },
     {
       "id": "g4",
       "name": "Gruppe 4",
-      "members": ["Paul Lohse", "Johannes Eller", "Maximilian Knopp", "Thomas Boukal"],
+      "members": [
+        "Paul Lohse",
+        "Johannes Eller",
+        "Maximilian Knopp",
+        "Thomas Boukal"
+      ],
       "previousRank": null
     },
     {
       "id": "g5",
       "name": "Gruppe 5",
-      "members": ["Bernhard Galster", "Luca Rott", "Paul Dirschl", "Sebastian Seidl"],
+      "members": [
+        "Bernhard Galster",
+        "Luca Rott",
+        "Paul Dirschl",
+        "Sebastian Seidl"
+      ],
       "previousRank": null
     },
     {
       "id": "g6",
       "name": "Gruppe 6",
-      "members": ["David Neumann", "Leon Kümmerle", "Berkay Köroglu", "Sebastian Haag"],
+      "members": [
+        "David Neumann",
+        "Leon Kümmerle",
+        "Berkay Köroglu",
+        "Sebastian Haag"
+      ],
       "previousRank": null
     },
     {
       "id": "g7",
       "name": "Gruppe 7",
-      "members": ["Kevin Treis", "Edi Gashi", "Elias Angulanza", "Tim Seibold", "Patric Pausch"],
+      "members": [
+        "Kevin Treis",
+        "Edi Gashi",
+        "Elias Angulanza",
+        "Tim Seibold",
+        "Patric Pausch"
+      ],
       "previousRank": null
     }
   ],
@@ -61,29 +101,185 @@
     "Gruppe 7": "#2563eb"
   },
   "players": [
-    { "name": "Alexander Auhagen", "previousRank": 1, "runs": [{ "date": "2026-01-11", "km": 7.67, "img": "uploads/alexander_auhagen/Run1.jpg", "selfie": null }] },
-    { "name": "Thomas Kümmerle", "previousRank": 1, "runs": [] },
-    { "name": "Fabian Füßl", "previousRank": 1, "runs": [] },
-    { "name": "Valentin Ertl", "previousRank": 1, "runs": [] },
-    { "name": "Martin Winklmaier", "previousRank": 1, "runs": [] },
-    { "name": "Lucas Gschmeidler", "previousRank": 1, "runs": [] },
-    { "name": "Vinzenz Ertl", "previousRank": 1, "runs": [] },
-    { "name": "Nac", "previousRank": 1, "runs": [] },
-    { "name": "Alois Breu", "previousRank": 1, "runs": [] },
-    { "name": "Luis Müller", "previousRank": 1, "runs": [] },
-    { "name": "Lukas Zieglmaier", "previousRank": 1, "runs": [] },
-    { "name": "Alexandru Kohonicz", "previousRank": 1, "runs": [] },
-    { "name": "Lukas Königer", "previousRank": 1, "runs": [] },
-    { "name": "Philipp Gschaider", "previousRank": 1, "runs": [] },
-    { "name": "Philipp Köhl", "previousRank": 1, "runs": [] },
-    { "name": "Paul Lohse", "previousRank": 1, "runs": [] },
-    { "name": "Johannes Eller", "previousRank": 1, "runs": [] },
-    { "name": "Maximilian Knopp", "previousRank": 1, "runs": [] },
-    { "name": "Thomas Boukal", "previousRank": 1, "runs": [] },
-    { "name": "Bernhard Galster", "previousRank": 1, "runs": [] },
-    { "name": "Luca Rott", "previousRank": 1, "runs": [] },
-    { "name": "Paul Dirschl", "previousRank": 1, "runs": [] },
-    { "name": "Sebastian Seidl", "previousRank": 1, "runs": [] },
-    { "name": "David Neumann", "previousRank": 1, "runs": [] },
-    { "name": "Leon Kümmerle", "previousRank": 1, "runs": [] },
-    { "name": "Berkay Köroglu", "previousRank": 1,
+    {
+      "name": "Alexander Auhagen",
+      "previousRank": 1,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 7.67,
+          "img": "uploads/alexander_auhagen/Run1.jpg",
+          "selfie": null
+        }
+      ]
+    },
+    {
+      "name": "Thomas Kümmerle",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Fabian Füßl",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Valentin Ertl",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Martin Winklmaier",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Lucas Gschmeidler",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Vinzenz Ertl",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Nac",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Alois Breu",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Luis Müller",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Lukas Zieglmaier",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Alexandru Kohonicz",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Lukas Königer",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Philipp Gschaider",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Philipp Köhl",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Paul Lohse",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Johannes Eller",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Maximilian Knopp",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Thomas Boukal",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Bernhard Galster",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Luca Rott",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Paul Dirschl",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Sebastian Seidl",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "David Neumann",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Leon Kümmerle",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Berkay Köroglu",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Sebastian Haag",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Kevin Treis",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Edi Gashi",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Elias Angulanza",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Tim Seibold",
+      "previousRank": 1,
+      "runs": []
+    },
+    {
+      "name": "Patric Pausch",
+      "previousRank": 1,
+      "runs": []
+    }
+  ],
+  "start": "2026-01-11",
+  "end": "2026-01-31",
+  "groupPrev": {
+    "Gruppe 1": 1,
+    "Gruppe 2": 1,
+    "Gruppe 3": 1,
+    "Gruppe 4": 1,
+    "Gruppe 5": 1,
+    "Gruppe 6": 1,
+    "Gruppe 7": 1,
+    "Leader Gruppe": 1
+  },
+  "lastSnapshot": "2026-01-11"
+}
