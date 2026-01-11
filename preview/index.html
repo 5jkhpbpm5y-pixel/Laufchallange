@@ -109,6 +109,7 @@
       font-size:13px;
       font-weight:1000;
       line-height:1;
+      white-space:nowrap;
     }
     .warnLegend .warnIcon{
       color:#facc15;
@@ -236,6 +237,7 @@
       align-items:center;
       font-weight:900;
       color:var(--muted);
+      white-space:nowrap;
     }
     .kmPill{
       font-size:12px;
@@ -248,6 +250,7 @@
       align-items:center;
       font-weight:1000;
       color:#dff7e8;
+      white-space:nowrap;
     }
 
     .podiumCard.p1{ border-color: var(--gold); box-shadow: 0 0 0 1px rgba(251,191,36,.20) inset; }
@@ -308,13 +311,57 @@
       display:block;
       background:rgba(255,255,255,.03);
     }
+    .proofWrap{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
 
-    @media (max-width:520px){
-      body{ padding:12px; }
-      .podiumCard{ min-height:150px; }
-      .pName{ font-size:24px; }
-      th,td{ padding:10px; }
-      table{ min-width:680px; }
+    /* ===== WARNUNG (Leader-Gruppe) ===== */
+    .warnBlock{
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.08);
+      border-radius:16px;
+      padding:14px 16px;
+      margin-top:12px;
+      text-align:center;
+    }
+    .warnTitle{
+      font-weight:1000;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#fde68a;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:8px;
+    }
+    .warnList{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-top:10px;
+    }
+    .warnPill{
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(250,204,21,.10);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:1000;
+      color:#fde68a;
+      white-space:nowrap;
+    }
+    .warnIcon{
+      color:#facc15;
+      font-weight:1000;
+      margin-left:8px;
+    }
+    tr.losingRow td{
+      background: rgba(255, 107, 107, .08);
     }
 
     /* Admin */
@@ -358,51 +405,32 @@
       font-weight:800;
     }
 
-    /* ===== WARNUNG (Leader-Gruppe) ===== */
-    .warnBlock{
-      border:1px solid rgba(250,204,21,.35);
-      background:rgba(250,204,21,.08);
-      border-radius:16px;
-      padding:14px 16px;
-      margin-top:12px;
-      text-align:center;
-    }
-    .warnTitle{
-      font-weight:1000;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      color:#fde68a;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:center;
-      margin-bottom:8px;
-    }
-    .warnList{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      justify-content:center;
-      margin-top:10px;
-    }
-    .warnPill{
-      border:1px solid rgba(250,204,21,.35);
-      background:rgba(250,204,21,.10);
-      padding:6px 10px;
-      border-radius:999px;
-      font-weight:1000;
-      color:#fde68a;
-    }
+    /* ===== Responsive Switch: Full vs Short Labels ===== */
+    .thShort, .nameShort, .groupShort, .kmShort { display:none; }
+    .thFull, .nameFull, .groupFull, .kmFull { display:inline; }
 
-    .warnIcon{
-      color:#facc15;
-      font-weight:1000;
-      margin-left:8px;
-    }
+    /* ===== Mobile: no horizontal scroll + compact table/podium ===== */
+    @media (max-width:560px){
+      body{ padding:12px; }
+      .podiumCard{ min-height:auto; padding:12px; border-radius:18px; }
+      .pName{ font-size:22px; }
+      .pTitle{ font-size:12px; }
+      .pMeta{ margin-top:10px; gap:8px; }
+      .podiumWrap{ gap:10px; }
 
-    tr.losingRow td{
-      background: rgba(255, 107, 107, .08);
+      .tableWrap{ overflow-x:hidden; }
+      table{ min-width:0; }
+      th,td{ padding:8px 8px; }
+
+      /* Caret-Spalte ausblenden (spart Breite) */
+      th.caretH, td.caret{ display:none; }
+
+      /* Short headers + short content */
+      .thShort, .nameShort, .groupShort, .kmShort { display:inline; }
+      .thFull, .nameFull, .groupFull, .kmFull { display:none; }
+
+      img.proof{ max-height:64px; }
+      .tag{ padding:4px 8px; font-size:12px; }
     }
   </style>
 </head>
@@ -428,7 +456,7 @@
         <div class="metaRowTop">
           <div class="metaLeft">
             <div class="logoBadge" title="Vereinslogo">
-              <img id="clubLogo" src="" alt="Vereinslogo">
+              <img id="clubLogo" src="uploads/logo.png" alt="Vereinslogo">
             </div>
 
             <div class="warnLegend" title="⚠️ = aktuell bestrafungsgefährdet">
@@ -497,21 +525,23 @@
     let DATA = null;
     let expandedGroup = null;
     let expandedPlayer = null;
-
-    // merkt sich, welche Ansicht aktiv ist
     let currentView = "players";
 
     // ====== ADMIN PASS (nur Klickschutz) ======
     const ADMIN_PASSWORD = "14492";
     const ADMIN_SESSION_KEY = "laufchallenge_admin_ok";
 
-    // ====== PATHS (Preview vs Public) ======
+    // ====== PATHS (Uploads) ======
+    // data.json speichert IMMER "uploads/..." (produktionspfad)
+    // preview rendert "uploads/..." automatisch als "../uploads/..."
     const IN_PREVIEW = location.pathname.includes("/preview/");
-    function resolveAssetPath(p){
-      if (!p) return p;
-      const s = String(p).replace(/^\.\//, "");
-      if (IN_PREVIEW && s.startsWith("uploads/")) return "../" + s;
-      return s;
+    const DATA_UPLOAD_BASE = "uploads";
+
+    function resolveAsset(path){
+      if (!path) return null;
+      let p = String(path).replace(/^\.\//, "");
+      if (IN_PREVIEW && p.startsWith("uploads/")) return "../" + p;
+      return p;
     }
 
     // ====== HELPERS ======
@@ -521,15 +551,6 @@
       return String(s).replace(/[&<>"']/g, m => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
       }[m]));
-    }
-
-    function cleanFileName(raw){
-      const s = String(raw || "").trim().replace(/\\/g, "/");
-      if (!s) return "";
-      const stripped = s
-        .replace(/^\.?\/*/,"")
-        .replace(/^uploads\//i,"");
-      return stripped.split("/").pop();
     }
 
     function toISODateLocal(dateObj){
@@ -555,6 +576,26 @@
         .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
         .replace(/[^a-z0-9]+/g,"_")
         .replace(/^_+|_+$/g,"");
+    }
+
+    function abbrevPlayerName(name){
+      const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+      if (parts.length <= 1) return parts[0] || "—";
+      const first = parts[0];
+      const last = parts[parts.length - 1];
+      return `${first} ${String(last).charAt(0).toUpperCase()}.`;
+    }
+
+    function isLeaderGroupName(groupName){
+      return String(groupName || "").toLowerCase().includes("leader");
+    }
+
+    function groupShortValue(groupName){
+      const g = String(groupName || "");
+      if (isLeaderGroupName(g)) return "L";
+      const m = g.match(/(\d+)/);
+      if (m) return m[1];       // nur Zahl (wie Bundesliga)
+      return g.trim().charAt(0).toUpperCase() || "—";
     }
 
     function adminModeEnabled(){
@@ -906,7 +947,7 @@
           </div>
 
           <div class="hint" style="margin-top:8px">
-            Workflow: <b>1)</b> Lauf hinzufügen → <b>2)</b> <code>data.json</code> herunterladen → <b>3)</b> Datei im Repo ersetzen → <b>4)</b> Bilder in den Spieler-Ordner hochladen.
+            Workflow: <b>1)</b> Lauf hinzufügen → <b>2)</b> <code>data.json</code> herunterladen → <b>3)</b> Datei im Repo ersetzen → <b>4)</b> Bild in den Spieler-Ordner hochladen.
           </div>
 
           <div class="adminGrid">
@@ -928,7 +969,7 @@
 
           <div style="display:grid; gap:10px; grid-template-columns:1fr 220px; align-items:end; margin-top:10px">
             <div>
-              <div class="hint" style="margin:0 0 4px 0">Beweis (Pflicht, im Spieler-Ordner)</div>
+              <div class="hint" style="margin:0 0 4px 0">Bild-Dateiname (im Spieler-Ordner)</div>
               <input id="adminImgName" class="inp" placeholder="Run1.jpg">
 
               <div style="margin-top:10px">
@@ -989,18 +1030,16 @@
         const playerName = $("adminPlayer").value.trim();
         const km = Number($("adminKm").value || 0);
         const date = $("adminDate").value;
-
-        const imgName = cleanFileName($("adminImgName").value);
-        const selfieName = cleanFileName($("adminSelfieName").value);
-
+        const imgNameRaw = $("adminImgName").value.trim();
+        const selfieNameRaw = $("adminSelfieName").value.trim();
         const prevRank = Number($("adminPrevRank").value || 0);
 
         if (!playerName || !date || !Number.isFinite(km) || km <= 0){
           $("adminHint").textContent = "Bitte Spieler, Datum und Strecke > 0 ausfüllen.";
           return;
         }
-        if (!imgName){
-          $("adminHint").innerHTML = `Bitte Beweis-Dateiname eintragen (z.B. <code>Run1.jpg</code>).`;
+        if (!imgNameRaw){
+          $("adminHint").innerHTML = `Bitte Bild-Dateiname eintragen (z.B. <code>Run1.jpg</code>).`;
           return;
         }
 
@@ -1019,9 +1058,22 @@
 
         const slug = slugifyName(playerName);
 
-        // canonical paths (immer "uploads/...", damit data.json public-kompatibel bleibt)
-        const imgPath = `uploads/${slug}/${imgName}`;
-        const selfiePath = selfieName ? `uploads/${slug}/${selfieName}` : null;
+        // nur Dateiname akzeptieren, egal was eingegeben wurde
+        const cleanFile = (v) => String(v || "")
+          .trim()
+          .replace(/^\/+/,"")
+          .replace(/^uploads\/+/i,"")
+          .replace(new RegExp("^" + slug + "\\/+","i"), "")
+          .split("/").pop();
+
+        const imgName = cleanFile(imgNameRaw);
+        const imgPath = `${DATA_UPLOAD_BASE}/${slug}/${imgName}`;
+
+        let selfiePath = null;
+        if (selfieNameRaw){
+          const selfieName = cleanFile(selfieNameRaw);
+          selfiePath = `${DATA_UPLOAD_BASE}/${slug}/${selfieName}`;
+        }
 
         p.runs.push({
           date,
@@ -1032,9 +1084,9 @@
 
         $("adminHint").innerHTML =
           `✅ Lauf hinzugefügt (lokal).<br>` +
-          `1) Lade das Beweisbild exakt als <code>${esc(imgName)}</code> nach <code>uploads/${esc(slug)}/</code> hoch.<br>` +
-          (selfieName ? `2) Lade das Selfie exakt als <code>${esc(selfieName)}</code> nach <code>uploads/${esc(slug)}/</code> hoch.<br>` : ``) +
-          `3) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.<br>` +
+          `1) Lade das Bild exakt als <code>${esc(imgName)}</code> nach <code>uploads/${esc(slug)}/</code> hoch.<br>` +
+          (selfiePath ? `Selfie: <code>${esc(selfiePath.split("/").pop())}</code> im selben Ordner.<br>` : ``) +
+          `2) Klick <b>data.json herunterladen</b> und ersetze die Datei im Repo.<br>` +
           `<span class="hint">Hinweis: GitHub Pages ist case-sensitiv. <code>Run1.jpg</code> ≠ <code>run1.jpg</code>.</span>`;
 
         render();
@@ -1147,7 +1199,6 @@
       // ===== Podium =====
       if (currentView === "groups") {
         const top3g = groupRows.slice(0, 3);
-
         $("podiumMount").innerHTML = `
           <div class="podiumWrap">
             ${top3g.map((g, idx) => {
@@ -1179,7 +1230,6 @@
         $("podiumHint").textContent = "";
       } else if (currentView === "players") {
         const top3 = playerRows.slice(0,3);
-
         $("podiumMount").innerHTML = `
           <div class="podiumWrap">
             ${top3.map((p, idx) => {
@@ -1214,12 +1264,24 @@
           <table>
             <thead>
               <tr>
-                <th></th>
-                <th>Trend</th>
-                <th>Rang</th>
+                <th class="caretH"></th>
+                <th>
+                  <span class="thFull">Trend</span>
+                  <span class="thShort">T</span>
+                </th>
+                <th>
+                  <span class="thFull">Rang</span>
+                  <span class="thShort">P</span>
+                </th>
                 <th>Spieler</th>
-                <th>Gruppe</th>
-                <th class="num">Strecke</th>
+                <th>
+                  <span class="thFull">Gruppe</span>
+                  <span class="thShort">G</span>
+                </th>
+                <th class="num">
+                  <span class="thFull">Strecke</span>
+                  <span class="thShort">S</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -1241,36 +1303,37 @@
                           <div class="hint" style="margin:0">Noch keine Läufe eingetragen.</div>
                         ` : `
                           <div class="tableWrap" style="margin-top:0">
-                            <table style="min-width:640px">
+                            <table style="min-width:0;width:100%">
                               <thead>
                                 <tr>
                                   <th>Run</th>
                                   <th>Datum</th>
-                                  <th class="num">Strecke</th>
-                                  <th>Beweis / Selfie</th>
+                                  <th class="num">S</th>
+                                  <th>Beweis</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 ${runsSorted.map((r, idx) => {
-                                  const proof = r.img ? resolveAssetPath(r.img) : "";
-                                  const selfie = r.selfie ? resolveAssetPath(r.selfie) : "";
+                                  const img = resolveAsset(r.img);
+                                  const selfie = resolveAsset(r.selfie);
                                   return `
                                     <tr>
                                       <td class="num">${idx+1}</td>
                                       <td>${formatDateDE(r.date || "")}</td>
-                                      <td class="num">${Number(r.km||0).toFixed(2)} km</td>
-                                      <td style="display:flex; gap:8px; align-items:flex-start">
-                                        ${proof ? `
-                                          <a href="${esc(proof)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
-                                            <img class="proof" src="${esc(proof)}" alt="Beweis" loading="lazy">
-                                          </a>
-                                        ` : `<span class="hint" style="margin:0">—</span>`}
-
-                                        ${selfie ? `
-                                          <a href="${esc(selfie)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
-                                            <img class="proof" src="${esc(selfie)}" alt="Selfie" loading="lazy">
-                                          </a>
-                                        ` : ``}
+                                      <td class="num">${Number(r.km||0).toFixed(2)}</td>
+                                      <td>
+                                        <div class="proofWrap">
+                                          ${img ? `
+                                            <a href="${esc(img)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+                                              <img class="proof" src="${esc(img)}" alt="Beweis" loading="lazy">
+                                            </a>
+                                          ` : ``}
+                                          ${selfie ? `
+                                            <a href="${esc(selfie)}" target="_blank" rel="noreferrer" style="color:var(--text);text-decoration:none">
+                                              <img class="proof" src="${esc(selfie)}" alt="Selfie" loading="lazy">
+                                            </a>
+                                          ` : ``}
+                                        </div>
                                       </td>
                                     </tr>
                                   `;
@@ -1292,16 +1355,19 @@
                     <td>${trend(pr.rank_delta)}</td>
                     <td class="num">${pr.current_rank}</td>
                     <td style="font-weight:1000">
-                      ${esc(pr.name)}
+                      <span class="nameFull">${esc(pr.name)}</span>
+                      <span class="nameShort">${esc(abbrevPlayerName(pr.name))}</span>
                       <span style="opacity:.95">${medal}</span>
                       ${losingSet.has(pr.group) ? `<span class="warnIcon">⚠️</span>` : ""}
                     </td>
                     <td>
-                      <span class="tag" style="border-color:${groupCol}; color:${groupCol}">
-                        ${esc(pr.group)}
-                      </span>
+                      <span class="tag groupFull" style="border-color:${groupCol}; color:${groupCol}">${esc(pr.group)}</span>
+                      <span class="tag groupShort" style="border-color:${groupCol}; color:${groupCol}">${esc(groupShortValue(pr.group))}</span>
                     </td>
-                    <td class="num" style="font-weight:1000">${pr.km.toFixed(2)} km</td>
+                    <td class="num" style="font-weight:1000">
+                      <span class="kmFull">${pr.km.toFixed(2)} km</span>
+                      <span class="kmShort">${pr.km.toFixed(2)}</span>
+                    </td>
                   </tr>
                   ${details}
                 `;
@@ -1320,11 +1386,11 @@
           <table>
             <thead>
               <tr>
-                <th></th>
-                <th>Trend</th>
-                <th>Rang</th>
-                <th>Gruppe</th>
-                <th class="num">Strecke</th>
+                <th class="caretH"></th>
+                <th><span class="thFull">Trend</span><span class="thShort">T</span></th>
+                <th><span class="thFull">Rang</span><span class="thShort">P</span></th>
+                <th><span class="thFull">Gruppe</span><span class="thShort">G</span></th>
+                <th class="num"><span class="thFull">Strecke</span><span class="thShort">S</span></th>
               </tr>
             </thead>
             <tbody>
@@ -1343,12 +1409,12 @@
                         </div>
 
                         <div class="tableWrap" style="margin-top:0">
-                          <table style="min-width:520px">
+                          <table style="min-width:0;width:100%">
                             <thead>
                               <tr>
                                 <th>#</th>
                                 <th>Spieler</th>
-                                <th class="num">Strecke</th>
+                                <th class="num">S</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1356,7 +1422,7 @@
                                 <tr>
                                   <td class="num">${idx+1}</td>
                                   <td style="font-weight:1000">${esc(m.name)} ${idx===0 ? "👑" : ""}</td>
-                                  <td class="num" style="font-weight:1000">${Number(m.km).toFixed(2)} km</td>
+                                  <td class="num" style="font-weight:1000">${Number(m.km).toFixed(2)}</td>
                                 </tr>
                               `).join("")}
                             </tbody>
@@ -1372,8 +1438,14 @@
                     <td class="caret" style="color:${col}">${open ? "▾" : "▸"}</td>
                     <td>${trend(gr.rank_delta)}</td>
                     <td class="num">${gr.current_rank}</td>
-                    <td style="font-weight:1000; color:${col}">${esc(gr.group)}</td>
-                    <td class="num" style="font-weight:1000">${Number(gr.km).toFixed(2)} km</td>
+                    <td style="font-weight:1000">
+                      <span class="nameFull" style="color:${col}">${esc(gr.group)}</span>
+                      <span class="tag nameShort" style="border-color:${col}; color:${col}">${esc(groupShortValue(gr.group))}</span>
+                    </td>
+                    <td class="num" style="font-weight:1000">
+                      <span class="kmFull">${Number(gr.km).toFixed(2)} km</span>
+                      <span class="kmShort">${Number(gr.km).toFixed(2)}</span>
+                    </td>
                   </tr>
                   ${details}
                 `;
@@ -1407,13 +1479,13 @@
           </div>
 
           <div class="hint" style="font-size:14px; line-height:1.65">
-            In der <b>Einzelwertung</b> geht’s ganz oben um <b>Ruhm & Ehre</b> – wer die meisten Kilometer sammelt, setzt das Zeichen.
+            In der <b>Einzelwertung</b> geht’s ganz oben um <b>Ruhm & Ehre</b>.
             <br><br>
-            In der <b>Gruppenwertung</b> holt sich die beste Gruppe einen <b>Preis</b>. Was genau das ist, bleibt bis zum Ende der Laufchallenge geheim.
+            In der <b>Gruppenwertung</b> holt sich die beste Gruppe einen <b>Preis</b> (bleibt bis zum Ende geheim).
             <br><br>
-            Und ja: Es gibt auch eine <b>Bestrafung</b> – für die Gruppe(n), die am Ende <b>hinter der Leader Gruppe</b> landen.
+            Es gibt auch eine <b>Bestrafung</b> – für die Gruppe(n), die am Ende <b>hinter der Leader Gruppe</b> landen.
             <br><br>
-            <b>Bitte bis Donnerstag (HIT Training) Vorschläge mitbringen, damit wir das gemeinsam festlegen.</b>
+            <b>Bitte bis Donnerstag (HIT Training) Vorschläge mitbringen.</b>
           </div>
 
           <div style="margin-top:16px; text-align:center">
@@ -1437,8 +1509,8 @@
             ${
               topPlayer
                 ? `<div style="margin-top:10px; display:flex; justify-content:center">
-                    <span class="badgeMini blue">👑 <b>${esc(topPlayer.name)}</b> · <b>${Number(topPlayer.km).toFixed(2)} km</b></span>
-                  </div>`
+                     <span class="badgeMini blue">👑 <b>${esc(topPlayer.name)}</b> · <b>${Number(topPlayer.km).toFixed(2)} km</b></span>
+                   </div>`
                 : `<div class="hint" style="margin-top:8px">—</div>`
             }
           </div>
@@ -1471,6 +1543,9 @@
     });
 
     async function init(){
+      // Logo im Preview korrekt setzen
+      $("clubLogo").src = resolveAsset("uploads/logo.png");
+
       const res = await fetch("./data.json", { cache: "no-store" });
       if (!res.ok) throw new Error("data.json nicht gefunden (Status " + res.status + ")");
       DATA = await res.json();
@@ -1483,10 +1558,6 @@
       if (!DATA.colors) DATA.colors = {};
       if (!DATA.groupPrev) DATA.groupPrev = {};
 
-      // Logo korrekt (Preview/Public)
-      $("clubLogo").src = resolveAssetPath("uploads/logo.png");
-
-      // Default View korrekt setzen
       setView(currentView);
       render();
     }
@@ -1495,7 +1566,7 @@
       init().catch(err => {
         console.error(err);
         $("playersView").innerHTML =
-          `<div class="hint">Fehler: ${esc(err.message)}<br>Prüfe, ob <code>data.json</code> im gleichen Ordner liegt und gültiges JSON ist.</div>`;
+          `<div class="hint">Fehler: ${esc(err.message)}<br>Prüfe, ob <code>data.json</code> im Repo-Root liegt und gültiges JSON ist.</div>`;
       });
     });
   </script>
