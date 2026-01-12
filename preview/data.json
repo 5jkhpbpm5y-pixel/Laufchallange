@@ -215,13 +215,27 @@
     },
     {
       "name": "Philipp Köhl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 15,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 21.24,
+          "img": "uploads/philipp_koehl/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Paul Lohse",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 13,
+      "runs": [
+        {
+          "date": "2026-01-12",
+          "km": 7.11,
+          "img": "uploads/paul_lohse/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Johannes Eller",
@@ -291,8 +305,15 @@
     },
     {
       "name": "Berkay Köroglu",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 12,
+      "runs": [
+        {
+          "date": "2026-01-12",
+          "km": 8.05,
+          "img": "uploads/berkay_koeroglu/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Sebastian Haag",
@@ -301,8 +322,21 @@
     },
     {
       "name": "Kevin Treis",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 14,
+      "runs": [
+        {
+          "date": "2026-01-12",
+          "km": 3,
+          "img": "uploads/kevin_treis/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-12",
+          "km": 1,
+          "img": "uploads/kevin_treis/Run2.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Edi Gashi",
