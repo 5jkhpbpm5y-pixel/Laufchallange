@@ -115,7 +115,7 @@
     },
     {
       "name": "Thomas Kümmerle",
-      "previousRank": 6,
+      "previousRank": 8,
       "runs": [
         {
           "date": "2026-01-11",
@@ -133,6 +133,12 @@
           "date": "2026-01-14",
           "km": 7.04,
           "img": "uploads/thomas_kuemmerle/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-15",
+          "km": 6.23,
+          "img": "uploads/thomas_kuemmerle/Run4.jpg",
           "selfie": null
         }
       ]
@@ -233,7 +239,7 @@
         {
           "date": "2026-01-13",
           "km": 8.7,
-          "img": "uploads/nac/Run2.jpg",
+          "img": "uploads/nac/Run1.jpg",
           "selfie": null
         },
         {
@@ -508,8 +514,15 @@
     },
     {
       "name": "Sebastian Haag",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 27,
+      "runs": [
+        {
+          "date": "2026-01-13",
+          "km": 5.04,
+          "img": "uploads/sebastian_haag/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Kevin Treis",
