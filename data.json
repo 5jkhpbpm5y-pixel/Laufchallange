@@ -115,23 +115,93 @@
     },
     {
       "name": "Thomas Kümmerle",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 6,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 10.15,
+          "img": "uploads/thomas_kuemmerle/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 7.03,
+          "img": "uploads/thomas_kuemmerle/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-14",
+          "km": 7.04,
+          "img": "uploads/thomas_kuemmerle/Run3.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Fabian Füßl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 8,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 7.42,
+          "img": "uploads/fabian_fuessl/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Valentin Ertl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 9,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 6.03,
+          "img": "uploads/valentin_ertl/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 15.86,
+          "img": "uploads/valentin_ertl/Run2.jpg",
+          "selfie": "uploads/valentin_ertl/SelfieRun2.jpg"
+        },
+        {
+          "date": "2026-01-14",
+          "km": 8.44,
+          "img": "uploads/valentin_ertl/Run3.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Martin Winklmaier",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 3,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 11.26,
+          "img": "uploads/martin_winklmaier/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-12",
+          "km": 10.91,
+          "img": "uploads/martin_winklmaier/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 6.18,
+          "img": "uploads/martin_winklmaier/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-14",
+          "km": 12.68,
+          "img": "uploads/martin_winklmaier/Run4.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Lucas Gschmeidler",
@@ -140,38 +210,111 @@
     },
     {
       "name": "Vinzenz Ertl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 24,
+      "runs": [
+        {
+          "date": "2026-01-13",
+          "km": 15.06,
+          "img": "uploads/vinzenz_ertl/Run1.jpg",
+          "selfie": "uploads/vinzenz_ertl/SelfieRun1.jpg"
+        }
+      ]
     },
     {
       "name": "Nac",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 9,
+      "runs": [
+        {
+          "date": "2026-01-12",
+          "km": 10.01,
+          "img": "uploads/nac/Run1.jpg",
+          "selfie": "uploads/nac/SelfieRun1.jpg"
+        },
+        {
+          "date": "2026-01-13",
+          "km": 8.7,
+          "img": "uploads/nac/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-14",
+          "km": 12.01,
+          "img": "uploads/nac/Run3.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Alois Breu",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 9,
+      "runs": [
+        {
+          "date": "2026-01-13",
+          "km": 8.19,
+          "img": "uploads/alois_breu/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 0.68,
+          "img": "uploads/alois_breu/Run2.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Luis Müller",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 22,
+      "runs": [
+        {
+          "date": "2026-01-14",
+          "km": 9.23,
+          "img": "uploads/luis_mueller/Run1.jpg",
+          "selfie": "uploads/luis_mueller/SelfieRun1.jpg"
+        }
+      ]
     },
     {
       "name": "Lukas Zieglmaier",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 15,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 7.39,
+          "img": "uploads/lukas_zieglmaier/Run1.jpg",
+          "selfie": "uploads/lukas_zieglmaier/SelfieRun1.jpg"
+        },
+        {
+          "date": "2026-01-13",
+          "km": 22.02,
+          "img": "uploads/lukas_zieglmaier/Run2.jpg",
+          "selfie": "uploads/lukas_zieglmaier/SelfieRun2.jpg"
+        }
+      ]
     },
     {
       "name": "Alexandru Kohonicz",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 16,
+      "runs": [
+        {
+          "date": "2026-01-13",
+          "km": 10.03,
+          "img": "uploads/alexandru_kohonicz/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Lukas Königer",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 19,
+      "runs": [
+        {
+          "date": "2026-01-13",
+          "km": 5.07,
+          "img": "uploads/lukas_koeniger/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Philipp Gschaider",
@@ -180,13 +323,27 @@
     },
     {
       "name": "Philipp Köhl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 15,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 21.24,
+          "img": "uploads/philipp_koehl/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Paul Lohse",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 13,
+      "runs": [
+        {
+          "date": "2026-01-12",
+          "km": 7.11,
+          "img": "uploads/paul_lohse/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Johannes Eller",
@@ -195,48 +352,159 @@
     },
     {
       "name": "Maximilian Knopp",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 15,
+      "runs": [
+        {
+          "date": "2026-01-13",
+          "km": 12.7,
+          "img": "uploads/maximilian_knopp/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 22.22,
+          "img": "uploads/maximilian_knopp/Run2.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Thomas Boukal",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 21,
+      "runs": [
+        {
+          "date": "2026-01-14",
+          "km": 6.69,
+          "img": "uploads/thomas_boukal/Go1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Bernhard Galster",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 25,
+      "runs": [
+        {
+          "date": "2026-01-14",
+          "km": 0.73,
+          "img": "uploads/bernhard_galster/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Luca Rott",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 10,
+      "runs": [
+        {
+          "date": "2026-01-14",
+          "km": 9.38,
+          "img": "uploads/luca_rott/Run2.jpg",
+          "selfie": "uploads/luca_rott/SelfieRun2.jpg"
+        },
+        {
+          "date": "2026-01-14",
+          "km": 5.49,
+          "img": "uploads/luca_rott/Run3.jpg",
+          "selfie": "uploads/luca_rott/SelfieRun3.jpg"
+        },
+        {
+          "date": "2026-01-13",
+          "km": 8.37,
+          "img": "uploads/luca_rott/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Paul Dirschl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 13,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 7,
+          "img": "uploads/paul_dirschl/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 8.62,
+          "img": "uploads/paul_dirschl/Run2.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Sebastian Seidl",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 10,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 5.03,
+          "img": "uploads/sebastian_seidl/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "David Neumann",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 13,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 5.75,
+          "img": "uploads/david_neumann/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 9.05,
+          "img": "uploads/david_neumann/Run2.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Leon Kümmerle",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 16,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 5.79,
+          "img": "uploads/leon_kuemmerle/Run1.jpg",
+          "selfie": "uploads/leon_kuemmerle/SelfieRun1.jpg"
+        },
+        {
+          "date": "2026-01-13",
+          "km": 0.62,
+          "img": "uploads/leon_kuemmerle/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 9.4,
+          "img": "uploads/leon_kuemmerle/Run3.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Berkay Köroglu",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 18,
+      "runs": [
+        {
+          "date": "2026-01-12",
+          "km": 8.05,
+          "img": "uploads/berkay_koeroglu/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-14",
+          "km": 5.01,
+          "img": "uploads/berkay_koeroglu/Run2.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Sebastian Haag",
@@ -245,8 +513,27 @@
     },
     {
       "name": "Kevin Treis",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 15,
+      "runs": [
+        {
+          "date": "2026-01-12",
+          "km": 3,
+          "img": "uploads/kevin_treis/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-12",
+          "km": 1,
+          "img": "uploads/kevin_treis/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-12",
+          "km": 4.09,
+          "img": "uploads/kevin_treis/Run3.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Edi Gashi",
@@ -255,8 +542,27 @@
     },
     {
       "name": "Elias Angulanza",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 3,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 5.3,
+          "img": "uploads/elias_angulanza/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 22.22,
+          "img": "uploads/elias_angulanza/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-14",
+          "km": 5.7,
+          "img": "uploads/elias_angulanza/Run1.jpg",
+          "selfie": null
+        }
+      ]
     },
     {
       "name": "Tim Seibold",
@@ -265,8 +571,27 @@
     },
     {
       "name": "Patric Pausch",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 9,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 6.13,
+          "img": "uploads/patric_pausch/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-12",
+          "km": 10.54,
+          "img": "uploads/patric_pausch/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-14",
+          "km": 10.22,
+          "img": "uploads/patric_pausch/Run3.jpg",
+          "selfie": null
+        }
+      ]
     }
   ],
   "start": "2026-01-11",
