@@ -456,8 +456,57 @@
     },
     {
       "name": "Philipp Gschaider",
-      "previousRank": 1,
-      "runs": []
+      "previousRank": 4,
+      "runs": [
+        {
+          "date": "2026-01-11",
+          "km": 8.6,
+          "img": "uploads/philipp_gschaider/Run1.jpg",
+          "selfie": "uploads/philipp_gschaider/SelfieRun1.jpg"
+        },
+        {
+          "date": "2026-01-13",
+          "km": 7.27,
+          "img": "uploads/philipp_gschaider/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-13",
+          "km": 6,
+          "img": "uploads/philipp_gschaider/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-15",
+          "km": 5.5,
+          "img": "uploads/philipp_gschaider/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 17.5,
+          "img": "uploads/philipp_gschaider/Run5.jpg",
+          "selfie": "uploads/philipp_gschaider/SelfieRun5.jpg"
+        },
+        {
+          "date": "2026-01-18",
+          "km": 5.64,
+          "img": "uploads/philipp_gschaider/Run6.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-19",
+          "km": 8.6,
+          "img": "uploads/philipp_gschaider/Run7.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-20",
+          "km": 13.14,
+          "img": "uploads/philipp_gschaider/Run8.jpg",
+          "selfie": "uploads/philipp_gschaider/SelfieRun8.jpg"
+        }
+      ]
     },
     {
       "name": "Philipp Köhl",
@@ -562,7 +611,7 @@
     },
     {
       "name": "Luca Rott",
-      "previousRank": 3,
+      "previousRank": 2,
       "runs": [
         {
           "date": "2026-01-14",
@@ -611,6 +660,12 @@
           "km": 8.23,
           "img": "uploads/luca_rott/Run8.jpg",
           "selfie": "uploads/luca_rott/SelfieRun8.jpg"
+        },
+        {
+          "date": "2026-01-19",
+          "km": 8.6,
+          "img": "uploads/luca_rott/Run9.jpg",
+          "selfie": null
         }
       ]
     },
