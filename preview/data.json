@@ -318,12 +318,18 @@
     },
     {
       "name": "Alexandru Kohonicz",
-      "previousRank": 16,
+      "previousRank": 21,
       "runs": [
         {
           "date": "2026-01-13",
           "km": 10.03,
           "img": "uploads/alexandru_kohonicz/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 6.82,
+          "img": "uploads/alexandru_kohonicz/Run2.jpg",
           "selfie": null
         }
       ]
@@ -371,12 +377,24 @@
     },
     {
       "name": "Paul Lohse",
-      "previousRank": 13,
+      "previousRank": 20,
       "runs": [
         {
           "date": "2026-01-12",
           "km": 7.11,
           "img": "uploads/paul_lohse/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 7.67,
+          "img": "uploads/paul_lohse/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 6.93,
+          "img": "uploads/paul_lohse/Run3.jpg",
           "selfie": null
         }
       ]
@@ -472,7 +490,7 @@
     },
     {
       "name": "Paul Dirschl",
-      "previousRank": 13,
+      "previousRank": 10,
       "runs": [
         {
           "date": "2026-01-11",
@@ -484,6 +502,18 @@
           "date": "2026-01-13",
           "km": 8.62,
           "img": "uploads/paul_dirschl/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-15",
+          "km": 8.77,
+          "img": "uploads/paul_dirschl/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 3.52,
+          "img": "uploads/paul_dirschl/Run4.jpg",
           "selfie": null
         }
       ]
