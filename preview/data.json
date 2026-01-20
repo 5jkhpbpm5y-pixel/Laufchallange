@@ -121,7 +121,7 @@
     },
     {
       "name": "Thomas Kümmerle",
-      "previousRank": 8,
+      "previousRank": 9,
       "runs": [
         {
           "date": "2026-01-11",
@@ -145,6 +145,12 @@
           "date": "2026-01-15",
           "km": 6.23,
           "img": "uploads/thomas_kuemmerle/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-19",
+          "km": 5.12,
+          "img": "uploads/thomas_kuemmerle/Run5.jpg",
           "selfie": null
         }
       ]
@@ -222,13 +228,25 @@
     },
     {
       "name": "Vinzenz Ertl",
-      "previousRank": 24,
+      "previousRank": 12,
       "runs": [
         {
           "date": "2026-01-13",
           "km": 15.06,
           "img": "uploads/vinzenz_ertl/Run1.jpg",
           "selfie": "uploads/vinzenz_ertl/SelfieRun1.jpg"
+        },
+        {
+          "date": "2026-01-17",
+          "km": 10.18,
+          "img": "uploads/vinzenz_ertl/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 8.01,
+          "img": "uploads/vinzenz_ertl/Run3.jpg",
+          "selfie": null
         }
       ]
     },
@@ -598,7 +616,7 @@
     },
     {
       "name": "Berkay Köroglu",
-      "previousRank": 18,
+      "previousRank": 11,
       "runs": [
         {
           "date": "2026-01-12",
@@ -610,6 +628,24 @@
           "date": "2026-01-14",
           "km": 5.01,
           "img": "uploads/berkay_koeroglu/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 6.04,
+          "img": "uploads/berkay_koeroglu/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-17",
+          "km": 5.13,
+          "img": "uploads/berkay_koeroglu/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 7.35,
+          "img": "uploads/berkay_koeroglu/Run5.jpg",
           "selfie": null
         }
       ]
