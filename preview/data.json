@@ -336,7 +336,7 @@
     },
     {
       "name": "Alois Breu",
-      "previousRank": 9,
+      "previousRank": 14,
       "runs": [
         {
           "date": "2026-01-13",
@@ -349,6 +349,24 @@
           "km": 0.68,
           "img": "uploads/alois_breu/Run2.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-15",
+          "km": 9.41,
+          "img": "uploads/alois_breu/Run3.jpg",
+          "selfie": "uploads/alois_breu/SelfieRun3.jpg"
+        },
+        {
+          "date": "2026-01-17",
+          "km": 9.51,
+          "img": "uploads/alois_breu/Run4.jpg",
+          "selfie": "uploads/alois_breu/SelfieRun4.jpg"
+        },
+        {
+          "date": "2026-01-20",
+          "km": 9.09,
+          "img": "uploads/alois_breu/Run5.jpg",
+          "selfie": "uploads/alois_breu/SelfieRun5.jpg"
         }
       ]
     },
@@ -677,12 +695,30 @@
           "km": 7.44,
           "img": "uploads/david_neumann/Run5.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 5.07,
+          "img": "uploads/david_neumann/Run6.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 8.25,
+          "img": "uploads/david_neumann/Run7.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-19",
+          "km": 9.01,
+          "img": "uploads/david_neumann/Run8.jpg",
+          "selfie": null
         }
       ]
     },
     {
       "name": "Leon Kümmerle",
-      "previousRank": 16,
+      "previousRank": 10,
       "runs": [
         {
           "date": "2026-01-11",
@@ -700,6 +736,30 @@
           "date": "2026-01-13",
           "km": 9.4,
           "img": "uploads/leon_kuemmerle/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 8,
+          "img": "uploads/leon_kuemmerle/Run5.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-17",
+          "km": 5,
+          "img": "uploads/leon_kuemmerle/Run6.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 4.34,
+          "img": "uploads/leon_kuemmerle/Run7.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-20",
+          "km": 8.5,
+          "img": "uploads/leon_kuemmerle/Run8.jpg",
           "selfie": null
         }
       ]
