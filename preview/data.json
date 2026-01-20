@@ -193,7 +193,7 @@
     },
     {
       "name": "Martin Winklmaier",
-      "previousRank": 3,
+      "previousRank": 1,
       "runs": [
         {
           "date": "2026-01-11",
@@ -217,6 +217,36 @@
           "date": "2026-01-14",
           "km": 12.68,
           "img": "uploads/martin_winklmaier/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 10.16,
+          "img": "uploads/martin_winklmaier/Run5.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-17",
+          "km": 11.03,
+          "img": "uploads/martin_winklmaier/Run6.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-17",
+          "km": 10.18,
+          "img": "uploads/martin_winklmaier/Run7.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-18",
+          "km": 10.77,
+          "img": "uploads/martin_winklmaier/Run8.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-19",
+          "km": 10.3,
+          "img": "uploads/martin_winklmaier/Run9.jpg",
           "selfie": null
         }
       ]
@@ -252,7 +282,7 @@
     },
     {
       "name": "Nac",
-      "previousRank": 9,
+      "previousRank": 1,
       "runs": [
         {
           "date": "2026-01-12",
@@ -271,6 +301,24 @@
           "km": 12.01,
           "img": "uploads/nac/Run3.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 8.3,
+          "img": "uploads/nac/Run4.jpg",
+          "selfie": "uploads/nac/SelfieRun4.jpg"
+        },
+        {
+          "date": "2026-01-19",
+          "km": 9.2,
+          "img": "uploads/nac/Run5.jpg",
+          "selfie": "uploads/nac/SelfieRun5.jpg"
+        },
+        {
+          "date": "2026-01-19",
+          "km": 10.01,
+          "img": "uploads/nac/Run6.jpg",
+          "selfie": "uploads/nac/SelfieRun6.jpg"
         }
       ]
     },
@@ -652,12 +700,24 @@
     },
     {
       "name": "Sebastian Haag",
-      "previousRank": 27,
+      "previousRank": 23,
       "runs": [
         {
           "date": "2026-01-13",
           "km": 5.04,
           "img": "uploads/sebastian_haag/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-15",
+          "km": 8,
+          "img": "uploads/sebastian_haag/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-19",
+          "km": 6.04,
+          "img": "uploads/sebastian_haag/Run3.jpg",
           "selfie": null
         }
       ]
