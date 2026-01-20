@@ -270,13 +270,19 @@
     },
     {
       "name": "Luis Müller",
-      "previousRank": 22,
+      "previousRank": 17,
       "runs": [
         {
           "date": "2026-01-14",
           "km": 9.23,
           "img": "uploads/luis_mueller/Run1.jpg",
           "selfie": "uploads/luis_mueller/SelfieRun1.jpg"
+        },
+        {
+          "date": "2026-01-16",
+          "km": 12.81,
+          "img": "uploads/luis_mueller/Run2.jpg",
+          "selfie": "uploads/luis_mueller/SelfieRun2.jpg"
         }
       ]
     },
@@ -358,7 +364,7 @@
     },
     {
       "name": "Maximilian Knopp",
-      "previousRank": 15,
+      "previousRank": 1,
       "runs": [
         {
           "date": "2026-01-13",
@@ -370,6 +376,18 @@
           "date": "2026-01-13",
           "km": 22.22,
           "img": "uploads/maximilian_knopp/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 7.01,
+          "img": "uploads/maximilian_knopp/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 3.02,
+          "img": "uploads/maximilian_knopp/Run4.jpg",
           "selfie": null
         }
       ]
@@ -526,7 +544,7 @@
     },
     {
       "name": "Kevin Treis",
-      "previousRank": 15,
+      "previousRank": 19,
       "runs": [
         {
           "date": "2026-01-12",
@@ -544,6 +562,12 @@
           "date": "2026-01-12",
           "km": 4.09,
           "img": "uploads/kevin_treis/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 5.68,
+          "img": "uploads/kevin_treis/Run4.jpg",
           "selfie": null
         }
       ]
