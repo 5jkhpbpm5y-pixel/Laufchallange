@@ -157,12 +157,24 @@
     },
     {
       "name": "Fabian Füßl",
-      "previousRank": 8,
+      "previousRank": 19,
       "runs": [
         {
           "date": "2026-01-11",
           "km": 7.42,
           "img": "uploads/fabian_fuessl/Run1.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-17",
+          "km": 9.88,
+          "img": "uploads/fabian_fuessl/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-20",
+          "km": 5.29,
+          "img": "uploads/fabian_fuessl/Run3.jpg",
           "selfie": null
         }
       ]
@@ -532,7 +544,7 @@
     },
     {
       "name": "Luca Rott",
-      "previousRank": 10,
+      "previousRank": 3,
       "runs": [
         {
           "date": "2026-01-14",
@@ -551,6 +563,36 @@
           "km": 8.37,
           "img": "uploads/luca_rott/Run1.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 10.02,
+          "img": "uploads/luca_rott/Run4.jpg",
+          "selfie": "uploads/luca_rott/SelfieRun4.jpg"
+        },
+        {
+          "date": "2026-01-17",
+          "km": 9.42,
+          "img": "uploads/luca_rott/Run5.jpg",
+          "selfie": "uploads/luca_rott/SelfieRun5.jpg"
+        },
+        {
+          "date": "2026-01-19",
+          "km": 10.48,
+          "img": "uploads/luca_rott/Run6.jpg",
+          "selfie": "uploads/luca_rott/SelfieRun6.jpg"
+        },
+        {
+          "date": "2026-01-19",
+          "km": 5.01,
+          "img": "uploads/luca_rott/Run7.jpg",
+          "selfie": "uploads/luca_rott/SelfieRun7.jpg"
+        },
+        {
+          "date": "2026-01-20",
+          "km": 8.23,
+          "img": "uploads/luca_rott/Run8.jpg",
+          "selfie": "uploads/luca_rott/SelfieRun8.jpg"
         }
       ]
     },
