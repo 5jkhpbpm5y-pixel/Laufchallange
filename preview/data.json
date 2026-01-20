@@ -181,7 +181,7 @@
     },
     {
       "name": "Valentin Ertl",
-      "previousRank": 9,
+      "previousRank": 14,
       "runs": [
         {
           "date": "2026-01-11",
@@ -199,6 +199,12 @@
           "date": "2026-01-14",
           "km": 8.44,
           "img": "uploads/valentin_ertl/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-16",
+          "km": 21,
+          "img": "uploads/valentin_ertl/Run4.jpg",
           "selfie": null
         }
       ]
@@ -270,7 +276,7 @@
     },
     {
       "name": "Vinzenz Ertl",
-      "previousRank": 12,
+      "previousRank": 11,
       "runs": [
         {
           "date": "2026-01-13",
@@ -288,6 +294,12 @@
           "date": "2026-01-18",
           "km": 8.01,
           "img": "uploads/vinzenz_ertl/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-20",
+          "km": 10.3,
+          "img": "uploads/vinzenz_ertl/Run4.jpg",
           "selfie": null
         }
       ]
