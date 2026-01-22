@@ -384,7 +384,7 @@
     },
     {
       "name": "Luis Müller",
-      "previousRank": 17,
+      "previousRank": 19,
       "runs": [
         {
           "date": "2026-01-14",
@@ -397,6 +397,12 @@
           "km": 12.81,
           "img": "uploads/luis_mueller/Run2.jpg",
           "selfie": "uploads/luis_mueller/SelfieRun2.jpg"
+        },
+        {
+          "date": "2026-01-21",
+          "km": 10.06,
+          "img": "uploads/luis_mueller/Run3.jpg",
+          "selfie": "uploads/luis_mueller/SelfieRun3.jpg"
         }
       ]
     },
@@ -426,7 +432,7 @@
     },
     {
       "name": "Alexandru Kohonicz",
-      "previousRank": 21,
+      "previousRank": 23,
       "runs": [
         {
           "date": "2026-01-13",
@@ -438,6 +444,12 @@
           "date": "2026-01-18",
           "km": 6.82,
           "img": "uploads/alexandru_kohonicz/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-21",
+          "km": 4,
+          "img": "uploads/alexandru_kohonicz/Run3.jpg",
           "selfie": null
         }
       ]
@@ -683,7 +695,7 @@
     },
     {
       "name": "Paul Dirschl",
-      "previousRank": 10,
+      "previousRank": 15,
       "runs": [
         {
           "date": "2026-01-11",
@@ -707,6 +719,12 @@
           "date": "2026-01-18",
           "km": 3.52,
           "img": "uploads/paul_dirschl/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-21",
+          "km": 3.76,
+          "img": "uploads/paul_dirschl/Run5.jpg",
           "selfie": null
         }
       ]
@@ -869,7 +887,7 @@
     },
     {
       "name": "Sebastian Haag",
-      "previousRank": 23,
+      "previousRank": 16,
       "runs": [
         {
           "date": "2026-01-13",
@@ -887,6 +905,18 @@
           "date": "2026-01-19",
           "km": 6.04,
           "img": "uploads/sebastian_haag/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-20",
+          "km": 8.21,
+          "img": "uploads/sebastian_haag/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-21",
+          "km": 9.17,
+          "img": "uploads/sebastian_haag/Run5.jpg",
           "selfie": null
         }
       ]
