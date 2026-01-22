@@ -103,7 +103,7 @@
   "players": [
     {
       "name": "Alexander Auhagen",
-      "previousRank": 21,
+      "previousRank": 24,
       "runs": [
         {
           "date": "2026-01-11",
@@ -115,6 +115,12 @@
           "date": "2026-01-18",
           "km": 8.46,
           "img": "uploads/alexander_auhagen/Run2.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-21",
+          "km": 9.13,
+          "img": "uploads/alexander_auhagen/Run3.jpg",
           "selfie": null
         }
       ]
@@ -306,7 +312,7 @@
     },
     {
       "name": "Nac",
-      "previousRank": 1,
+      "previousRank": 5,
       "runs": [
         {
           "date": "2026-01-12",
@@ -343,6 +349,12 @@
           "km": 10.01,
           "img": "uploads/nac/Run6.jpg",
           "selfie": "uploads/nac/SelfieRun6.jpg"
+        },
+        {
+          "date": "2026-01-21",
+          "km": 8.5,
+          "img": "uploads/nac/Run7.jpg",
+          "selfie": null
         }
       ]
     },
@@ -798,6 +810,12 @@
           "km": 9.01,
           "img": "uploads/david_neumann/Run8.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-21",
+          "km": 11,
+          "img": "uploads/david_neumann/Run9.jpg",
+          "selfie": null
         }
       ]
     },
@@ -851,7 +869,7 @@
     },
     {
       "name": "Berkay Köroglu",
-      "previousRank": 11,
+      "previousRank": 10,
       "runs": [
         {
           "date": "2026-01-12",
@@ -881,6 +899,18 @@
           "date": "2026-01-18",
           "km": 7.35,
           "img": "uploads/berkay_koeroglu/Run5.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-20",
+          "km": 8,
+          "img": "uploads/berkay_koeroglu/Run6.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-21",
+          "km": 8.01,
+          "img": "uploads/berkay_koeroglu/Run7.jpg",
           "selfie": null
         }
       ]
