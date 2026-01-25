@@ -103,7 +103,7 @@
   "players": [
     {
       "name": "Alexander Auhagen",
-      "previousRank": 24,
+      "previousRank": 21,
       "runs": [
         {
           "date": "2026-01-11",
@@ -121,6 +121,12 @@
           "date": "2026-01-21",
           "km": 9.13,
           "img": "uploads/alexander_auhagen/Run3.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-25",
+          "km": 8.99,
+          "img": "uploads/alexander_auhagen/Run4.jpg",
           "selfie": null
         }
       ]
@@ -366,7 +372,7 @@
     },
     {
       "name": "Alois Breu",
-      "previousRank": 14,
+      "previousRank": 13,
       "runs": [
         {
           "date": "2026-01-13",
@@ -397,6 +403,12 @@
           "km": 9.09,
           "img": "uploads/alois_breu/Run5.jpg",
           "selfie": "uploads/alois_breu/SelfieRun5.jpg"
+        },
+        {
+          "date": "2026-01-23",
+          "km": 8.84,
+          "img": "uploads/alois_breu/Run6.jpg",
+          "selfie": "uploads/alois_breu/SelfieRun6.jpg"
         }
       ]
     },
@@ -617,7 +629,7 @@
     },
     {
       "name": "Maximilian Knopp",
-      "previousRank": 1,
+      "previousRank": 10,
       "runs": [
         {
           "date": "2026-01-13",
@@ -641,6 +653,12 @@
           "date": "2026-01-16",
           "km": 3.02,
           "img": "uploads/maximilian_knopp/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-25",
+          "km": 10.27,
+          "img": "uploads/maximilian_knopp/Run5.jpg",
           "selfie": null
         }
       ]
@@ -899,7 +917,7 @@
     },
     {
       "name": "Berkay Köroglu",
-      "previousRank": 10,
+      "previousRank": 8,
       "runs": [
         {
           "date": "2026-01-12",
@@ -942,12 +960,18 @@
           "km": 8.01,
           "img": "uploads/berkay_koeroglu/Run7.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-24",
+          "km": 7.38,
+          "img": "uploads/berkay_koeroglu/Run8.jpg",
+          "selfie": null
         }
       ]
     },
     {
       "name": "Sebastian Haag",
-      "previousRank": 16,
+      "previousRank": 14,
       "runs": [
         {
           "date": "2026-01-13",
@@ -977,6 +1001,12 @@
           "date": "2026-01-21",
           "km": 9.17,
           "img": "uploads/sebastian_haag/Run5.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-22",
+          "km": 11.52,
+          "img": "uploads/sebastian_haag/Run6.jpg",
           "selfie": null
         }
       ]
