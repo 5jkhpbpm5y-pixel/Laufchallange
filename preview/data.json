@@ -103,7 +103,7 @@
   "players": [
     {
       "name": "Alexander Auhagen",
-      "previousRank": 21,
+      "previousRank": 17,
       "runs": [
         {
           "date": "2026-01-11",
@@ -133,7 +133,7 @@
     },
     {
       "name": "Thomas Kümmerle",
-      "previousRank": 9,
+      "previousRank": 16,
       "runs": [
         {
           "date": "2026-01-11",
@@ -169,7 +169,7 @@
     },
     {
       "name": "Fabian Füßl",
-      "previousRank": 19,
+      "previousRank": 23,
       "runs": [
         {
           "date": "2026-01-11",
@@ -289,7 +289,7 @@
     },
     {
       "name": "Lucas Gschmeidler",
-      "previousRank": 1,
+      "previousRank": 29,
       "runs": []
     },
     {
@@ -372,7 +372,7 @@
     },
     {
       "name": "Alois Breu",
-      "previousRank": 13,
+      "previousRank": 8,
       "runs": [
         {
           "date": "2026-01-13",
@@ -409,6 +409,12 @@
           "km": 8.84,
           "img": "uploads/alois_breu/Run6.jpg",
           "selfie": "uploads/alois_breu/SelfieRun6.jpg"
+        },
+        {
+          "date": "2026-01-25",
+          "km": 9.27,
+          "img": "uploads/alois_breu/Run7.jpg",
+          "selfie": "uploads/alois_breu/SelfieRun7.jpg"
         }
       ]
     },
@@ -438,7 +444,7 @@
     },
     {
       "name": "Lukas Zieglmaier",
-      "previousRank": 8,
+      "previousRank": 14,
       "runs": [
         {
           "date": "2026-01-11",
@@ -462,7 +468,7 @@
     },
     {
       "name": "Alexandru Kohonicz",
-      "previousRank": 23,
+      "previousRank": 15,
       "runs": [
         {
           "date": "2026-01-13",
@@ -481,12 +487,24 @@
           "km": 4,
           "img": "uploads/alexandru_kohonicz/Run3.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-25",
+          "km": 8.07,
+          "img": "uploads/alexandru_kohonicz/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-28",
+          "km": 6.92,
+          "img": "uploads/alexandru_kohonicz/Run5.jpg",
+          "selfie": null
         }
       ]
     },
     {
       "name": "Lukas Königer",
-      "previousRank": 20,
+      "previousRank": 24,
       "runs": [
         {
           "date": "2026-01-13",
@@ -510,7 +528,7 @@
     },
     {
       "name": "Philipp Gschaider",
-      "previousRank": 3,
+      "previousRank": 2,
       "runs": [
         {
           "date": "2026-01-11",
@@ -570,7 +588,7 @@
     },
     {
       "name": "Philipp Köhl",
-      "previousRank": 18,
+      "previousRank": 13,
       "runs": [
         {
           "date": "2026-01-11",
@@ -594,7 +612,7 @@
     },
     {
       "name": "Paul Lohse",
-      "previousRank": 22,
+      "previousRank": 21,
       "runs": [
         {
           "date": "2026-01-12",
@@ -624,12 +642,12 @@
     },
     {
       "name": "Johannes Eller",
-      "previousRank": 1,
+      "previousRank": 29,
       "runs": []
     },
     {
       "name": "Maximilian Knopp",
-      "previousRank": 10,
+      "previousRank": 7,
       "runs": [
         {
           "date": "2026-01-13",
@@ -660,12 +678,18 @@
           "km": 10.27,
           "img": "uploads/maximilian_knopp/Run5.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-26",
+          "km": 5.15,
+          "img": "uploads/maximilian_knopp/Run6.jpg",
+          "selfie": null
         }
       ]
     },
     {
       "name": "Thomas Boukal",
-      "previousRank": 24,
+      "previousRank": 27,
       "runs": [
         {
           "date": "2026-01-14",
@@ -683,7 +707,7 @@
     },
     {
       "name": "Bernhard Galster",
-      "previousRank": 25,
+      "previousRank": 28,
       "runs": [
         {
           "date": "2026-01-14",
@@ -695,7 +719,7 @@
     },
     {
       "name": "Luca Rott",
-      "previousRank": 2,
+      "previousRank": 3,
       "runs": [
         {
           "date": "2026-01-14",
@@ -755,7 +779,7 @@
     },
     {
       "name": "Paul Dirschl",
-      "previousRank": 15,
+      "previousRank": 20,
       "runs": [
         {
           "date": "2026-01-11",
@@ -791,7 +815,7 @@
     },
     {
       "name": "Sebastian Seidl",
-      "previousRank": 26,
+      "previousRank": 25,
       "runs": [
         {
           "date": "2026-01-11",
@@ -912,12 +936,24 @@
           "km": 8.5,
           "img": "uploads/leon_kuemmerle/Run8.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-26",
+          "km": 5,
+          "img": "uploads/leon_kuemmerle/Run8.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-27",
+          "km": 4.19,
+          "img": "uploads/leon_kuemmerle/Run9.jpg",
+          "selfie": null
         }
       ]
     },
     {
       "name": "Berkay Köroglu",
-      "previousRank": 8,
+      "previousRank": 9,
       "runs": [
         {
           "date": "2026-01-12",
@@ -971,7 +1007,7 @@
     },
     {
       "name": "Sebastian Haag",
-      "previousRank": 14,
+      "previousRank": 10,
       "runs": [
         {
           "date": "2026-01-13",
@@ -1013,7 +1049,7 @@
     },
     {
       "name": "Kevin Treis",
-      "previousRank": 19,
+      "previousRank": 26,
       "runs": [
         {
           "date": "2026-01-12",
@@ -1043,12 +1079,12 @@
     },
     {
       "name": "Edi Gashi",
-      "previousRank": 1,
+      "previousRank": 29,
       "runs": []
     },
     {
       "name": "Elias Angulanza",
-      "previousRank": 3,
+      "previousRank": 18,
       "runs": [
         {
           "date": "2026-01-11",
@@ -1072,12 +1108,12 @@
     },
     {
       "name": "Tim Seibold",
-      "previousRank": 1,
+      "previousRank": 29,
       "runs": []
     },
     {
       "name": "Patric Pausch",
-      "previousRank": 9,
+      "previousRank": 22,
       "runs": [
         {
           "date": "2026-01-11",
@@ -1103,14 +1139,14 @@
   "start": "2026-01-11",
   "end": "2026-01-31",
   "groupPrev": {
-    "Gruppe 1": 1,
-    "Gruppe 2": 1,
-    "Gruppe 3": 1,
-    "Gruppe 4": 1,
-    "Gruppe 5": 1,
+    "Gruppe 1": 2,
+    "Gruppe 2": 3,
+    "Gruppe 3": 4,
+    "Gruppe 4": 7,
+    "Gruppe 5": 5,
     "Gruppe 6": 1,
-    "Gruppe 7": 1,
-    "Leader Gruppe": 1
+    "Gruppe 7": 8,
+    "Leader Gruppe": 6
   },
-  "lastSnapshot": "2026-01-11"
+  "lastSnapshot": "2026-01-28"
 }
