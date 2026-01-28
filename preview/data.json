@@ -324,7 +324,7 @@
     },
     {
       "name": "Nac",
-      "previousRank": 5,
+      "previousRank": 2,
       "runs": [
         {
           "date": "2026-01-12",
@@ -367,6 +367,24 @@
           "km": 8.5,
           "img": "uploads/nac/Run7.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-25",
+          "km": 14.01,
+          "img": "uploads/nac/Run8.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-24",
+          "km": 9.3,
+          "img": "uploads/nac/Run9.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-26",
+          "km": 13.04,
+          "img": "uploads/nac/Run10.jpg",
+          "selfie": "uploads/nac/SelfieRun10.jpg"
         }
       ]
     },
@@ -1007,7 +1025,7 @@
     },
     {
       "name": "Sebastian Haag",
-      "previousRank": 10,
+      "previousRank": 7,
       "runs": [
         {
           "date": "2026-01-13",
@@ -1044,12 +1062,24 @@
           "km": 11.52,
           "img": "uploads/sebastian_haag/Run6.jpg",
           "selfie": null
+        },
+        {
+          "date": "2026-01-26",
+          "km": 10.85,
+          "img": "uploads/sebastian_haag/Run7.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-27",
+          "km": 10.29,
+          "img": "uploads/sebastian_haag/Run8.jpg",
+          "selfie": null
         }
       ]
     },
     {
       "name": "Kevin Treis",
-      "previousRank": 26,
+      "previousRank": 24,
       "runs": [
         {
           "date": "2026-01-12",
@@ -1073,6 +1103,18 @@
           "date": "2026-01-16",
           "km": 5.68,
           "img": "uploads/kevin_treis/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-27",
+          "km": 4,
+          "img": "uploads/kevin_treis/Run5.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-27",
+          "km": 1,
+          "img": "uploads/kevin_treis/Run6.jpg",
           "selfie": null
         }
       ]
