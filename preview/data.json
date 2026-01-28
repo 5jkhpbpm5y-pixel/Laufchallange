@@ -876,7 +876,7 @@
     },
     {
       "name": "David Neumann",
-      "previousRank": 4,
+      "previousRank": 1,
       "runs": [
         {
           "date": "2026-01-11",
@@ -930,6 +930,36 @@
           "date": "2026-01-21",
           "km": 11,
           "img": "uploads/david_neumann/Run9.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-23",
+          "km": 9.5,
+          "img": "uploads/david_neumann/Run10.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-25",
+          "km": 12.28,
+          "img": "uploads/david_neumann/Run11.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-26",
+          "km": 13.01,
+          "img": "uploads/david_neumann/Run12.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-28",
+          "km": 5.78,
+          "img": "uploads/david_neumann/Run13.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-28",
+          "km": 7.43,
+          "img": "uploads/david_neumann/Run14.jpg",
           "selfie": null
         }
       ]
