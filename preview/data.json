@@ -103,7 +103,7 @@
   "players": [
     {
       "name": "Alexander Auhagen",
-      "previousRank": 17,
+      "previousRank": 19,
       "runs": [
         {
           "date": "2026-01-11",
@@ -127,6 +127,12 @@
           "date": "2026-01-25",
           "km": 8.99,
           "img": "uploads/alexander_auhagen/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-29",
+          "km": 7.58,
+          "img": "uploads/alexander_auhagen/Run5.jpg",
           "selfie": null
         }
       ]
@@ -391,6 +397,12 @@
           "km": 13.04,
           "img": "uploads/nac/Run10.jpg",
           "selfie": "uploads/nac/SelfieRun10.jpg"
+        },
+        {
+          "date": "2026-01-28",
+          "km": 9.22,
+          "img": "uploads/nac/Run11.jpg",
+          "selfie": null
         }
       ]
     },
@@ -660,6 +672,12 @@
           "date": "2026-01-22",
           "km": 6.26,
           "img": "uploads/paul_lohse/Run4.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-29",
+          "km": 7.58,
+          "img": "uploads/paul_lohse/Run5.jpg",
           "selfie": null
         }
       ]
