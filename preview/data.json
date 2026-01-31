@@ -139,7 +139,7 @@
     },
     {
       "name": "Thomas Kümmerle",
-      "previousRank": 16,
+      "previousRank": 19,
       "runs": [
         {
           "date": "2026-01-11",
@@ -169,6 +169,12 @@
           "date": "2026-01-19",
           "km": 5.12,
           "img": "uploads/thomas_kuemmerle/Run5.jpg",
+          "selfie": null
+        },
+        {
+          "date": "2026-01-31",
+          "km": 10.04,
+          "img": "uploads/thomas_kuemmerle/Run6.jpg",
           "selfie": null
         }
       ]
